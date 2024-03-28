@@ -42,6 +42,7 @@ static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glCont
 
         SDL_GL_GetDrawableSize(window, &width, &height);
         glViewport(0, 0, event.window.data1, event.window.data1);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         SDL_GL_SwapWindow(window);
     }
