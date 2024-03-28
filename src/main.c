@@ -8,15 +8,19 @@
 
 static void assert(bool condition) { if (!condition) abort(); }
 
-static void render(SDL_Window* window, SDL_GLContext* glContext) {
+static void renderLoop(SDL_Window* window, SDL_GLContext* glContext) {
     SDL_Event event;
+    int width, height;
+
     while (true) {
         while (SDL_PollEvent(&event) == 1) {
             if (event.type == SDL_QUIT)
                 return;
         }
 
-        SDL_GL_SetSwapInterval(1);
+        SDL_GetWindowSize(window, &width, &height);
+        glViewport(0, 0, width, height);
+
         SDL_GL_SwapWindow(window);
     }
 }
@@ -45,8 +49,9 @@ int main(void) {
     assert(window != nullptr);
 
     SDL_GLContext* glContext = SDL_GL_CreateContext(window);
-    assert(gladLoadGL() == 1);
-    render(window, glContext);
+    assert(gladLoadGLLoader((GLADloadproc) &SDL_GL_GetProcAddress) == 1);
+    SDL_GL_SetSwapInterval(1);
+    renderLoop(window, glContext);
     SDL_GL_DeleteContext(glContext);
 
     SDL_DestroyWindow(window);
