@@ -18,7 +18,7 @@ static void renderLoop(SDL_Window* window, SDL_GLContext* glContext) {
                 return;
         }
 
-        SDL_GetWindowSize(window, &width, &height);
+        SDL_GL_GetDrawableSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
         SDL_GL_SwapWindow(window);
@@ -44,7 +44,7 @@ int main(void) {
         SDL_WINDOWPOS_CENTERED,
         512,
         512,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
     );
     assert(window != nullptr);
 
