@@ -21,11 +21,10 @@ static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glCont
         while (SDL_PollEvent(&event) == 1) {
             if (event.type == SDL_QUIT)
                 return;
-
-            if (event.type == SDL_WINDOWEVENT)
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-                    glViewport(0, 0, event.window.data1, event.window.data1);
         }
+
+        SDL_GL_GetDrawableSize(window, &width, &height);
+        glViewport(0, 0, event.window.data1, event.window.data1);
 
         SDL_GL_SwapWindow(window);
     }
