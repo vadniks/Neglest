@@ -9,8 +9,16 @@
 static void assert(bool condition) { if (!condition) abort(); }
 
 static void render(SDL_Window* window, SDL_GLContext* glContext) {
-    SDL_GL_SetSwapInterval(1);
-    SDL_GL_SwapWindow(window);
+    SDL_Event event;
+    while (true) {
+        while (SDL_PollEvent(&event) == 1) {
+            if (event.type == SDL_QUIT)
+                return;
+        }
+
+        SDL_GL_SetSwapInterval(1);
+        SDL_GL_SwapWindow(window);
+    }
 }
 
 int main(void) {
@@ -32,11 +40,12 @@ int main(void) {
         SDL_WINDOWPOS_CENTERED,
         512,
         512,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
     );
     assert(window != nullptr);
 
     SDL_GLContext* glContext = SDL_GL_CreateContext(window);
+    assert(gladLoadGL() == 1);
     render(window, glContext);
     SDL_GL_DeleteContext(glContext);
 
