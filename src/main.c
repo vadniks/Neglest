@@ -35,8 +35,6 @@ static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glCont
     int width, height;
 
     while (true) {
-        const unsigned long millis = SDL_GetTicks64();
-
         while (SDL_PollEvent(&event) == 1) {
             if (event.type == SDL_QUIT)
                 return;
@@ -47,8 +45,6 @@ static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glCont
         glClear(GL_COLOR_BUFFER_BIT);
 
         SDL_GL_SwapWindow(window);
-
-        SDL_Log("fps: %d", (int) SDL_roundf(1000.0f / (float) (SDL_GetTicks64() - millis)));
     }
 }
 
