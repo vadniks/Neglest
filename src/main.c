@@ -3,8 +3,13 @@
 #include <SDL2/SDL.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
 
-#define nullable _Nullable
-#define nonnull _Nonnull
+#ifdef __clang__
+#   define nullable _Nullable
+#   define nonnull _Nonnull
+#else
+#   define nullable
+#   define nonnull
+#endif
 
 static void assert(bool condition) { if (!condition) abort(); }
 
