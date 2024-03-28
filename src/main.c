@@ -8,7 +8,7 @@
 
 static void assert(bool condition) { if (!condition) abort(); }
 
-static void renderLoop(SDL_Window* window, SDL_GLContext* glContext) {
+static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glContext) {
     SDL_Event event;
     int width, height;
 
