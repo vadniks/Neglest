@@ -64,12 +64,13 @@ int main(void) {
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
+        const int scale = 50;
         SDL_Window* window = SDL_CreateWindow(
             "Title",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            512,
-            512,
+            16 * scale,
+            9 * scale,
             SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
         );
         assert(window != nullptr); {
