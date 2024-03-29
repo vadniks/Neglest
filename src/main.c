@@ -28,9 +28,16 @@
 #   define nonnull
 #endif
 
+#define USED(x) ((void) x)
+
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
 
 static inline void assert(bool condition) { if (!condition) abort(); }
+
+static void renderFrame(SDL_Window* nonnull window, SDL_GLContext* nonnull glContext) {
+    USED(window);
+    USED(glContext);
+}
 
 static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glContext) {
     SDL_Event event;
@@ -44,8 +51,11 @@ static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glCont
 
         SDL_GL_GetDrawableSize(window, &width, &height);
         glViewport(0, 0, width, height);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+        glClearColor(1.0f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        renderFrame(window, glContext);
 
         SDL_GL_SwapWindow(window);
     }
