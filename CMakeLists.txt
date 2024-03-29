@@ -17,5 +17,5 @@ file(GLOB PROJECT_SOURCES CONFIGURE_DEPENDS src/*.c src/*.h)
 file(GLOB GLAD_SOURCES CONFIGURE_DEPENDS glad/include/*/* glad/src/*)
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${GLAD_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} SDL2)
+target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image)
 target_include_directories(${PROJECT_NAME} PRIVATE glad/include)

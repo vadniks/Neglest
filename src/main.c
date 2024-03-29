@@ -28,6 +28,8 @@
 #   define nonnull
 #endif
 
+static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
+
 static inline void assert(bool condition) { if (!condition) abort(); }
 
 static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glContext) {
@@ -63,7 +65,7 @@ int main(void) {
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
         SDL_Window* window = SDL_CreateWindow(
-            "title",
+            "Title",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             512,
