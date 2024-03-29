@@ -43,7 +43,7 @@ static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glCont
         }
 
         SDL_GL_GetDrawableSize(window, &width, &height);
-        glViewport(0, 0, event.window.data1, event.window.data1);
+        glViewport(0, 0, width, height);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
