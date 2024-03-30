@@ -81,10 +81,10 @@ static void beforeRender(SDL_Window* window, SDL_GLContext glContext) {
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     assert(success == 1);
 
-    glUseProgram(shaderProgram);
-
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
+
+    glUseProgram(shaderProgram);
 
     //
 
