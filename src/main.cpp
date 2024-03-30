@@ -36,7 +36,7 @@ static void beforeRender(SDL_Window* window, SDL_GLContext glContext) {
     unsigned vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
     const char* const vertexShaderCode = R"(
         #version 330 core
@@ -86,7 +86,16 @@ static void beforeRender(SDL_Window* window, SDL_GLContext glContext) {
 
     glUseProgram(shaderProgram);
 
+    unsigned vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
     //
+
+    glBindVertexArray(0);
+    glDeleteVertexArrays(1, &vao);
 
     glDeleteProgram(shaderProgram);
 
