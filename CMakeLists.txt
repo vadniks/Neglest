@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.26)
 set(CMAKE_C_COMPILER /usr/bin/clang)
-project(Neglest C)
+project(Neglest LANGUAGES C)
 
 set(CMAKE_C_STANDARD 23)
 
