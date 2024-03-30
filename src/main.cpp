@@ -33,30 +33,50 @@ static void beforeRender(SDL_Window* window, SDL_GLContext glContext) {
         0.0f, 0.5f, 0.0f
     };
 
-    unsigned int vbo;
+    unsigned vbo;
     glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo); {
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-        const char* const shader = R"(
-            #version 330 core
-            layout (location = 0) in vec3 pos;
+    const char* const vertexShaderCode = R"(
+        #version 330 core
+        layout (location = 0) in vec3 position;
 
-            void main() {
-                gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
-            }
-        )";
+        void main() {
+            gl_Position = vec4(position.x, position.y, position.z, 1.0);
+        }
+    )";
 
-        const unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER); {
-            glShaderSource(vertexShader, 1, &shader, nullptr);
-            glCompileShader(vertexShader);
+    const unsigned vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
+    glCompileShader(vertexShader);
 
-            int success;
-            glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-            assert(success == 1);
-        } glDeleteShader(vertexShader);
+    int success;
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    assert(success == 1);
 
-    } glBindBuffer(GL_ARRAY_BUFFER, 0);
+    const char* const fragmentShaderCode = R"(
+        #version 330 core
+        out vec4 color;
+
+        void main() {
+            color = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        }
+    )";
+
+    const unsigned fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
+    glCompileShader(fragmentShader);
+
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    assert(success == 1);
+
+    //
+
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &vbo);
 }
 
