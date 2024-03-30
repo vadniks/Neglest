@@ -16,17 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <SDL2/SDL.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
-
-#ifdef __clang__
-#   define nullable _Nullable
-#   define nonnull _Nonnull
-#else
-#   define nullable
-#   define nonnull
-#endif
 
 #define USED(x) ((void) x)
 
@@ -34,12 +26,20 @@ static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(
 
 static inline void assert(bool condition) { if (!condition) abort(); }
 
-static void renderFrame(SDL_Window* nonnull window, SDL_GLContext* nonnull glContext) {
+static void renderFrame(SDL_Window* window, SDL_GLContext glContext) {
     USED(window);
     USED(glContext);
+
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0f
+    };
+
+
 }
 
-static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glContext) {
+static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
     SDL_Event event;
     int width, height;
 
@@ -61,7 +61,7 @@ static void renderLoop(SDL_Window* nonnull window, SDL_GLContext* nonnull glCont
     }
 }
 
-int main(void) {
+int main() {
     assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0); {
 
         SDL_version version;
@@ -84,7 +84,7 @@ int main(void) {
             SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
         );
         assert(window != nullptr); {
-            SDL_GLContext* glContext = SDL_GL_CreateContext(window); {
+            SDL_GLContext glContext = SDL_GL_CreateContext(window); {
                 assert(gladLoadGLLoader((GLADloadproc) &SDL_GL_GetProcAddress) == 1);
                 SDL_GL_SetSwapInterval(1);
 
