@@ -17,14 +17,14 @@
  */
 
 #include <cstdlib>
+#include <cassert>
 #include <SDL2/SDL.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
+#include <glm/glm.hpp>
 
 #define USED(x) ((void) x)
 
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
-
-static inline void assert(bool condition) { if (!condition) abort(); }
 
 static void renderFrame(SDL_Window* window, SDL_GLContext glContext) {
     USED(window);
