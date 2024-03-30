@@ -129,10 +129,12 @@ static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
     int width, height;
     bool beforeRenderCalled = false;
 
+    unsigned vbo, shaderProgram, vao;
+
     while (true) {
         while (SDL_PollEvent(&event) == 1) {
             if (event.type == SDL_QUIT)
-                return;
+                goto end;
         }
 
         SDL_GL_GetDrawableSize(window, &width, &height);
@@ -141,7 +143,6 @@ static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
         glClearColor(1.0f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        unsigned vbo, shaderProgram, vao;
         if (!beforeRenderCalled) {
             beforeRenderCalled = true;
             beforeRender(&vbo, &shaderProgram, &vao);
@@ -151,6 +152,9 @@ static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
 
         SDL_GL_SwapWindow(window);
     }
+    end:
+
+    afterRender(vbo, shaderProgram, vao);
 }
 
 int main() {
