@@ -16,32 +16,59 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
+//#include <cstdlib>
 #include <cassert>
 #include <SDL2/SDL.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
-#include <glm/glm.hpp>
+//#include <glm/glm.hpp>
 
 #define USED(x) ((void) x)
 
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
 
-static void renderFrame(SDL_Window* window, SDL_GLContext glContext) {
-    USED(window);
-    USED(glContext);
-
+static void beforeRender(SDL_Window* window, SDL_GLContext glContext) {
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
         0.0f, 0.5f, 0.0f
     };
 
+    unsigned int vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); {
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+        const char* const shader = R"(
+            #version 330 core
+            layout (location = 0) in vec3 pos;
+
+            void main() {
+                gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+            }
+        )";
+
+        const unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER); {
+            glShaderSource(vertexShader, 1, &shader, nullptr);
+            glCompileShader(vertexShader);
+
+            int success;
+            glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+            assert(success == 1);
+        } glDeleteShader(vertexShader);
+
+    } glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &vbo);
+}
+
+static void renderFrame(SDL_Window* window, SDL_GLContext glContext) {
+    USED(window);
+    USED(glContext);
 }
 
 static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
     SDL_Event event;
     int width, height;
+    bool beforeRenderCalled = false;
 
     while (true) {
         while (SDL_PollEvent(&event) == 1) {
@@ -54,6 +81,11 @@ static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
 
         glClearColor(1.0f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        if (!beforeRenderCalled) {
+            beforeRenderCalled = true;
+            beforeRender(window, glContext);
+        }
 
         renderFrame(window, glContext);
 
