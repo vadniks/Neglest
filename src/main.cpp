@@ -71,10 +71,24 @@ static void beforeRender(SDL_Window* window, SDL_GLContext glContext) {
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     assert(success == 1);
 
-    //
-
+    const unsigned shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
     glDeleteShader(fragmentShader);
     glDeleteShader(vertexShader);
+
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    assert(success == 1);
+
+    glUseProgram(shaderProgram);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(0);
+
+    //
+
+    glDeleteProgram(shaderProgram);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &vbo);
