@@ -81,14 +81,17 @@ static void renderFrame() {
     glGenVertexArrays(1, &vao);
 
     float vertices[] = {
-        0.5f, 0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f, 0.5f, 0.0f
+        0.6f, 0.6f, 0.0f,
+        0.6f, -0.3f, 0.0f,
+        -0.3f, 0.6f, 0.0f,
+
+        -0.6f, 0.3f, 0.0f,
+        -0.6f, -0.6f, 0.0f,
+        0.3f, -0.6f, 0.0f
     };
     unsigned indices[] = {
-        0, 1, 3,
-        1, 2, 3
+        0, 1, 2,
+        3, 4, 5
     };
 
     glBindVertexArray(vao);
@@ -106,9 +109,9 @@ static void renderFrame() {
     glUseProgram(shaderProgram);
     glBindVertexArray(vao);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     //
 
