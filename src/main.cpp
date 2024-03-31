@@ -91,8 +91,6 @@ static void renderFrame() {
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glDeleteProgram(shaderProgram);
 
-    //
-
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &vbo);
 
