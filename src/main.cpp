@@ -106,7 +106,9 @@ static void renderFrame() {
     glUseProgram(shaderProgram);
     glBindVertexArray(vao);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     //
 
@@ -135,7 +137,7 @@ static void renderLoop(SDL_Window* window) {
         SDL_GL_GetDrawableSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
-        glClearColor(1.0f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         renderFrame();
