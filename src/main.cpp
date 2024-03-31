@@ -26,7 +26,7 @@
 
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
 
-static void beforeRender(unsigned* xVbo, unsigned* xShaderProgram, unsigned* xVao) {
+static void renderFrame() {
     unsigned vbo;
     glGenBuffers(1, &vbo);
 
@@ -81,12 +81,6 @@ static void beforeRender(unsigned* xVbo, unsigned* xShaderProgram, unsigned* xVa
     unsigned vao;
     glGenVertexArrays(1, &vao);
 
-    *xVbo = vbo;
-    *xShaderProgram = shaderProgram;
-    *xVao = vao;
-}
-
-static void renderFrame(unsigned vbo, unsigned shaderProgram, unsigned vao) {
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
@@ -95,7 +89,7 @@ static void renderFrame(unsigned vbo, unsigned shaderProgram, unsigned vao) {
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
@@ -103,9 +97,7 @@ static void renderFrame(unsigned vbo, unsigned shaderProgram, unsigned vao) {
     glBindVertexArray(vao);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
-}
 
-static void afterRender(unsigned vbo, unsigned shaderProgram, unsigned vao) {
     glBindVertexArray(0);
     glDeleteVertexArrays(1, &vao);
 
@@ -118,14 +110,11 @@ static void afterRender(unsigned vbo, unsigned shaderProgram, unsigned vao) {
 static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
     SDL_Event event;
     int width, height;
-    bool beforeRenderCalled = false;
-
-    unsigned vbo, shaderProgram, vao;
 
     while (true) {
         while (SDL_PollEvent(&event) == 1) {
             if (event.type == SDL_QUIT)
-                goto end;
+                return;
         }
 
         SDL_GL_GetDrawableSize(window, &width, &height);
@@ -134,18 +123,10 @@ static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
         glClearColor(1.0f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        if (!beforeRenderCalled) {
-            beforeRenderCalled = true;
-            beforeRender(&vbo, &shaderProgram, &vao);
-        }
-
-        renderFrame(vbo, shaderProgram, vao);
+        renderFrame();
 
         SDL_GL_SwapWindow(window);
     }
-    end:
-
-    afterRender(vbo, shaderProgram, vao);
 }
 
 int main() {
