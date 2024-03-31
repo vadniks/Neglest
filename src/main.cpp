@@ -69,20 +69,22 @@ static void renderFrame() {
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     assert(success == 1);
 
-    float vertices[] = {
+    //
+
+    float vertices1[] = {
         0.6f, 0.6f, 0.0f,
         0.6f, -0.3f, 0.0f,
         -0.3f, 0.6f, 0.0f
     };
 
-    unsigned vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    unsigned vao1;
+    glGenVertexArrays(1, &vao1);
+    glBindVertexArray(vao1);
 
-    unsigned vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+    unsigned vbo1;
+    glGenBuffers(1, &vbo1);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo1);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_DYNAMIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
@@ -92,10 +94,40 @@ static void renderFrame() {
     glDeleteProgram(shaderProgram);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &vbo1);
 
     glBindVertexArray(0);
-    glDeleteVertexArrays(1, &vao);
+    glDeleteVertexArrays(1, &vao1);
+
+    //
+
+    float vertices2[] = {
+        -0.6f, -0.6f, 0.0f,
+        -0.6f, 0.0f, 0.0f,
+        0.0f, -0.6f, 0.0f
+    };
+
+    unsigned vao2;
+    glGenVertexArrays(1, &vao2);
+    glBindVertexArray(vao2);
+
+    unsigned vbo2;
+    glGenBuffers(1, &vbo2);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo2);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_DYNAMIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(0);
+
+    glUseProgram(shaderProgram);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDeleteProgram(shaderProgram);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &vbo2);
+
+    glBindVertexArray(0);
+    glDeleteVertexArrays(1, &vao2);
 }
 
 static void renderLoop(SDL_Window* window) {
