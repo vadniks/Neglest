@@ -27,16 +27,8 @@
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
 
 static void beforeRender(unsigned* xVbo, unsigned* xShaderProgram, unsigned* xVao) {
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f
-    };
-
     unsigned vbo;
     glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     const char* const vertexShaderCode = R"(
         #version 330 core
@@ -88,7 +80,6 @@ static void beforeRender(unsigned* xVbo, unsigned* xShaderProgram, unsigned* xVa
 
     unsigned vao;
     glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
 
     *xVbo = vbo;
     *xShaderProgram = shaderProgram;
