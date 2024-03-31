@@ -106,7 +106,7 @@ static void renderFrame() {
     glDeleteBuffers(1, &vbo);
 }
 
-static void renderLoop(SDL_Window* window, SDL_GLContext glContext) {
+static void renderLoop(SDL_Window* window) {
     SDL_Event event;
     int width, height;
 
@@ -156,7 +156,7 @@ int main() {
                 assert(gladLoadGLLoader((GLADloadproc) &SDL_GL_GetProcAddress) == 1);
                 SDL_GL_SetSwapInterval(1);
 
-                renderLoop(window, glContext);
+                renderLoop(window);
 
             } SDL_GL_DeleteContext(glContext);
 
