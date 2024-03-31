@@ -26,9 +26,6 @@
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
 
 static void renderFrame() {
-    unsigned vbo;
-    glGenBuffers(1, &vbo);
-
     const char* const vertexShaderCode = R"(
         #version 330 core
         layout (location = 0) in vec3 position;
@@ -72,14 +69,6 @@ static void renderFrame() {
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     assert(success == 1);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-    glEnableVertexAttribArray(0);
-
-    glUseProgram(shaderProgram);
-
-    unsigned vao;
-    glGenVertexArrays(1, &vao);
-
     float vertices[] = {
         0.6f, 0.6f, 0.0f,
         0.6f, -0.3f, 0.0f,
@@ -94,7 +83,12 @@ static void renderFrame() {
         3, 4, 5
     };
 
+    unsigned vao;
+    glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
+
+    unsigned vbo;
+    glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
@@ -107,24 +101,20 @@ static void renderFrame() {
     glEnableVertexAttribArray(0);
 
     glUseProgram(shaderProgram);
-    glBindVertexArray(vao);
-
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     //
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &ebo);
 
-    glBindVertexArray(0);
-    glDeleteVertexArrays(1, &vao);
-
     glDeleteProgram(shaderProgram);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &vbo);
+
+    glBindVertexArray(0);
+    glDeleteVertexArrays(1, &vao);
 }
 
 static void renderLoop(SDL_Window* window) {
