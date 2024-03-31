@@ -16,7 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//#include <cstdlib>
 #include <cassert>
 #include <SDL2/SDL.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
@@ -152,6 +151,7 @@ int main() {
             SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
         );
         assert(window != nullptr); {
+
             SDL_GLContext glContext = SDL_GL_CreateContext(window); {
                 assert(gladLoadGLLoader((GLADloadproc) &SDL_GL_GetProcAddress) == 1);
                 SDL_GL_SetSwapInterval(1);
@@ -159,6 +159,7 @@ int main() {
                 renderLoop(window, glContext);
 
             } SDL_GL_DeleteContext(glContext);
+
         } SDL_DestroyWindow(window);
 
     } SDL_Quit();
