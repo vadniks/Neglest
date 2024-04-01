@@ -73,14 +73,12 @@ static void renderFrame() {
     assert(success == 1);
 
     float vertices[] = {
-        -1.0f, -1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f
+        -0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f
     };
     unsigned indices[] = {
-        0, 1, 2,
-        0, 3, 2
+        0, 1, 2
     };
 
     unsigned vao;
@@ -101,7 +99,7 @@ static void renderFrame() {
     glEnableVertexAttribArray(0);
 
     glUseProgram(shaderProgram);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
     glDeleteProgram(shaderProgram);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
