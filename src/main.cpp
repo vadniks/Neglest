@@ -99,7 +99,7 @@ static void renderFrame() {
     const int colorLocation = glGetUniformLocation(shaderProgram, "color");
     assert(colorLocation >= 0);
     glUseProgram(shaderProgram);
-    glUniform4f(colorLocation, 0.5f, sin((float) SDL_GetTicks()) / 2.0f + 0.5f, 1.0f, 1.0f);
+    glUniform4f(colorLocation, 0.5f, 0.5f, 1.0f, 1.0f);
 
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
     glDeleteProgram(shaderProgram);
