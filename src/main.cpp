@@ -21,8 +21,6 @@
 #include <glad/glad.h> // https://glad.dav1d.de/
 //#include <glm/glm.hpp>
 
-#define USED(x) ((void) x)
-
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(nullptr) == 8);
 
 static void renderFrame() {
