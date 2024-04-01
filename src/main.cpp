@@ -29,11 +29,9 @@ static void renderFrame() {
     const char* const vertexShaderCode = R"(
         #version 330 core
         layout (location = 0) in vec3 position;
-        out vec4 color;
 
         void main() {
             gl_Position = vec4(position.x, position.y, position.z, 1.0);
-            color = vec4(0.5, 0.0, 0.0, 1.0);
         }
     )";
 
@@ -48,7 +46,7 @@ static void renderFrame() {
     const char* const fragmentShaderCode = R"(
         #version 330 core
         out vec4 finalColor;
-        in vec4 color;
+        uniform vec4 color;
 
         void main() {
             finalColor = color;
@@ -98,7 +96,9 @@ static void renderFrame() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
+    const int colorLocation = glGetUniformLocation(shaderProgram, "color");
     glUseProgram(shaderProgram);
+    glUniform4f(colorLocation, 0.5f, 0.5f, 0.5f, 1.0f);
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
     glDeleteProgram(shaderProgram);
 
