@@ -23,7 +23,7 @@
 
 #define USED(x) ((void) x)
 
-static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(void*) == 8);
+static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(nullptr) == 8);
 
 static void renderFrame() {
     const char* const vertexShaderCode = R"(
