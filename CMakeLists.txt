@@ -18,3 +18,5 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${GLAD_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image glm)
 target_include_directories(${PROJECT_NAME} PRIVATE glad/include)
+
+file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})
