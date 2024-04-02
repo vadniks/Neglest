@@ -148,6 +148,7 @@ int main() {
 
     } IMG_Quit();
     SDL_Quit();
+
     assert(SDL_GetNumAllocations() == 0);
     return 0;
 }
