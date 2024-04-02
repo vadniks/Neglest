@@ -71,7 +71,7 @@ static void renderFrame() {
     glGenerateMipmap(GL_TEXTURE_2D);
     SDL_FreeSurface(surface);
 
-    Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+    static Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
