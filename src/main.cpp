@@ -32,7 +32,8 @@ static void renderFrame() {
         -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left
     };
     unsigned indices[] = {
-        0, 1, 2, 3
+        0, 1, 3,
+        1, 2, 3
     };
 
     unsigned vao;
@@ -72,8 +73,7 @@ static void renderFrame() {
 
     Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
-    shader.setValue("offset", 0.5f);
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
     glBindTexture(1, 0);
     glDeleteTextures(1, &texture);
