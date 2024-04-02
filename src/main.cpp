@@ -56,6 +56,7 @@ static void renderFrame() {
 
     Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
+    shader.setValue("offset", 0.5f);
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
