@@ -23,7 +23,7 @@
 #include <glad/glad.h> // https://glad.dav1d.de/
 //#include <glm/glm.hpp>
 
-static void renderFrame() {
+static void renderFrame(float mix) {
     float vertices[] = {
         // positions        // colors        // texture1 coords
         0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
@@ -90,8 +90,8 @@ static void renderFrame() {
     static Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
     glUniform1i(glGetUniformLocation(shader.id, "texture1In"), 0);
-    glUniform1i(glGetUniformLocation(shader.id, "texture2In"), 1);
-//    shader.setValue("texture2In", 1);
+    shader.setValue("texture2In", 1);
+    shader.setValue("mixIn", mix);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
@@ -114,11 +114,18 @@ static void renderFrame() {
 static void renderLoop(SDL_Window* window) {
     SDL_Event event;
     int width, height;
+    float mix = 0.0f;
 
     while (true) {
         while (SDL_PollEvent(&event) == 1) {
             if (event.type == SDL_QUIT)
                 return;
+            if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_UP)
+                    mix += 0.1f;
+                else
+                    mix -= 0.1f;
+            }
         }
 
         SDL_GL_GetDrawableSize(window, &width, &height);
@@ -127,7 +134,7 @@ static void renderLoop(SDL_Window* window) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderFrame();
+        renderFrame(mix);
 
         SDL_GL_SwapWindow(window);
     }
