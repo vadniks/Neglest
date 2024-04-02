@@ -19,20 +19,20 @@
 #include "defs.hpp"
 #include "Shader.hpp"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
 //#include <glm/glm.hpp>
 
-static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(nullptr) == 8);
-
 static void renderFrame() {
     float vertices[] = {
-        // positions        // colors
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+        // positions        // colors        // texture coords
+        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
+        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+        -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left
     };
     unsigned indices[] = {
-        0, 1, 2
+        0, 1, 2, 3
     };
 
     unsigned vao;
@@ -49,15 +49,34 @@ static void renderFrame() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), reinterpret_cast<const void*>(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    unsigned texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    SDL_Surface* surface = IMG_Load("images/wall.jpg");
+    assert(surface != nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface->w, surface->h, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    SDL_FreeSurface(surface);
 
     Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
     shader.setValue("offset", 0.5f);
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+
+    glBindTexture(1, 0);
+    glDeleteTextures(1, &texture);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &ebo);
@@ -92,7 +111,8 @@ static void renderLoop(SDL_Window* window) {
 }
 
 int main() {
-    assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0); {
+    assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0);
+    assert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) > 0); {
 
         SDL_version version;
         SDL_GetVersion(&version);
@@ -125,7 +145,8 @@ int main() {
 
         } SDL_DestroyWindow(window);
 
-    } SDL_Quit();
+    } IMG_Quit();
+    SDL_Quit();
     assert(SDL_GetNumAllocations() == 0);
     return 0;
 }
