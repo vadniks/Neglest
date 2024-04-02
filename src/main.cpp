@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <cassert>
+#include "defs.hpp"
 #include <SDL2/SDL.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
 //#include <glm/glm.hpp>
