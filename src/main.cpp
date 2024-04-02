@@ -25,7 +25,7 @@
 
 static void renderFrame() {
     float vertices[] = {
-        // positions        // colors        // texture coords
+        // positions        // colors        // texture1 coords
         0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
@@ -57,27 +57,49 @@ static void renderFrame() {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    unsigned texture;
-    glGenTextures(1, &texture);
+    unsigned texture1;
+    glGenTextures(1, &texture1);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, texture1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    SDL_Surface* surface = IMG_Load("images/wall.jpg");
-    assert(surface != nullptr);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface->w, surface->h, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+    SDL_Surface* surface1 = IMG_Load("images/wall.jpg");
+    assert(surface1 != nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface1->w, surface1->h, 0, GL_RGB, GL_UNSIGNED_BYTE, surface1->pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
-    SDL_FreeSurface(surface);
+    SDL_FreeSurface(surface1);
+
+    unsigned texture2;
+    glGenTextures(1, &texture2);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    SDL_Surface* surface2 = IMG_Load("images/awesomeface.png");
+    assert(surface2 != nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface2->w, surface2->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface2->pixels);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    SDL_FreeSurface(surface2);
 
     static Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
+    glUniform1i(glGetUniformLocation(shader.id, "texture1In"), 0);
+    glUniform1i(glGetUniformLocation(shader.id, "texture2In"), 1);
+//    shader.setValue("texture2In", 1);
+
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
     glBindTexture(1, 0);
-    glDeleteTextures(1, &texture);
+    glDeleteTextures(1, &texture2);
+
+    glBindTexture(1, 0);
+    glDeleteTextures(1, &texture1);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &ebo);
