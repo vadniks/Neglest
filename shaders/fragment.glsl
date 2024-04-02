@@ -10,5 +10,5 @@ uniform sampler2D texture1In;
 uniform sampler2D texture2In;
 
 void main() {
-    colorOut = mix(texture(texture1In, textureCoords), texture(texture2In, textureCoords), 0.2);
+    colorOut = mix(texture(texture1In, textureCoords), texture(texture2In, vec2(textureCoords.x, -textureCoords.y)), 0.2);
 }
