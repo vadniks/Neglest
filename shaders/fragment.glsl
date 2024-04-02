@@ -9,5 +9,5 @@ out vec4 colorOut;
 uniform sampler2D textureIn;
 
 void main() {
-    colorOut = texture(textureIn, textureCoords);
+    colorOut = texture(textureIn, textureCoords) * vec4(color, 1.0);
 }
