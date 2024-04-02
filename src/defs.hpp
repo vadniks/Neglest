@@ -24,4 +24,4 @@
 
 #include <stdexcept>
 
-inline void assert(bool condition) { if (!condition) throw std::runtime_error(""); }
+inline void assert(bool condition) { if (!condition) throw std::runtime_error("assert"); }

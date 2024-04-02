@@ -60,7 +60,7 @@ static unsigned init(const std::string& vertexPath, const std::string& fragmentP
     assert(success == 1);
 
     fragmentCode = fragmentShaderCode.c_str();
-    fragment = glCreateShader(GL_VERTEX_SHADER);
+    fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fragmentCode, nullptr);
     glCompileShader(fragment);
     glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);

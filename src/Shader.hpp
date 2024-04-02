@@ -25,6 +25,7 @@ public:
     const unsigned id;
 public:
     Shader(const std::string& vertexPath, const std::string& fragmentPath);
+    Shader(const Shader&) = delete;
     ~Shader();
     void use() const;
     void setValue(const std::string& name, bool value) const;

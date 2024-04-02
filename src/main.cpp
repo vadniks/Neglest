@@ -17,6 +17,7 @@
  */
 
 #include "defs.hpp"
+#include "Shader.hpp"
 #include <SDL2/SDL.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
 //#include <glm/glm.hpp>
@@ -24,53 +25,6 @@
 static_assert(sizeof(char) == 1 & sizeof(int) == 4 & sizeof(long) == 8 & sizeof(nullptr) == 8);
 
 static void renderFrame() {
-    const char* const vertexShaderCode = R"(
-        #version 330 core
-        layout (location = 0) in vec3 position;
-        layout (location = 1) in vec3 colorIn;
-        out vec3 color;
-
-        void main() {
-            gl_Position = vec4(position, 1.0);
-            color = colorIn;
-        }
-    )";
-
-    const unsigned vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
-    glCompileShader(vertexShader);
-
-    int success;
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    assert(success == 1);
-
-    const char* const fragmentShaderCode = R"(
-        #version 330 core
-        in vec3 color;
-        out vec4 colorOut;
-
-        void main() {
-            colorOut = vec4(color, 1.0);
-        }
-    )";
-
-    const unsigned fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    assert(success == 1);
-
-    const unsigned shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    glDeleteShader(fragmentShader);
-    glDeleteShader(vertexShader);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    assert(success == 1);
-
     float vertices[] = {
         // positions        // colors
         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
@@ -100,9 +54,9 @@ static void renderFrame() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), reinterpret_cast<const void*>(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    glUseProgram(shaderProgram);
+    Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+    shader.use();
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
-    glDeleteProgram(shaderProgram);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &ebo);
