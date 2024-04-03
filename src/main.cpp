@@ -91,8 +91,8 @@ static void renderFrame(float mix) {
     SDL_FreeSurface(surface2);
 
     auto transform = glm::mat4(1.0f);
-    transform = glm::rotate(transform, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+    transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+    transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
     static Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
