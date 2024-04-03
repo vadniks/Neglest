@@ -103,6 +103,14 @@ static void renderFrame(float mix) {
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
+    glm::mat4 transform2(1.0f);
+    transform2 = glm::translate(transform2, glm::vec3(-0.5f, 0.5f, 0.0f));
+    transform2 = glm::scale(transform2, glm::vec3(1.5f, 1.5f, 1.0f));
+
+    glUniformMatrix4fv(glGetUniformLocation(shader.id, "transformIn"), 1, GL_FALSE, glm::value_ptr(transform2));
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
     glBindTexture(1, 0);
     glDeleteTextures(1, &texture2);
 
