@@ -8,11 +8,11 @@ out vec3 color;
 out vec3 position;
 out vec2 textureCoords;
 
-uniform float offset;
+uniform mat4 transformIn;
 
 void main() {
     position = positionIn;
-    gl_Position = vec4(position, 1.0);
+    gl_Position = transformIn * vec4(position, 1.0);
     color = colorIn;
     textureCoords = textureCoordsIn;
 }

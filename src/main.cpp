@@ -18,10 +18,13 @@
 
 #include "defs.hpp"
 #include "Shader.hpp"
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <glad/glad.h> // https://glad.dav1d.de/
-//#include <glm/glm.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 static void renderFrame(float mix) {
     float vertices[] = {
@@ -87,11 +90,16 @@ static void renderFrame(float mix) {
     glGenerateMipmap(GL_TEXTURE_2D);
     SDL_FreeSurface(surface2);
 
+    auto transform = glm::mat4(1.0f);
+    transform = glm::rotate(transform, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+    transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
     static Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
     glUniform1i(glGetUniformLocation(shader.id, "texture1In"), 0);
     shader.setValue("texture2In", 1);
     shader.setValue("mixIn", mix);
+    glUniformMatrix4fv(glGetUniformLocation(shader.id, "transformIn"), 1, GL_FALSE, glm::value_ptr(transform));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
