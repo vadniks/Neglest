@@ -21,7 +21,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <glad/glad.h> // https://glad.dav1d.de/
+//#include <glad/glad.h> // https://glad.dav1d.de/
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -182,7 +183,8 @@ int main() {
         assert(window != nullptr); {
 
             SDL_GLContext glContext = SDL_GL_CreateContext(window); {
-                assert(gladLoadGLLoader((GLADloadproc) &SDL_GL_GetProcAddress) == 1);
+                glewExperimental = GL_TRUE;
+                assert(glewInit() == GLEW_OK);
                 SDL_GL_SetSwapInterval(1);
 
                 renderLoop(window);
