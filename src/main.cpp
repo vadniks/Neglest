@@ -133,8 +133,8 @@ static void renderFrame(float width, float height) {
 
     shader.setValue("texture1In", 0);
     shader.setValue("texture2In", 1);
-    glUniformMatrix4fv(glGetUniformLocation(shader.id, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shader.id, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    shader.setValue("view", view);
+    shader.setValue("projection", projection);
 
     for (int i = 0; i < 10; i++) {
         auto model = glm::mat4(1.0f);
