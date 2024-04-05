@@ -192,13 +192,12 @@ int main() {
             SDL_GLContext glContext = SDL_GL_CreateContext(window); {
                 glewExperimental = GL_TRUE;
                 assert(glewInit() == GLEW_OK);
+
                 glEnable(GL_DEPTH_TEST);
                 SDL_GL_SetSwapInterval(1);
 
                 renderLoop(window);
-
             } SDL_GL_DeleteContext(glContext);
-
         } SDL_DestroyWindow(window);
 
     } IMG_Quit();
