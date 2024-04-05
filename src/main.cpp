@@ -26,7 +26,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-static void renderFrame(float mix) {
+static void renderFrame(float width, float height, float mix) {
     float vertices[] = {
         // positions        // colors        // texture1 coords
         0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
@@ -90,24 +90,22 @@ static void renderFrame(float mix) {
     glGenerateMipmap(GL_TEXTURE_2D);
     SDL_FreeSurface(surface2);
 
-    auto transform = glm::mat4(1.0f);
-    transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-    transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    auto model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    auto view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), width / height, 0.1f, 100.0f);
 
     static Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
-    glUniform1i(glGetUniformLocation(shader.id, "texture1In"), 0);
+
+    shader.setValue("texture1In", 0);
     shader.setValue("texture2In", 1);
-    shader.setValue("mixIn", mix);
-    glUniformMatrix4fv(glGetUniformLocation(shader.id, "transformIn"), 1, GL_FALSE, glm::value_ptr(transform));
-
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-    glm::mat4 transform2(1.0f);
-    transform2 = glm::translate(transform2, glm::vec3(-0.5f, 0.5f, 0.0f));
-    transform2 = glm::scale(transform2, glm::vec3(1.5f, 1.5f, 1.0f));
-
-    glUniformMatrix4fv(glGetUniformLocation(shader.id, "transformIn"), 1, GL_FALSE, glm::value_ptr(transform2));
+    glUniformMatrix4fv(glGetUniformLocation(shader.id, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(glGetUniformLocation(shader.id, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shader.id, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
@@ -150,7 +148,7 @@ static void renderLoop(SDL_Window* window) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderFrame(mix);
+        renderFrame(width, height, mix);
 
         SDL_GL_SwapWindow(window);
     }
