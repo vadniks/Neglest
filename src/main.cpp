@@ -139,7 +139,7 @@ static void renderFrame(float width, float height) {
     for (int i = 0; i < 10; i++) {
         auto model = glm::mat4(1.0f);
         model = glm::translate(model, cubePositions[i]);
-        model = glm::rotate(model, glm::radians(20.0f * static_cast<float>(i)), glm::vec3(1.0f, 0.3f, 0.5f));
+        model = glm::rotate(model, glm::radians(i % 3 == 0 ? static_cast<float>(SDL_GetTicks()) / 100.0f : 20.0f * static_cast<float>(i)), glm::vec3(1.0f, 0.3f, 0.5f));
         shader.setValue("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
