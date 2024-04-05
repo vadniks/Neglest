@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 
 static void readShaderFiles(
     const std::string& vertexShaderFilePath,
@@ -78,3 +79,9 @@ void Shader::setValue(const std::string& name, int value) const
 
 void Shader::setValue(const std::string& name, float value) const
 { glUniform1f(glGetUniformLocation(id, name.c_str()), value); }
+
+void Shader::setValue(const std::string& name, const glm::mat3& value) const
+{ glUniformMatrix3fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value)); }
+
+void Shader::setValue(const std::string& name, const glm::mat4& value) const
+{ glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value)); }

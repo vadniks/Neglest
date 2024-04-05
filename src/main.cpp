@@ -110,8 +110,18 @@ static void renderFrame(float width, float height) {
     glGenerateMipmap(GL_TEXTURE_2D);
     SDL_FreeSurface(surface2);
 
-    auto model = glm::mat4(1.0f);
-    model = glm::rotate(model, static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::radians(-50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f, 0.0f, 0.0f),
+        glm::vec3( 2.0f, 5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f, 3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f, 2.0f, -2.5f),
+        glm::vec3( 1.5f, 0.2f, -1.5f),
+        glm::vec3(-1.3f, 1.0f, -1.5f)
+    };
 
     auto view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -123,11 +133,17 @@ static void renderFrame(float width, float height) {
 
     shader.setValue("texture1In", 0);
     shader.setValue("texture2In", 1);
-    glUniformMatrix4fv(glGetUniformLocation(shader.id, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glUniformMatrix4fv(glGetUniformLocation(shader.id, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shader.id, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    for (int i = 0; i < 10; i++) {
+        auto model = glm::mat4(1.0f);
+        model = glm::translate(model, cubePositions[i]);
+        model = glm::rotate(model, glm::radians(20.0f * static_cast<float>(i)), glm::vec3(1.0f, 0.3f, 0.5f));
+        shader.setValue("model", model);
+
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 
     glBindTexture(1, 0);
     glDeleteTextures(1, &texture2);
