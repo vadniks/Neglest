@@ -111,7 +111,7 @@ static void renderFrame(float width, float height) {
     SDL_FreeSurface(surface2);
 
     auto model = glm::mat4(1.0f);
-    model = glm::rotate(model, static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::radians(-50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
     auto view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -180,7 +180,7 @@ int main() {
 
         const int scale = 50;
         SDL_Window* window = SDL_CreateWindow(
-            "Title",
+            "OpenGL",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             16 * scale,
