@@ -156,7 +156,7 @@ static void renderLoop(SDL_Window* window) {
         glViewport(0, 0, width, height);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         renderFrame(static_cast<float>(width), static_cast<float>(height));
 
@@ -192,6 +192,7 @@ int main() {
             SDL_GLContext glContext = SDL_GL_CreateContext(window); {
                 glewExperimental = GL_TRUE;
                 assert(glewInit() == GLEW_OK);
+                glEnable(GL_DEPTH_TEST);
                 SDL_GL_SetSwapInterval(1);
 
                 renderLoop(window);
