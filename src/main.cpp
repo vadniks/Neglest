@@ -26,7 +26,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-static void renderFrame(float width, float height) {
+static void renderFrame(float width, float height, float cameraX, float cameraY, float cameraZ) {
     float vertices[] = {
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
         0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
@@ -110,6 +110,14 @@ static void renderFrame(float width, float height) {
     glGenerateMipmap(GL_TEXTURE_2D);
     SDL_FreeSurface(surface2);
 
+//    auto cameraPosition = glm::vec3(cameraX, cameraY, cameraZ);
+//    auto cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+//    glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraTarget);
+//
+//    glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+//    glm::vec3 cameraRight = glm::normalize(glm::cross(worldUp, cameraDirection));
+//    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+
     glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f, 0.0f, 0.0f),
         glm::vec3( 2.0f, 5.0f, -15.0f),
@@ -123,8 +131,11 @@ static void renderFrame(float width, float height) {
         glm::vec3(-1.3f, 1.0f, -1.5f)
     };
 
+    const float radius = 10.0f;
+    float camX = sin(static_cast<float>(SDL_GetTicks()) / 1000.0f) * radius;
+    float camZ = cos(static_cast<float>(SDL_GetTicks()) / 1000.0f) * radius;
     auto view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), width / height, 0.1f, 100.0f);
 
@@ -161,11 +172,39 @@ static void renderFrame(float width, float height) {
 static void renderLoop(SDL_Window* window) {
     SDL_Event event;
     int width, height;
+    float cameraX = 0.0f, cameraY = 0.0f, cameraZ = 0.0f;
 
     while (true) {
         while (SDL_PollEvent(&event) == 1) {
-            if (event.type == SDL_QUIT)
-                return;
+            switch (event.type) {
+                case SDL_QUIT:
+                    return;
+                case SDL_KEYDOWN:
+                    break;
+                default:
+                    continue;
+            }
+
+            switch (event.key.keysym.sym) {
+                case SDLK_SPACE:
+                    cameraY += 1.0f;
+                    break;
+                case SDLK_LSHIFT:
+                    cameraY -= 1.0f;
+                    break;
+                case SDLK_a:
+                    cameraX -= 1.0f;
+                    break;
+                case SDLK_d:
+                    cameraX += 1.0f;
+                    break;
+                case SDLK_w:
+                    cameraZ -= 1.0f;
+                    break;
+                case SDLK_s:
+                    cameraZ += 1.0f;
+                    break;
+            }
         }
 
         SDL_GL_GetDrawableSize(window, &width, &height);
@@ -174,7 +213,7 @@ static void renderLoop(SDL_Window* window) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderFrame(static_cast<float>(width), static_cast<float>(height));
+        renderFrame(static_cast<float>(width), static_cast<float>(height), cameraX, cameraY, cameraZ);
 
         SDL_GL_SwapWindow(window);
     }
