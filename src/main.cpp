@@ -188,8 +188,42 @@ static void processKeyboardPress(
     }
 }
 
-static void processMouseMotion(int x, int y) {
-    SDL_Log("%d %d", x, y);
+static void processMouseMotion(
+    int& lastX,
+    int& lastY,
+    int xPos,
+    int yPos,
+    bool firstMouse,
+    float& yaw,
+    float& pitch,
+    glm::vec3& cameraFront
+) {
+    if (firstMouse) {
+        lastX = xPos;
+        lastY = yPos;
+    }
+
+    auto xOffset = static_cast<float>(xPos - lastX);
+    auto yOffset = static_cast<float>(lastY - yPos);
+
+    lastX = xPos;
+    lastY = yPos;
+
+    const float sensitivity = 0.1f;
+    xOffset *= sensitivity;
+    yOffset *= sensitivity;
+
+    yaw += xOffset;
+    pitch += yOffset;
+
+    if (pitch > 89.0f) pitch = 89.0f;
+    if (pitch < -89.0f) pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
 }
 
 static void renderLoop(SDL_Window* window) {
@@ -201,12 +235,19 @@ static void renderLoop(SDL_Window* window) {
     glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
+    int lastX = -1, lastY = -1;
+    float yaw = 0.0f, pitch = 0.0f;
+    bool firstMouse = true, mousePressed = false;
+
     while (true) {
         auto currentFrame = static_cast<float>(SDL_GetTicks());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
         float cameraSpeed = 0.01f * deltaTime;
+
+        SDL_GL_GetDrawableSize(window, &width, &height);
+        glViewport(0, 0, width, height);
 
         while (SDL_PollEvent(&event) == 1) {
             switch (event.type) {
@@ -216,13 +257,27 @@ static void renderLoop(SDL_Window* window) {
                     processKeyboardPress(event.key.keysym.sym, cameraPos, cameraFront, cameraUp, cameraSpeed);
                     break;
                 case SDL_MOUSEMOTION:
-                    processMouseMotion(event.motion.x, event.motion.y);
+                    if (!mousePressed) break;
+                    processMouseMotion(
+                        lastX,
+                        lastY,
+                        event.motion.x,
+                        event.motion.y,
+                        firstMouse,
+                        yaw,
+                        pitch,
+                        cameraFront
+                    );
+                    firstMouse = false;
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    mousePressed = false;
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    mousePressed = true;
                     break;
             }
         }
-
-        SDL_GL_GetDrawableSize(window, &width, &height);
-        glViewport(0, 0, width, height);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -249,6 +304,9 @@ int main() {
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
+        SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_WARP_MOTION, "1");
+        SDL_SetHint(SDL_HINT_MOUSE_AUTO_CAPTURE, "1");
+
         const int scale = 50;
         SDL_Window* window = SDL_CreateWindow(
             "OpenGL",
@@ -256,7 +314,7 @@ int main() {
             SDL_WINDOWPOS_CENTERED,
             16 * scale,
             9 * scale,
-            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_MOUSE_GRABBED
+            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI// | SDL_WINDOW_MOUSE_GRABBED
         );
         assert(window != nullptr); {
 
