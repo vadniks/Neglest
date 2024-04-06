@@ -291,6 +291,7 @@ int main() {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
         SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_MODE_CENTER, "1");
         SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "0");
@@ -311,6 +312,7 @@ int main() {
                 assert(glewInit() == GLEW_OK);
 
                 glEnable(GL_DEPTH_TEST);
+                glEnable(GL_MULTISAMPLE);
                 SDL_GL_SetSwapInterval(1);
 
                 renderLoop(window);
