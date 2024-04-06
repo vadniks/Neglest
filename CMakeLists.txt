@@ -19,3 +19,4 @@ target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW glm)
 
 file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY images DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY font DESTINATION ${CMAKE_BINARY_DIR})

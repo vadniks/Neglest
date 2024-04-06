@@ -1,13 +1,14 @@
 
 #include "defs.hpp"
 #include "Shader.hpp"
-#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+
+static TTF_Font* gFont = nullptr;
 
 static void renderFrame(
     float width,
@@ -280,7 +281,9 @@ static void renderLoop(SDL_Window* window) {
 
 int main() {
     assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0);
-    assert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) > 0); {
+    assert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) > 0);
+    assert(TTF_Init() == 0); {
+        gFont = TTF_OpenFont("font/Roboto-Regular.ttf", 14);
 
         SDL_version version;
         SDL_GetVersion(&version);
@@ -319,7 +322,9 @@ int main() {
             } SDL_GL_DeleteContext(glContext);
         } SDL_DestroyWindow(window);
 
-    } IMG_Quit();
+        TTF_CloseFont(gFont);
+    } TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
 
     assert(SDL_GetNumAllocations() == 0);
