@@ -26,7 +26,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-static void renderFrame(float width, float height, const glm::vec3& cameraPos, const glm::vec3& cameraFront, const glm::vec3& cameraUp) {
+static void renderFrame(
+    float width,
+    float height,
+    float zoom,
+    const glm::vec3& cameraPos,
+    const glm::vec3& cameraFront,
+    const glm::vec3& cameraUp
+) {
     float vertices[] = {
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
         0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
@@ -126,7 +133,7 @@ static void renderFrame(float width, float height, const glm::vec3& cameraPos, c
     auto view = glm::mat4(1.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), width / height, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(zoom), width / height, 0.1f, 100.0f);
 
     static Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader.use();
@@ -236,8 +243,8 @@ static void renderLoop(SDL_Window* window) {
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
     int lastX = -1, lastY = -1;
-    float yaw = 0.0f, pitch = 0.0f;
-    bool firstMouse = true, mousePressed = false;
+    float yaw = 0.0f, pitch = 0.0f, zoom = 45.0f;
+    bool firstMouse = true;
 
     while (true) {
         auto currentFrame = static_cast<float>(SDL_GetTicks());
@@ -257,7 +264,6 @@ static void renderLoop(SDL_Window* window) {
                     processKeyboardPress(event.key.keysym.sym, cameraPos, cameraFront, cameraUp, cameraSpeed);
                     break;
                 case SDL_MOUSEMOTION:
-//                    if (!mousePressed) break;
                     processMouseMotion(
                         lastX,
                         lastY,
@@ -270,11 +276,12 @@ static void renderLoop(SDL_Window* window) {
                     );
                     firstMouse = false;
                     break;
-                case SDL_MOUSEBUTTONUP:
-                    mousePressed = false;
-                    break;
-                case SDL_MOUSEBUTTONDOWN:
-                    mousePressed = true;
+                case SDL_MOUSEWHEEL:
+                    zoom -= (float) static_cast<float>(lastY - event.motion.yrel) / 10.0f;
+                    if (zoom < 1.0f)
+                        zoom = 1.0f;
+                    if (zoom > 45.0f)
+                        zoom = 45.0f;
                     break;
             }
         }
@@ -282,7 +289,7 @@ static void renderLoop(SDL_Window* window) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderFrame(static_cast<float>(width), static_cast<float>(height), cameraPos, cameraFront, cameraUp);
+        renderFrame(static_cast<float>(width), static_cast<float>(height), zoom, cameraPos, cameraFront, cameraUp);
 
         SDL_GL_SwapWindow(window);
     }
