@@ -161,13 +161,19 @@ static void renderFrame(float width, float height, const glm::vec3& cameraPos, c
 static void renderLoop(SDL_Window* window) {
     SDL_Event event;
     int width, height;
-    float cameraSpeed = 0.1f;
+    float deltaTime = 0.0f, lastFrame = 0.0f;
 
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
     glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
     while (true) {
+        auto currentFrame = static_cast<float>(SDL_GetTicks());
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        float cameraSpeed = 0.1f * deltaTime;
+
         while (SDL_PollEvent(&event) == 1) {
             switch (event.type) {
                 case SDL_QUIT:
@@ -179,12 +185,6 @@ static void renderLoop(SDL_Window* window) {
             }
 
             switch (event.key.keysym.sym) {
-                case SDLK_LSHIFT:
-                    cameraSpeed += 0.1f;
-                    break;
-                case SDLK_LCTRL:
-                    cameraSpeed -= 0.1f;
-                    break;
                 case SDLK_w:
                     cameraPos += cameraSpeed * cameraFront;
                     break;
