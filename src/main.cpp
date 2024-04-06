@@ -158,6 +158,25 @@ static void renderFrame(float width, float height, const glm::vec3& cameraPos, c
     glDeleteVertexArrays(1, &vao);
 }
 
+static void processKeyboardEvents(SDL_Keycode keycode, glm::vec3& cameraPos, glm::vec3& cameraFront, glm::vec3& cameraUp, float cameraSpeed) {
+    switch (keycode) {
+        case SDLK_w:
+            cameraPos += cameraSpeed * cameraFront;
+            break;
+        case SDLK_a:
+            cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+            break;
+        case SDLK_s:
+            cameraPos -= cameraSpeed * cameraFront;
+            break;
+        case SDLK_d:
+            cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+            break;
+        default:
+            break;
+    }
+}
+
 static void renderLoop(SDL_Window* window) {
     SDL_Event event;
     int width, height;
@@ -179,24 +198,9 @@ static void renderLoop(SDL_Window* window) {
                 case SDL_QUIT:
                     return;
                 case SDL_KEYDOWN:
+                    processKeyboardEvents(event.key.keysym.sym, cameraPos, cameraFront, cameraUp, cameraSpeed);
                     break;
-                default:
-                    continue;
-            }
 
-            switch (event.key.keysym.sym) {
-                case SDLK_w:
-                    cameraPos += cameraSpeed * cameraFront;
-                    break;
-                case SDLK_a:
-                    cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-                    break;
-                case SDLK_s:
-                    cameraPos -= cameraSpeed * cameraFront;
-                    break;
-                case SDLK_d:
-                    cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-                    break;
             }
         }
 
