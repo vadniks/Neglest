@@ -184,7 +184,7 @@ static void processKeyboardPress(
 }
 
 static void processMouseMotion(int x, int y) {
-
+    SDL_Log("%d %d", x, y);
 }
 
 static void renderLoop(SDL_Window* window) {
@@ -232,12 +232,7 @@ int main() {
     assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0);
     assert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) > 0); {
 
-        SDL_Cursor* const originalCursor = SDL_GetCursor();
-
-        byte cursorData[] = {0, 0};
-        SDL_Cursor* const cursor = SDL_CreateCursor(cursorData, cursorData, 2, 2, 1, 1);
-        assert(cursor != nullptr);
-        SDL_SetCursor(cursor);
+        SDL_ShowCursor(SDL_DISABLE);
 
         SDL_version version;
         SDL_GetVersion(&version);
@@ -256,7 +251,7 @@ int main() {
             SDL_WINDOWPOS_CENTERED,
             16 * scale,
             9 * scale,
-            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
+            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_MOUSE_GRABBED
         );
         assert(window != nullptr); {
 
@@ -271,8 +266,6 @@ int main() {
             } SDL_GL_DeleteContext(glContext);
         } SDL_DestroyWindow(window);
 
-        SDL_SetCursor(originalCursor);
-        SDL_FreeCursor(cursor);
     } IMG_Quit();
     SDL_Quit();
 
