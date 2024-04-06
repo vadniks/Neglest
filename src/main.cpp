@@ -180,10 +180,10 @@ static void processKeyboardPress(
 }
 
 static void processMouseMotion(
-    int& lastX,
-    int& lastY,
-    int xPos,
-    int yPos,
+    float& lastX,
+    float& lastY,
+    float xPos,
+    float yPos,
     bool firstMouse,
     float& yaw,
     float& pitch,
@@ -194,8 +194,8 @@ static void processMouseMotion(
         lastY = yPos;
     }
 
-    auto xOffset = static_cast<float>(xPos - lastX);
-    auto yOffset = static_cast<float>(lastY - yPos);
+    float xOffset = xPos - lastX;
+    float yOffset = lastY - yPos;
 
     lastX = xPos;
     lastY = yPos;
@@ -226,7 +226,7 @@ static void renderLoop(SDL_Window* window) {
     glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    int lastX = -1, lastY = -1;
+    float lastX = -1, lastY = -1;
     float yaw = 0.0f, pitch = 0.0f, zoom = 45.0f;
     bool firstMouse = true;
 
@@ -251,8 +251,8 @@ static void renderLoop(SDL_Window* window) {
                     processMouseMotion(
                         lastX,
                         lastY,
-                        event.motion.x,
-                        event.motion.y,
+                        static_cast<float>(event.motion.x),
+                        static_cast<float>(event.motion.y),
                         firstMouse,
                         yaw,
                         pitch,
@@ -261,7 +261,7 @@ static void renderLoop(SDL_Window* window) {
                     firstMouse = false;
                     break;
                 case SDL_MOUSEWHEEL:
-                    zoom -= (float) static_cast<float>(lastY - event.motion.yrel) / 10.0f;
+                    zoom -= lastY - static_cast<float>(event.motion.yrel) / 10.0f;
                     if (zoom < 1.0f)
                         zoom = 1.0f;
                     if (zoom > 45.0f)
@@ -296,8 +296,7 @@ int main() {
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
-        SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_MODE_CENTER, "1");
-        SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "0");
+        SDL_SetHint(SDL_HINT_MOUSE_AUTO_CAPTURE, "1");
 
         const int scale = 50;
         SDL_Window* window = SDL_CreateWindow(
