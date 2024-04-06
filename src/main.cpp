@@ -172,7 +172,7 @@ static void renderLoop(SDL_Window* window) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        float cameraSpeed = 0.1f * deltaTime;
+        float cameraSpeed = 0.01f * deltaTime;
 
         while (SDL_PollEvent(&event) == 1) {
             switch (event.type) {
