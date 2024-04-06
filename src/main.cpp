@@ -158,7 +158,13 @@ static void renderFrame(float width, float height, const glm::vec3& cameraPos, c
     glDeleteVertexArrays(1, &vao);
 }
 
-static void processKeyboardEvents(SDL_Keycode keycode, glm::vec3& cameraPos, glm::vec3& cameraFront, glm::vec3& cameraUp, float cameraSpeed) {
+static void processKeyboardPress(
+    SDL_Keycode keycode,
+    glm::vec3& cameraPos,
+    glm::vec3& cameraFront,
+    glm::vec3& cameraUp,
+    float cameraSpeed
+) {
     switch (keycode) {
         case SDLK_w:
             cameraPos += cameraSpeed * cameraFront;
@@ -175,6 +181,10 @@ static void processKeyboardEvents(SDL_Keycode keycode, glm::vec3& cameraPos, glm
         default:
             break;
     }
+}
+
+static void processMouseMotion(int x, int y) {
+
 }
 
 static void renderLoop(SDL_Window* window) {
@@ -198,9 +208,11 @@ static void renderLoop(SDL_Window* window) {
                 case SDL_QUIT:
                     return;
                 case SDL_KEYDOWN:
-                    processKeyboardEvents(event.key.keysym.sym, cameraPos, cameraFront, cameraUp, cameraSpeed);
+                    processKeyboardPress(event.key.keysym.sym, cameraPos, cameraFront, cameraUp, cameraSpeed);
                     break;
-
+                case SDL_MOUSEMOTION:
+                    processMouseMotion(event.motion.x, event.motion.y);
+                    break;
             }
         }
 
@@ -219,6 +231,13 @@ static void renderLoop(SDL_Window* window) {
 int main() {
     assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0);
     assert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) > 0); {
+
+        SDL_Cursor* const originalCursor = SDL_GetCursor();
+
+        byte cursorData[] = {0, 0};
+        SDL_Cursor* const cursor = SDL_CreateCursor(cursorData, cursorData, 2, 2, 1, 1);
+        assert(cursor != nullptr);
+        SDL_SetCursor(cursor);
 
         SDL_version version;
         SDL_GetVersion(&version);
@@ -252,6 +271,8 @@ int main() {
             } SDL_GL_DeleteContext(glContext);
         } SDL_DestroyWindow(window);
 
+        SDL_SetCursor(originalCursor);
+        SDL_FreeCursor(cursor);
     } IMG_Quit();
     SDL_Quit();
 
