@@ -178,6 +178,11 @@ static void processKeyboardPress(
         case SDLK_d:
             cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
             break;
+        case SDLK_q:
+            SDL_Event event;
+            event.type = SDL_QUIT;
+            SDL_PushEvent(&event);
+            break;
         default:
             break;
     }
