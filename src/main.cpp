@@ -161,7 +161,7 @@ static void renderFrame(float width, float height, const glm::vec3& cameraPos, c
 static void renderLoop(SDL_Window* window) {
     SDL_Event event;
     int width, height;
-    float deltaTime = 0.0f, lastFrame = 0.0f;
+    float deltaTime, lastFrame = 0.0f;
 
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
     glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
