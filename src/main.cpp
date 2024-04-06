@@ -257,7 +257,7 @@ static void renderLoop(SDL_Window* window) {
                     processKeyboardPress(event.key.keysym.sym, cameraPos, cameraFront, cameraUp, cameraSpeed);
                     break;
                 case SDL_MOUSEMOTION:
-                    if (!mousePressed) break;
+//                    if (!mousePressed) break;
                     processMouseMotion(
                         lastX,
                         lastY,
@@ -304,8 +304,8 @@ int main() {
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-        SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_WARP_MOTION, "1");
-        SDL_SetHint(SDL_HINT_MOUSE_AUTO_CAPTURE, "1");
+        SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_MODE_CENTER, "1");
+        SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "0");
 
         const int scale = 50;
         SDL_Window* window = SDL_CreateWindow(
@@ -314,7 +314,7 @@ int main() {
             SDL_WINDOWPOS_CENTERED,
             16 * scale,
             9 * scale,
-            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI// | SDL_WINDOW_MOUSE_GRABBED
+            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
         );
         assert(window != nullptr); {
 
