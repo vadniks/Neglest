@@ -11,6 +11,12 @@
 static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
+static std::tuple<int, int> measureText(const std::string& text) {
+    int w, h;
+    TTF_SizeUTF8(gFont, text.c_str(), &w, &h);
+    return {w, h};
+}
+
 static void drawText(int x, int y, const std::string& text) {
     SDL_Surface* surfaceArgb = TTF_RenderUTF8_Solid(gFont, text.c_str(), (SDL_Color) {255, 255, 255, 255});
     assert(surfaceArgb != nullptr);
@@ -80,9 +86,8 @@ static void drawText(int x, int y, const std::string& text) {
 
 static void renderFrame() {
     const std::string text = "Hello World!";
-    int w, h;
-    TTF_SizeUTF8(gFont, text.c_str(), &w, &h);
-    drawText(gWidth / 2 - w / 2, gHeight / 2 - h / 2, text);
+    const auto measures = measureText(text);
+    drawText(gWidth / 2 - std::get<0>(measures) / 2, gHeight / 2 - std::get<1>(measures) / 2, text);
 }
 
 static void renderLoop(SDL_Window* window) {
