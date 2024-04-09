@@ -4,13 +4,13 @@
 #include <string>
 #include <glm/glm.hpp>
 
-class Shader final {
+class CompoundShader final {
 public:
     const unsigned id;
 public:
-    Shader(const std::string& vertexPath, const std::string& fragmentPath);
-    Shader(const Shader&) = delete;
-    ~Shader();
+    CompoundShader(const std::string& vertexPath, const std::string& fragmentPath);
+    CompoundShader(const CompoundShader&) = delete;
+    ~CompoundShader();
     void use() const;
     void setValue(const std::string& name, bool value) const;
     void setValue(const std::string& name, int value) const;

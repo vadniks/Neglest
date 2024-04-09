@@ -1,5 +1,5 @@
 
-#include "Shader.hpp"
+#include "CompoundShader.hpp"
 #include "defs.hpp"
 #include <fstream>
 #include <sstream>
@@ -63,25 +63,25 @@ static unsigned init(const std::string& vertexPath, const std::string& fragmentP
     return id;
 }
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+CompoundShader::CompoundShader(const std::string& vertexPath, const std::string& fragmentPath)
     : id(init(vertexPath, fragmentPath))
 {}
 
-Shader::~Shader() { glDeleteProgram(id); }
+CompoundShader::~CompoundShader() { glDeleteProgram(id); }
 
-void Shader::use() const { glUseProgram(id); }
+void CompoundShader::use() const { glUseProgram(id); }
 
-void Shader::setValue(const std::string& name, bool value) const
+void CompoundShader::setValue(const std::string& name, bool value) const
 { setValue(name, static_cast<int>(value)); }
 
-void Shader::setValue(const std::string& name, int value) const
+void CompoundShader::setValue(const std::string& name, int value) const
 { glUniform1i(glGetUniformLocation(id, name.c_str()), value); }
 
-void Shader::setValue(const std::string& name, float value) const
+void CompoundShader::setValue(const std::string& name, float value) const
 { glUniform1f(glGetUniformLocation(id, name.c_str()), value); }
 
-void Shader::setValue(const std::string& name, const glm::mat3& value) const
+void CompoundShader::setValue(const std::string& name, const glm::mat3& value) const
 { glUniformMatrix3fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value)); }
 
-void Shader::setValue(const std::string& name, const glm::mat4& value) const
+void CompoundShader::setValue(const std::string& name, const glm::mat4& value) const
 { glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value)); }
