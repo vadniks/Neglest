@@ -12,8 +12,12 @@ static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
 static void renderFrame() {
-    SDL_Surface* surface = TTF_RenderUTF8_Solid(gFont, "Hello World!", (SDL_Color) {100, 100, 100, 255});
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {100, 100, 100, 255});
+    assert(surfaceArgb != nullptr);
+
+    SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
     assert(surface != nullptr);
+    SDL_FreeSurface(surfaceArgb);
 
     unsigned texture;
     glGenTextures(1, &texture);
@@ -31,7 +35,7 @@ static void renderFrame() {
         surface->h,
         0,
         GL_RGBA,
-        GL_UNSIGNED_BYTE,
+        GL_UNSIGNED_INT_8_8_8_8,
         surface->pixels
     );
 
@@ -105,7 +109,7 @@ int main() {
     assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0);
     assert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) > 0);
     assert(TTF_Init() == 0); {
-        gFont = TTF_OpenFont("font/Roboto-Regular.ttf", 14);
+        gFont = TTF_OpenFont("font/Roboto-Regular.ttf", 50);
 
         SDL_version version;
         SDL_GetVersion(&version);
