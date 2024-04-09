@@ -12,7 +12,7 @@ static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
 static void drawText(int x, int y, const std::string& text) {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Solid(gFont, text.c_str(), (SDL_Color) {127, 127, 127, 127});
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Solid(gFont, text.c_str(), (SDL_Color) {255, 255, 255, 255});
     assert(surfaceArgb != nullptr);
 
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
@@ -35,7 +35,7 @@ static void drawText(int x, int y, const std::string& text) {
         surface->h,
         0,
         GL_RGBA,
-        GL_BYTE,
+        GL_UNSIGNED_BYTE,
         surface->pixels
     );
 
