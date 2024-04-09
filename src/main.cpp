@@ -18,7 +18,7 @@ static std::tuple<int, int> measureText(const std::string& text) {
 }
 
 static void drawText(int x, int y, const std::string& text) {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Solid(gFont, text.c_str(), (SDL_Color) {255, 255, 255, 255});
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, text.c_str(), (SDL_Color) {255, 255, 255, 255});
     assert(surfaceArgb != nullptr);
 
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
