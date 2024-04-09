@@ -77,7 +77,7 @@ static void drawTexture(int x, int y, const SDL_Surface* surface, RgbaFormat for
 }
 
 static void renderFrame() {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {0, 0, 0, 0});
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {100, 100, 100, 255});
     assert(surfaceArgb != nullptr);
 
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
