@@ -69,8 +69,6 @@ static void drawText(int x, int y, const std::string& text) {
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    //
-
     glDeleteTextures(1, &texture);
 
     glDeleteBuffers(1, &vbo);
@@ -81,7 +79,10 @@ static void drawText(int x, int y, const std::string& text) {
 }
 
 static void renderFrame() {
-    drawText(0, 0, "Hello World!");
+    const std::string text = "Hello World!";
+    int w, h;
+    TTF_SizeUTF8(gFont, text.c_str(), &w, &h);
+    drawText(gWidth / 2 - w / 2, gHeight / 2 - h / 2, text);
 }
 
 static void renderLoop(SDL_Window* window) {
