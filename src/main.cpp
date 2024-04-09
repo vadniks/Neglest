@@ -8,15 +8,17 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-static enum RgbaFormat : unsigned {
-    RgbaFormatText = GL_UNSIGNED_INT_8_8_8_8,
-    RgbaFormatUsual = GL_UNSIGNED_BYTE
-};
-
 static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
-static void drawTexture(int x, int y, const SDL_Surface* surface, RgbaFormat format) {
+static void drawText(int x, int y, const std::string& text) {
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Solid(gFont, text.c_str(), (SDL_Color) {100, 100, 100, 255});
+    assert(surfaceArgb != nullptr);
+
+    SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
+    assert(surface != nullptr);
+    SDL_FreeSurface(surfaceArgb);
+
     unsigned texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -33,7 +35,7 @@ static void drawTexture(int x, int y, const SDL_Surface* surface, RgbaFormat for
         surface->h,
         0,
         GL_RGBA,
-        format,
+        GL_BYTE,
         surface->pixels
     );
 
@@ -74,21 +76,12 @@ static void drawTexture(int x, int y, const SDL_Surface* surface, RgbaFormat for
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+
+    SDL_FreeSurface(surface);
 }
 
 static void renderFrame() {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {100, 100, 100, 255});
-    assert(surfaceArgb != nullptr);
-
-    SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
-    assert(surface != nullptr);
-    SDL_FreeSurface(surfaceArgb);
-
-//    SDL_Surface* surface = IMG_Load("images/aSDL_Surface* surface = IMG_Load("images/awesomeface.png");wesomeface.png");
-
-    drawTexture(0, 0, surface, RgbaFormat::RgbaFormatText);
-
-    SDL_FreeSurface(surface);
+    drawText(0, 0, "Hello World!");
 }
 
 static void renderLoop(SDL_Window* window) {
