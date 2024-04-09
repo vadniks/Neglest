@@ -132,13 +132,15 @@ int main() {
 
         SDL_SetHint(SDL_HINT_MOUSE_AUTO_CAPTURE, "1");
 
-        const int scale = 50;
+//        SDL_DisplayMode displayMode;
+//        SDL_GetCurrentDisplayMode(0, &displayMode);
+
         SDL_Window* window = SDL_CreateWindow(
             "OpenGL",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            16 * scale,
-            9 * scale,
+            1200,
+            675,
             SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
         );
         assert(window != nullptr); {
