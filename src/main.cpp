@@ -12,7 +12,7 @@ static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
 static void drawText(int x, int y, const std::string& text) {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Solid(gFont, text.c_str(), (SDL_Color) {100, 100, 100, 255});
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Solid(gFont, text.c_str(), (SDL_Color) {127, 127, 127, 127});
     assert(surfaceArgb != nullptr);
 
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
@@ -23,8 +23,8 @@ static void drawText(int x, int y, const std::string& text) {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     glActiveTexture(GL_TEXTURE0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(
