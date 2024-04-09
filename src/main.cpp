@@ -132,9 +132,6 @@ int main() {
 
         SDL_SetHint(SDL_HINT_MOUSE_AUTO_CAPTURE, "1");
 
-//        SDL_DisplayMode displayMode;
-//        SDL_GetCurrentDisplayMode(0, &displayMode);
-
         SDL_Window* window = SDL_CreateWindow(
             "OpenGL",
             SDL_WINDOWPOS_CENTERED,
