@@ -2,11 +2,10 @@
 
 in vec2 textureCoords;
 
-out vec4 colorOut;
+out vec4 color;
 
-uniform sampler2D texture1In;
-uniform sampler2D texture2In;
+uniform sampler2D textureIn;
 
 void main() {
-    colorOut = mix(texture(texture1In, textureCoords), texture(texture2In, vec2(textureCoords.x, -textureCoords.y)), 0.2);
+    color = texture(textureIn, textureCoords);
 }

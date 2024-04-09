@@ -12,7 +12,70 @@ static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
 static void renderFrame() {
+    SDL_Surface* surface = TTF_RenderUTF8_Solid(gFont, "Hello World!", (SDL_Color) {100, 100, 100, 255});
+    assert(surface != nullptr);
 
+    unsigned texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glActiveTexture(GL_TEXTURE0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGBA,
+        surface->w,
+        surface->h,
+        0,
+        GL_RGBA,
+        GL_UNSIGNED_BYTE,
+        surface->pixels
+    );
+
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(gWidth), 0.0f, static_cast<float>(gHeight));
+
+    CompoundShader compoundShader("shaders/vertex.glsl", "shaders/fragment.glsl");
+    compoundShader.use();
+    compoundShader.setValue("projection", projection);
+
+    const int x = 0, y = 0;
+
+    const auto xPos = static_cast<float>(x), yPos = static_cast<float>(y), w = static_cast<float>(surface->w), h = static_cast<float>(surface->h);
+    float vertices[6][4] = {
+        {xPos, yPos + h, 0.0f, 0.0f},
+        {xPos, yPos, 0.0f, 1.0f},
+        {xPos + w, yPos, 1.0f, 1.0f},
+        {xPos, yPos + h, 0.0f, 0.0f},
+        {xPos + w, yPos, 1.0f, 1.0f},
+        {xPos + w, yPos + h, 1.0f, 0.0f}
+    };
+
+    unsigned vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    unsigned vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), reinterpret_cast<void*>(0));
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    //
+
+    glDeleteTextures(1, &texture);
+
+    SDL_FreeSurface(surface);
+
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
 }
 
 static void renderLoop(SDL_Window* window) {
