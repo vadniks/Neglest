@@ -11,14 +11,7 @@
 static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
-static void renderFrame() {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {100, 100, 100, 255});
-    assert(surfaceArgb != nullptr);
-
-    SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
-    assert(surface != nullptr);
-    SDL_FreeSurface(surfaceArgb);
-
+static void drawTexture(int x, int y, const SDL_Surface* surface) {
     unsigned texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -44,8 +37,6 @@ static void renderFrame() {
     CompoundShader compoundShader("shaders/vertex.glsl", "shaders/fragment.glsl");
     compoundShader.use();
     compoundShader.setValue("projection", projection);
-
-    const int x = 0, y = 0;
 
     const auto xPos = static_cast<float>(x), yPos = static_cast<float>(y), w = static_cast<float>(surface->w), h = static_cast<float>(surface->h);
     float vertices[6][4] = {
@@ -75,11 +66,22 @@ static void renderFrame() {
 
     glDeleteTextures(1, &texture);
 
-    SDL_FreeSurface(surface);
-
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+}
+
+static void renderFrame() {
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {100, 100, 100, 255});
+    assert(surfaceArgb != nullptr);
+
+    SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
+    assert(surface != nullptr);
+    SDL_FreeSurface(surfaceArgb);
+
+    drawTexture(0, 0, surface);
+
+    SDL_FreeSurface(surface);
 }
 
 static void renderLoop(SDL_Window* window) {
