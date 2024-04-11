@@ -1,12 +1,14 @@
 
 #include "defs.hpp"
 #include "CompoundShader.hpp"
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <cglm/cam.h>
 
 static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
@@ -45,11 +47,12 @@ static void drawText(int x, int y, const std::string& text) {
         surface->pixels
     );
 
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(gWidth), 0.0f, static_cast<float>(gHeight));
+    mat4 projection;
+    glm_ortho(0.0f, static_cast<float>(gWidth), 0.0f, static_cast<float>(gHeight), -1.0f, 1.0f, projection);
 
     CompoundShader compoundShader("shaders/vertex.glsl", "shaders/fragment.glsl");
     compoundShader.use();
-    compoundShader.setValue("projection", projection);
+    glUniformMatrix4fv(glGetUniformLocation(compoundShader.id, "projection"), 1, GL_FALSE, reinterpret_cast<float*>(projection));
 
     const auto xPos = static_cast<float>(x), yPos = static_cast<float>(y), w = static_cast<float>(surface->w), h = static_cast<float>(surface->h);
     float vertices[6][4] = {
