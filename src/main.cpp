@@ -52,7 +52,7 @@ static void drawText(int x, int y, const std::string& text) {
 
     CompoundShader compoundShader("shaders/vertex.glsl", "shaders/fragment.glsl");
     compoundShader.use();
-    glUniformMatrix4fv(glGetUniformLocation(compoundShader.id, "projection"), 1, GL_FALSE, reinterpret_cast<float*>(projection));
+    glUniformMatrix4fv(glGetUniformLocation(compoundShader.id, "projection"), 1, GL_FALSE, projection[0]);
 
     const auto xPos = static_cast<float>(x), yPos = static_cast<float>(y), w = static_cast<float>(surface->w), h = static_cast<float>(surface->h);
     float vertices[6][4] = {
