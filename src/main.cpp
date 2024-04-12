@@ -57,6 +57,7 @@ int main() {
     assert(window != nullptr);
 
     SDL_GLContext glContext = SDL_GL_CreateContext(window);
+
     glewExperimental = GL_TRUE;
     assert(glewInit() == GLEW_OK);
 
@@ -69,6 +70,7 @@ int main() {
     SDL_GL_SetSwapInterval(1);
 
     renderLoop(window);
+
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
 
