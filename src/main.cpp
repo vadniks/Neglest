@@ -33,7 +33,7 @@ static void renderLoop(SDL_Window* window) {
 }
 
 int main() {
-    assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0);
+    assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0);
 
     SDL_version version;
     SDL_GetVersion(&version);
