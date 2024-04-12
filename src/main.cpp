@@ -46,8 +46,6 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
-    SDL_SetHint(SDL_HINT_MOUSE_AUTO_CAPTURE, "1");
-
     SDL_Window* window = SDL_CreateWindow(
         "OpenGL",
         SDL_WINDOWPOS_CENTERED,
