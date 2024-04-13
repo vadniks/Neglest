@@ -8,12 +8,8 @@ class Texture {
 private:
     unsigned mId;
     int mWidth, mHeight;
-    int mInternalFormat;
-    unsigned mImageFormat;
-    int mWrapS, mWrapT;
-    int mFilterMin, mFilterMax;
 public:
-    Texture(unsigned width, unsigned height, byte* data);
+    Texture(int width, int height, byte* data);
     ~Texture();
     void bind() const;
 };
