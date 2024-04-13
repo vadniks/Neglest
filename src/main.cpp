@@ -1,22 +1,17 @@
 
 #include "ResourceManager.hpp"
+#include "Game.hpp"
 #include <cassert>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-static int gWidth = 0, gHeight = 0;
+static const int WIDTH = 1200, HEIGHT = 675;
+static Game gGame(WIDTH, HEIGHT);
 
-static void renderFrame() {
-
-}
-
-static void renderLoop(SDL_Window* window) {
+static void loop(SDL_Window* window) {
     SDL_Event event;
 
     while (true) {
-        SDL_GL_GetDrawableSize(window, &gWidth, &gHeight);
-        glViewport(0, 0, gWidth, gHeight);
-
         while (SDL_PollEvent(&event) == 1) {
             switch (event.type) {
                 case SDL_QUIT:
@@ -24,10 +19,12 @@ static void renderLoop(SDL_Window* window) {
             }
         }
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        gGame.processInput();
+        gGame.update();
 
-        renderFrame();
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        gGame.render();
 
         SDL_GL_SwapWindow(window);
     }
@@ -45,15 +42,14 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
     SDL_Window* window = SDL_CreateWindow(
         "OpenGL",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        1200,
-        675,
+        WIDTH,
+        HEIGHT,
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI
     );
     assert(window != nullptr);
@@ -69,8 +65,11 @@ int main() {
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
     SDL_GL_SetSwapInterval(1);
+    glViewport(0, 0, WIDTH, HEIGHT);
 
-    renderLoop(window);
+    gGame.init();
+
+    loop(window);
 
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
