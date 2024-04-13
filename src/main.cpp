@@ -1,4 +1,5 @@
 
+#include "ResourceManager.hpp"
 #include <cassert>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
@@ -34,6 +35,7 @@ static void renderLoop(SDL_Window* window) {
 
 int main() {
     assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0);
+    auto resourceManager = ResourceManager::instance();
 
     SDL_version version;
     SDL_GetVersion(&version);
@@ -74,6 +76,7 @@ int main() {
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
 
+    delete resourceManager;
     SDL_Quit();
 
     assert(SDL_GetNumAllocations() == 0);

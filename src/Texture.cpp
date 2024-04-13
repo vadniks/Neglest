@@ -2,7 +2,7 @@
 #include "Texture.hpp"
 #include <cassert>
 
-Texture::Texture(int width, int height, byte* data) {
+Texture::Texture(int width, int height, bool alpha, byte* data) {
     mId = 0;
     assert(width >= 0 && height >= 0);
     mWidth = width;
@@ -10,7 +10,17 @@ Texture::Texture(int width, int height, byte* data) {
 
     glGenTextures(1, (unsigned[1]) {mId});
     glBindTexture(GL_TEXTURE_2D, mId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        alpha ? GL_RGBA : GL_RGB,
+        mWidth,
+        mHeight,
+        0,
+        alpha ? GL_RGBA : GL_RGB,
+        GL_UNSIGNED_BYTE,
+        data
+    );
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
