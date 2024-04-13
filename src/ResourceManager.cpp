@@ -12,6 +12,19 @@ ResourceManager::ResourceManager() {
 
 ResourceManager::~ResourceManager() {
     IMG_Quit();
+
+    for (auto& i : mShaders) {
+        for (int j = 0; j < i.second.use_count(); i.second.reset(), j++);
+        delete i.second.get();
+    }
+    mShaders.clear();
+
+    for (auto& i : mTextures) {
+        for (int j = 0; j < i.second.use_count(); i.second.reset(), j++);
+        delete i.second.get();
+    }
+    mTextures.clear();
+
     gInstance = nullptr;
 }
 
