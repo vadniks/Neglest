@@ -36,34 +36,34 @@ Shader::~Shader() {
     glDeleteProgram(mId);
 }
 
-unsigned Shader::id() {
+unsigned Shader::id() const {
     return mId;
 }
 
-void Shader::use() {
+void Shader::use() const {
     glUseProgram(mId);
 }
 
-void Shader::setValue(const std::string& name, float value) {
+void Shader::setValue(const std::string& name, float value) const {
     glUniform1f(glGetUniformLocation(mId, name.c_str()), value);
 }
 
-void Shader::setValue(const std::string& name, int value) {
+void Shader::setValue(const std::string& name, int value) const {
     glUniform1i(glGetUniformLocation(mId, name.c_str()), value);
 }
 
-void Shader::setValue(const std::string& name, const glm::vec2& value) {
+void Shader::setValue(const std::string& name, const glm::vec2& value) const {
     glUniform2f(glGetUniformLocation(mId, name.c_str()), value.x, value.y);
 }
 
-void Shader::setValue(const std::string& name, const glm::vec3& value) {
+void Shader::setValue(const std::string& name, const glm::vec3& value) const {
     glUniform3f(glGetUniformLocation(mId, name.c_str()), value.x, value.y, value.z);
 }
 
-void Shader::setValue(const std::string& name, const glm::vec4& value) {
+void Shader::setValue(const std::string& name, const glm::vec4& value) const {
     glUniform4f(glGetUniformLocation(mId, name.c_str()), value.x, value.y, value.z, value.w);
 }
 
-void Shader::setValue(const std::string& name, const glm::mat4& value) {
+void Shader::setValue(const std::string& name, const glm::mat4& value) const {
     glUniformMatrix4fv(glGetUniformLocation(mId, name.c_str()), 1, false, glm::value_ptr(value));
 }
