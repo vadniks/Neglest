@@ -17,7 +17,4 @@ add_compile_options("-Wno-c99-extensions")
 file(GLOB PROJECT_SOURCES CONFIGURE_DEPENDS src/*.cpp src/*.hpp)
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
-set(CGLM_PATH ${PROJECT_SOURCE_DIR}/libs/cglm)
-
-target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW glm ${CGLM_PATH}/bin/libcglm.so)
-include_directories(${CGLM_PATH}/include)
+target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW glm)
