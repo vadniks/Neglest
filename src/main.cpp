@@ -54,7 +54,7 @@ int main() {
         SDL_WINDOWPOS_CENTERED,
         1200,
         675,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI
     );
     assert(window != nullptr);
 
@@ -63,10 +63,9 @@ int main() {
     glewExperimental = GL_TRUE;
     assert(glewInit() == GLEW_OK);
 
-    glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
-    glEnable(GL_BLEND);
 
+    glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
     SDL_GL_SetSwapInterval(1);
