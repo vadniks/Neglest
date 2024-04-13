@@ -41,9 +41,18 @@ std::shared_ptr<Shader> ResourceManager::getShader(const std::string& name) {
 }
 
 std::shared_ptr<Texture> ResourceManager::loadTexture(const std::string& file, bool alpha, const std::string& name) {
-
+    SDL_Surface* surface = IMG_Load(file.c_str());
+    std::shared_ptr<Texture> texture(new Texture(
+        surface->w,
+        surface->h,
+        alpha,
+        reinterpret_cast<byte*>(surface->pixels)
+    ));
+    SDL_FreeSurface(surface);
+    mTextures[name] = texture;
+    return texture;
 }
 
 std::shared_ptr<Texture> ResourceManager::getTexture(const std::string& name) {
-
+    return mTextures.at(name);
 }
