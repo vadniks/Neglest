@@ -8,7 +8,7 @@ Texture::Texture(int width, int height, bool alpha, byte* data) {
     mWidth = width;
     mHeight = height;
 
-    glGenTextures(1, (unsigned[1]) {mId});
+    glGenTextures(1, &mId);
     glBindTexture(GL_TEXTURE_2D, mId);
     glTexImage2D(
         GL_TEXTURE_2D,
@@ -31,7 +31,7 @@ Texture::Texture(int width, int height, bool alpha, byte* data) {
 }
 
 Texture::~Texture() {
-    glDeleteTextures(1, (unsigned[1]) {mId});
+    glDeleteTextures(1, &mId);
 }
 
 void Texture::bind() const {

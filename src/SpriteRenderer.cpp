@@ -20,11 +20,11 @@ SpriteRenderer::SpriteRenderer(const std::shared_ptr<Shader>& shader) {
         1.0f, 0.0f, 1.0f, 0.0f
     };
 
-    glGenBuffers(1, (unsigned[1]) {mVbo});
+    glGenBuffers(1, &mVbo);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glGenVertexArrays(1, (unsigned[1]) {mVao});
+    glGenVertexArrays(1, &mVao);
     glBindVertexArray(mVao);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, false, 4 * sizeof(float), nullptr);
@@ -34,8 +34,8 @@ SpriteRenderer::SpriteRenderer(const std::shared_ptr<Shader>& shader) {
 }
 
 SpriteRenderer::~SpriteRenderer() {
-    glDeleteBuffers(1, (unsigned[1]) {mVbo});
-    glDeleteVertexArrays(1, (unsigned[1]) {mVao});
+    glDeleteBuffers(1, &mVbo);
+    glDeleteVertexArrays(1, &mVao);
 }
 
 void SpriteRenderer::draw(

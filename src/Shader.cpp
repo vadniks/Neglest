@@ -12,13 +12,16 @@ static void assertCompiledOrLinked(unsigned id, bool compiled) {
 }
 
 Shader::Shader(const std::string& vertexSource, const std::string& fragmentSource) {
+    const char* const xVertexSource = vertexSource.c_str();
+    const char* const xFragmentSource = fragmentSource.c_str();
+
     const unsigned vertexId = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexId, 1, (const char*[1]) {vertexSource.c_str()}, nullptr);
+    glShaderSource(vertexId, 1, &xVertexSource, nullptr);
     glCompileShader(vertexId);
     assertCompiledOrLinked(vertexId, true);
 
     const unsigned fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentId, 1, (const char*[1]) {fragmentSource.c_str()}, nullptr);
+    glShaderSource(fragmentId, 1, &xFragmentSource, nullptr);
     glCompileShader(fragmentId);
     assertCompiledOrLinked(fragmentId, true);
 
