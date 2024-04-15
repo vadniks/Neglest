@@ -43,7 +43,7 @@ void SpriteRenderer::draw(
     glm::vec2 position,
     glm::vec2 size,
     float rotation,
-    glm::vec3 color // TODO: add alpha
+    glm::vec4 color
 ) {
     glm::mat4 model(1.0f);
     model = glm::translate(model, glm::vec3(position, 0.0f));
