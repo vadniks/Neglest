@@ -4,6 +4,9 @@
 #include "SpriteRenderer.hpp"
 #include <glm/ext/matrix_clip_space.hpp>
 
+static const std::string IMAGE = "image";
+static const std::string PROJECTION = "projection";
+
 static SpriteRenderer* renderer = nullptr;
 
 Game::Game(unsigned width, unsigned height) :
@@ -34,8 +37,8 @@ void Game::init() {
     );
 
     shader->use();
-    shader->setValue("image", 0);
-    shader->setValue("projection", proj);
+    shader->setValue(IMAGE, 0);
+    shader->setValue(PROJECTION, proj);
 
     renderer = new SpriteRenderer(shader);
 
