@@ -24,6 +24,9 @@ public:
     );
     virtual ~GameObject();
     virtual void draw(const std::shared_ptr<SpriteRenderer>& renderer);
+    glm::vec2 position();
+    void setPosition(glm::vec2 pos);
+    glm::vec2 size();
     bool solid();
     void setSolid(bool solid);
     bool destroyed();

@@ -3,21 +3,20 @@
 
 #include "GameState.hpp"
 #include "GameLevel.hpp"
-#include <array>
 #include <vector>
+#include <SDL2/SDL.h>
 
 class Game {
 private:
     GameState mState;
     unsigned mWidth, mHeight;
-    std::array<bool, 1024> mKeys;
     std::vector<GameLevel> mLevels;
     unsigned mLevel;
 public:
     Game(unsigned width, unsigned height);
     ~Game();
     void init();
-    void processInput();
+    void processInput(const SDL_Keycode* keyCode = nullptr);
     void update();
     void render();
 };

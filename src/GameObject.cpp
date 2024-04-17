@@ -24,6 +24,18 @@ void GameObject::draw(const std::shared_ptr<SpriteRenderer>& renderer) {
     renderer->draw(mSprite, mPosition, mSize, mRotation, mColor);
 }
 
+glm::vec2 GameObject::position() {
+    return mPosition;
+}
+
+void GameObject::setPosition(glm::vec2 pos) {
+    mPosition = pos;
+}
+
+glm::vec2 GameObject::size() {
+    return mSize;
+}
+
 bool GameObject::solid() {
     return mSolid;
 }
