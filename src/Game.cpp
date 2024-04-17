@@ -44,7 +44,6 @@ void Game::init() {
 
     renderer.reset(new SpriteRenderer(shader));
 
-    ResourceManager::instance()->loadTexture("res/awesomeface.png", true, "face");
     ResourceManager::instance()->loadTexture("res/background.jpg", false, "background");
     ResourceManager::instance()->loadTexture("res/block.png", false, "block");
     ResourceManager::instance()->loadTexture("res/block_solid.png", false, "blockSolid");
