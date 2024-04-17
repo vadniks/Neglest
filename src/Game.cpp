@@ -46,8 +46,8 @@ void Game::init() {
 
     ResourceManager::instance()->loadTexture("res/awesomeface.png", true, "face");
     ResourceManager::instance()->loadTexture("res/background.jpg", false, "background");
-    ResourceManager::instance()->loadTexture("res/block.png", true, "block");
-    ResourceManager::instance()->loadTexture("res/block_solid.png", true, "blockSolid");
+    ResourceManager::instance()->loadTexture("res/block.png", false, "block");
+    ResourceManager::instance()->loadTexture("res/block_solid.png", false, "blockSolid");
 
     mLevels.emplace_back("res/one.lvl", mWidth, mHeight / 2);
     mLevel = 0;
