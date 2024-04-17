@@ -7,7 +7,7 @@
 static const std::string IMAGE = "image";
 static const std::string PROJECTION = "projection";
 
-static SpriteRenderer* renderer = nullptr;
+static std::shared_ptr<SpriteRenderer> renderer;
 
 Game::Game(unsigned width, unsigned height) :
     mState(GameState::GAME_MENU),
@@ -17,7 +17,9 @@ Game::Game(unsigned width, unsigned height) :
 {}
 
 Game::~Game() {
-    delete renderer;
+    for (int i = 0; i < renderer.use_count(); i++)
+        renderer.reset();
+    delete renderer.get();
 }
 
 void Game::init() {
@@ -40,7 +42,7 @@ void Game::init() {
     shader->setValue(IMAGE, 0);
     shader->setValue(PROJECTION, proj);
 
-    renderer = new SpriteRenderer(shader);
+    renderer.reset(new SpriteRenderer(shader));
 
     ResourceManager::instance()->loadTexture("res/awesomeface.png", true, "face");
     ResourceManager::instance()->loadTexture("res/background.jpg", false, "background");
@@ -66,5 +68,5 @@ void Game::render() {
         glm::vec2(mWidth, mHeight),
         0.0f
     );
-    mLevels[mLevel].draw(std::shared_ptr<SpriteRenderer>(renderer));
+    mLevels[mLevel].draw(renderer);
 }
