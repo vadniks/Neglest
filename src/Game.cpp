@@ -10,10 +10,10 @@ static const std::string PROJECTION = "projection";
 static SpriteRenderer* renderer = nullptr;
 
 Game::Game(unsigned width, unsigned height) :
-    state(GameState::GAME_MENU),
-    width(width),
-    height(height),
-    keys()
+    mState(GameState::GAME_MENU),
+    mWidth(width),
+    mHeight(height),
+    mKeys()
 {}
 
 Game::~Game() {
@@ -29,8 +29,8 @@ void Game::init() {
 
     glm::mat4 proj = glm::ortho(
         0.0f,
-        static_cast<float>(width),
-        static_cast<float>(height),
+        static_cast<float>(mWidth),
+        static_cast<float>(mHeight),
         0.0f,
         -1.0f,
         1.0f
@@ -43,6 +43,12 @@ void Game::init() {
     renderer = new SpriteRenderer(shader);
 
     ResourceManager::instance()->loadTexture("res/awesomeface.png", true, "face");
+    ResourceManager::instance()->loadTexture("res/background.jpg", false, "background");
+    ResourceManager::instance()->loadTexture("res/block.png", true, "block");
+    ResourceManager::instance()->loadTexture("res/block_solid.png", true, "blockSolid");
+
+    mLevels.emplace_back("res/one.lvl", mWidth, mHeight / 2);
+    mLevel = 0;
 }
 
 void Game::processInput() {
@@ -55,10 +61,10 @@ void Game::update() {
 
 void Game::render() {
     renderer->draw(
-        ResourceManager::instance()->getTexture("face"),
-        glm::vec2(200.0f, 200.0f),
-        glm::vec2(300.0f, 400.0f),
-        45.0f,
-        glm::vec4(1.0f)
+        ResourceManager::instance()->getTexture("background"),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(mWidth, mHeight),
+        0.0f
     );
+    mLevels[mLevel].draw(std::shared_ptr<SpriteRenderer>(renderer));
 }

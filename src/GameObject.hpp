@@ -22,6 +22,9 @@ public:
         glm::vec4 color = glm::vec4(1.0f),
         glm::vec2 velocity = glm::vec2(0.0f, 0.0f)
     );
-    ~GameObject();
+    virtual ~GameObject();
     virtual void draw(const std::shared_ptr<SpriteRenderer>& renderer);
+    bool solid();
+    void setSolid(bool solid);
+    bool destroyed();
 };

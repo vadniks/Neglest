@@ -7,7 +7,7 @@
 static ResourceManager* gInstance = nullptr;
 
 ResourceManager::ResourceManager() {
-    IMG_Init(IMG_INIT_PNG);
+    IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 }
 
 ResourceManager::~ResourceManager() {
@@ -57,6 +57,7 @@ std::shared_ptr<Shader> ResourceManager::getShader(const std::string& name) {
 
 std::shared_ptr<Texture> ResourceManager::loadTexture(const std::string& file, bool alpha, const std::string& name) {
     SDL_Surface* surface = IMG_Load(file.c_str());
+    assert(surface != nullptr);
     std::shared_ptr<Texture> texture(new Texture(
         surface->w,
         surface->h,

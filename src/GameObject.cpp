@@ -23,3 +23,15 @@ GameObject::~GameObject() = default;
 void GameObject::draw(const std::shared_ptr<SpriteRenderer>& renderer) {
     renderer->draw(mSprite, mPosition, mSize, mRotation, mColor);
 }
+
+bool GameObject::solid() {
+    return mSolid;
+}
+
+void GameObject::setSolid(bool solid) {
+    mSolid = solid;
+}
+
+bool GameObject::destroyed() {
+    return mDestroyed;
+}
