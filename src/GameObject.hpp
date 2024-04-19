@@ -7,7 +7,7 @@
 #include <memory>
 
 class GameObject {
-private:
+protected:
     glm::vec2 mPosition, mSize, mVelocity;
     glm::vec4 mColor;
     float mRotation;
