@@ -15,7 +15,7 @@ public:
     ~GameLevel();
     void draw(const std::shared_ptr<SpriteRenderer>& renderer);
     bool completed();
-    std::vector<GameObject> bricks();
+    std::vector<GameObject>& bricks();
 private:
     void init(std::vector<std::vector<unsigned>>&& tileData, unsigned levelWidth, unsigned levelHeight);
 };

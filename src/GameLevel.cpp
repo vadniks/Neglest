@@ -39,7 +39,7 @@ bool GameLevel::completed() {
     return true;
 }
 
-std::vector<GameObject> GameLevel::bricks() {
+std::vector<GameObject>& GameLevel::bricks() {
     return mBricks;
 }
 
