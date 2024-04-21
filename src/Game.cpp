@@ -101,6 +101,7 @@ void Game::processInput(const SDL_Keycode* keyCode) {
 
 void Game::update() {
     gBall->move(mWidth);
+    doCollisions();
 }
 
 void Game::render() {
@@ -113,4 +114,17 @@ void Game::render() {
     mLevels[mLevel].draw(gRenderer);
     gPlayer->draw(gRenderer);
     gBall->draw(gRenderer);
+}
+
+static bool checkCollision(GameObject* one, GameObject* two) {
+    const bool collisionX = one->position().x + one->size().x >= two->position().x && two->position().x + two->size().x >= one->position().x;
+    const bool collisionY = one->position().y + one->size().y >= two->position().y && two->position().y + two->size().y >= one->position().y;
+    return collisionX && collisionY;
+}
+
+void Game::doCollisions() {
+    for (auto& box : mLevels[mLevel].bricks()) {
+        if (!box.destroyed() && checkCollision(gBall, &box) && !box.solid())
+            box.setDestroyed(true);
+    }
 }

@@ -30,4 +30,5 @@ public:
     bool solid();
     void setSolid(bool solid);
     bool destroyed();
+    void setDestroyed(bool destroyed);
 };

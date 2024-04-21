@@ -47,3 +47,7 @@ void GameObject::setSolid(bool solid) {
 bool GameObject::destroyed() {
     return mDestroyed;
 }
+
+void GameObject::setDestroyed(bool destroyed) {
+    mDestroyed = destroyed;
+}

@@ -19,4 +19,6 @@ public:
     void processInput(const SDL_Keycode* keyCode = nullptr);
     void update();
     void render();
+private:
+    void doCollisions();
 };

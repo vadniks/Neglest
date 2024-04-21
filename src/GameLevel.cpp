@@ -39,6 +39,10 @@ bool GameLevel::completed() {
     return true;
 }
 
+std::vector<GameObject> GameLevel::bricks() {
+    return mBricks;
+}
+
 void GameLevel::init(std::vector<std::vector<unsigned>>&& tileData, unsigned levelWidth, unsigned levelHeight) {
     unsigned height = tileData.size(), width = tileData[0].size();
     float unitWidth = static_cast<float>(levelWidth) / static_cast<float>(width);
