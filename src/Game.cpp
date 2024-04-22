@@ -14,8 +14,8 @@ static const std::string PROJECTION = "projection";
 static std::shared_ptr<SpriteRenderer> gRenderer;
 
 static const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
-static const float PLAYER_VELOCITY = 30.0f;
-static const glm::vec2 INITIAL_BALL_VELOCITY(7.5f, -7.5f);
+static const float PLAYER_VELOCITY = 50.0f;
+static const glm::vec2 INITIAL_BALL_VELOCITY(5.0f, -5.0f);
 static const float BALL_RADIUS = 12.5f;
 
 static GameObject* gPlayer;
@@ -197,5 +197,19 @@ void Game::doCollisions() {
                 }
             }
         }
+    }
+
+    Collision result = checkCollision(gBall, gPlayer);
+    if (!gBall->stuck() && std::get<0>(result)) {
+        float centerBoard = gPlayer->position().x + gPlayer->size().x / 2.0f;
+        float distance = (gBall->position().x + gBall->radius()) - centerBoard;
+        float percentage = distance / (gPlayer->size().x / 2.0f);
+
+        float strength = 2.0f;
+        glm::vec2 oldVelocity = gBall->velocity();
+
+        gBall->setVelocity(glm::vec2(INITIAL_BALL_VELOCITY.x * percentage * strength, gBall->velocity().y));
+        gBall->setVelocity(glm::vec2(gBall->velocity().x, -gBall->velocity().y));
+        gBall->setVelocity(glm::normalize(gBall->velocity()) * glm::length(oldVelocity));
     }
 }
