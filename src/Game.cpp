@@ -6,6 +6,13 @@
 #include <tuple>
 #include <glm/ext/matrix_clip_space.hpp>
 
+enum Direction {
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
+};
+
 using Collision = std::tuple<bool, Direction, glm::vec2>;
 
 static const std::string IMAGE = "image";
