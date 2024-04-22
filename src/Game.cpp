@@ -21,7 +21,7 @@ static const std::string PROJECTION = "projection";
 
 static const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
 static const float PLAYER_VELOCITY = 50.0f;
-static const glm::vec2 INITIAL_BALL_VELOCITY(5.0f, -5.0f);
+static const glm::vec2 INITIAL_BALL_VELOCITY(0.0f, -1.0f);
 static const float BALL_RADIUS = 12.5f;
 
 static std::shared_ptr<SpriteRenderer> gRenderer;
@@ -89,6 +89,9 @@ void Game::init() {
         "shaders/particleFragment.glsl",
         "particle"
     );
+    particleShader->use();
+    particleShader->setValue(IMAGE, 0);
+    particleShader->setValue(PROJECTION, proj);
 
     gParticleGenerator = new ParticleGenerator(particleShader, ResourceManager::instance()->getTexture("particle"));
 }
