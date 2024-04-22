@@ -3,6 +3,7 @@
 #include "ResourceManager.hpp"
 #include "SpriteRenderer.hpp"
 #include "BallObject.hpp"
+#include "ParticleGenerator.hpp"
 #include <tuple>
 #include <glm/ext/matrix_clip_space.hpp>
 
@@ -18,15 +19,15 @@ using Collision = std::tuple<bool, Direction, glm::vec2>;
 static const std::string IMAGE = "image";
 static const std::string PROJECTION = "projection";
 
-static std::shared_ptr<SpriteRenderer> gRenderer;
-
 static const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
 static const float PLAYER_VELOCITY = 50.0f;
 static const glm::vec2 INITIAL_BALL_VELOCITY(5.0f, -5.0f);
 static const float BALL_RADIUS = 12.5f;
 
+static std::shared_ptr<SpriteRenderer> gRenderer;
 static GameObject* gPlayer;
 static BallObject* gBall;
+static ParticleGenerator* gParticleGenerator;
 
 Game::Game(unsigned width, unsigned height) :
     mState(GameState::GAME_MENU),
@@ -42,10 +43,11 @@ Game::~Game() {
 
     delete gPlayer;
     delete gBall;
+    delete gParticleGenerator;
 }
 
 void Game::init() {
-    const auto shader = ResourceManager::instance()->loadShader(
+    const auto spriteShader = ResourceManager::instance()->loadShader(
         "shaders/spriteVertex.glsl",
         "shaders/spriteFragment.glsl",
         "sprite"
@@ -60,17 +62,18 @@ void Game::init() {
         1.0f
     );
 
-    shader->use();
-    shader->setValue(IMAGE, 0);
-    shader->setValue(PROJECTION, proj);
+    spriteShader->use();
+    spriteShader->setValue(IMAGE, 0);
+    spriteShader->setValue(PROJECTION, proj);
 
-    gRenderer.reset(new SpriteRenderer(shader));
+    gRenderer.reset(new SpriteRenderer(spriteShader));
 
     ResourceManager::instance()->loadTexture("res/awesomeface.png", true, "face");
     ResourceManager::instance()->loadTexture("res/background.jpg", false, "background");
     ResourceManager::instance()->loadTexture("res/block.png", false, "block");
     ResourceManager::instance()->loadTexture("res/block_solid.png", false, "blockSolid");
     ResourceManager::instance()->loadTexture("res/paddle.png", true, "paddle");
+    ResourceManager::instance()->loadTexture("res/particle.png", true, "particle");
 
     mLevels.emplace_back("res/one.lvl", mWidth, mHeight / 2);
     mLevel = 0;
@@ -80,6 +83,14 @@ void Game::init() {
 
     const glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     gBall = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::instance()->getTexture("face"));
+
+    const auto particleShader = ResourceManager::instance()->loadShader(
+        "shaders/particleVertex.glsl",
+        "shaders/particleFragment.glsl",
+        "particle"
+    );
+
+    gParticleGenerator = new ParticleGenerator(particleShader, ResourceManager::instance()->getTexture("particle"));
 }
 
 void Game::processInput(const SDL_Keycode* keyCode) {
@@ -112,6 +123,7 @@ void Game::processInput(const SDL_Keycode* keyCode) {
 void Game::update() {
     gBall->move(mWidth);
     doCollisions();
+    gParticleGenerator->update(gBall, glm::vec2(gBall->radius() / 2.0f));
 }
 
 void Game::render() {
@@ -123,6 +135,7 @@ void Game::render() {
     );
     mLevels[mLevel].draw(gRenderer);
     gPlayer->draw(gRenderer);
+    gParticleGenerator->draw();
     gBall->draw(gRenderer);
 }
 

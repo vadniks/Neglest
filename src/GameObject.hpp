@@ -3,8 +3,8 @@
 
 #include "Texture.hpp"
 #include "SpriteRenderer.hpp"
-#include <glm/glm.hpp>
 #include <memory>
+#include <glm/glm.hpp>
 
 class GameObject {
 protected:
