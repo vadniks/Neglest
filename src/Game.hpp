@@ -6,6 +6,13 @@
 #include <vector>
 #include <SDL2/SDL.h>
 
+enum Direction {
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
+};
+
 class Game {
 private:
     GameState mState;

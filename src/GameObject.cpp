@@ -51,3 +51,11 @@ bool GameObject::destroyed() {
 void GameObject::setDestroyed(bool destroyed) {
     mDestroyed = destroyed;
 }
+
+glm::vec2 GameObject::velocity() {
+    return mVelocity;
+}
+
+void GameObject::setVelocity(glm::vec2 velocity) {
+    mVelocity = velocity;
+}

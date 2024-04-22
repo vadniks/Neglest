@@ -3,7 +3,10 @@
 #include "ResourceManager.hpp"
 #include "SpriteRenderer.hpp"
 #include "BallObject.hpp"
+#include <tuple>
 #include <glm/ext/matrix_clip_space.hpp>
+
+using Collision = std::tuple<bool, Direction, glm::vec2>;
 
 static const std::string IMAGE = "image";
 static const std::string PROJECTION = "projection";
@@ -122,7 +125,30 @@ static bool checkCollision(GameObject* one, GameObject* two) {
     return collisionX && collisionY;
 }
 
-static bool checkCollision(BallObject* one, GameObject* two) {
+static Direction vectorDirection(glm::vec2 target) {
+    glm::vec2 compass[] = {
+        glm::vec2(0.0f, 1.0f),
+        glm::vec2(1.0f, 0.0f),
+        glm::vec2(0.0f, -1.0f),
+        glm::vec2(-1.0f, 0.0f)
+    };
+
+    float max = 0.0f;
+    unsigned int best_match = -1;
+
+    for (unsigned int i = 0; i < 4; i++) {
+        float dot_product = glm::dot(glm::normalize(target), compass[i]);
+
+        if (dot_product > max) {
+            max = dot_product;
+            best_match = i;
+        }
+    }
+
+    return (Direction)best_match;
+}
+
+static Collision checkCollision(BallObject* one, GameObject* two) {
     glm::vec2 center(one->position() + one->radius());
 
     glm::vec2 aabb_half_extents(two->size().x / 2.0f, two->size().y / 2.0f);
@@ -134,12 +160,42 @@ static bool checkCollision(BallObject* one, GameObject* two) {
     glm::vec2 closest = aabb_center + clamped;
     difference = closest - center;
 
-    return glm::length(difference) < one->radius();
+    if (glm::length(difference) <= one->radius())
+        return std::make_tuple(true, vectorDirection(difference), difference);
+    else
+        return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
 }
 
 void Game::doCollisions() {
     for (auto& box : mLevels[mLevel].bricks()) {
-        if (!box.destroyed() && checkCollision(gBall, &box) && !box.solid())
-            box.setDestroyed(true);
+        if (!box.destroyed()) {
+            Collision collision = checkCollision(gBall, &box);
+
+            if (std::get<0>(collision)) {
+                if (!box.solid())
+                    box.setDestroyed(true);
+
+                Direction direction = std::get<1>(collision);
+                glm::vec2 diff_vector = std::get<2>(collision);
+
+                if (direction == LEFT || direction == RIGHT) {
+                    gBall->setVelocity(glm::vec2(-(gBall->velocity().x), gBall->velocity().y));
+
+                    float penetration = gBall->radius() - std::abs(diff_vector.x);
+                    if (direction == LEFT)
+                        gBall->setPosition(glm::vec2(gBall->position().x + penetration, gBall->position().y));
+                    else
+                        gBall->setPosition(glm::vec2(gBall->position().x - penetration, gBall->position().y));
+                } else {
+                    gBall->setVelocity(glm::vec2(gBall->velocity().x, -(gBall->velocity().y)));
+
+                    float penetration = gBall->radius() - std::abs(diff_vector.y);
+                    if (direction == UP)
+                        gBall->setPosition(glm::vec2(gBall->position().x, gBall->position().y + penetration));
+                    else
+                        gBall->setPosition(glm::vec2(gBall->position().x, gBall->position().y - penetration));
+                }
+            }
+        }
     }
 }

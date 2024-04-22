@@ -31,4 +31,6 @@ public:
     void setSolid(bool solid);
     bool destroyed();
     void setDestroyed(bool destroyed);
+    glm::vec2 velocity();
+    void setVelocity(glm::vec2 velocity);
 };
