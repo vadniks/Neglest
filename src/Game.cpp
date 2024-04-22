@@ -11,8 +11,8 @@ static const std::string PROJECTION = "projection";
 static std::shared_ptr<SpriteRenderer> gRenderer;
 
 static const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
-static const float PLAYER_VELOCITY = 25.0f;
-static const glm::vec2 INITIAL_BALL_VELOCITY(15.0f, -15.0f);
+static const float PLAYER_VELOCITY = 30.0f;
+static const glm::vec2 INITIAL_BALL_VELOCITY(7.5f, -7.5f);
 static const float BALL_RADIUS = 12.5f;
 
 static GameObject* gPlayer;
@@ -120,6 +120,21 @@ static bool checkCollision(GameObject* one, GameObject* two) {
     const bool collisionX = one->position().x + one->size().x >= two->position().x && two->position().x + two->size().x >= one->position().x;
     const bool collisionY = one->position().y + one->size().y >= two->position().y && two->position().y + two->size().y >= one->position().y;
     return collisionX && collisionY;
+}
+
+static bool checkCollision(BallObject* one, GameObject* two) {
+    glm::vec2 center(one->position() + one->radius());
+
+    glm::vec2 aabb_half_extents(two->size().x / 2.0f, two->size().y / 2.0f);
+    glm::vec2 aabb_center(two->position().x + aabb_half_extents.x, two->position().y + aabb_half_extents.y);
+
+    glm::vec2 difference = center - aabb_center;
+    glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
+
+    glm::vec2 closest = aabb_center + clamped;
+    difference = closest - center;
+
+    return glm::length(difference) < one->radius();
 }
 
 void Game::doCollisions() {
