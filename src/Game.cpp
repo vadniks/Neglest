@@ -90,7 +90,7 @@ void Game::init() {
         "particle"
     );
     particleShader->use();
-    particleShader->setValue(IMAGE, 0);
+    particleShader->setValue("sprite", 0);
     particleShader->setValue(PROJECTION, proj);
 
     gParticleGenerator = new ParticleGenerator(particleShader, ResourceManager::instance()->getTexture("particle"));

@@ -44,7 +44,7 @@ void ParticleGenerator::update(GameObject* object, glm::vec2 offset) {
     for (unsigned int i = 0; i < newParticles; i++)
         respawnParticle(mParticles[firstUnusedParticle()], object, offset);
 
-    const float lifePoint = 0.1f;
+    const float lifePoint = 0.01f;
     for (int i = 0; i < particlesCount; i++) {
         Particle& p = mParticles[i];
         p.life -= lifePoint;
