@@ -2,6 +2,13 @@
 #include <cassert>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
+#include <cglm/cam.h>
+
+static void render(int width, int height) {
+    mat4 proj;
+    glm_ortho(0.0f, (float) width, 0.0f, (float) height, -1.0f, 1.0f, proj);
+
+}
 
 static void loop(SDL_Window* window) {
     SDL_Event event;
@@ -14,8 +21,13 @@ static void loop(SDL_Window* window) {
             }
         }
 
-        glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
+        int width, height;
+        SDL_GL_GetDrawableSize(window, &width, &height);
+        glViewport(0, 0, width, height);
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        render(width, height);
 
         SDL_GL_SwapWindow(window);
     }
@@ -40,7 +52,7 @@ int main() {
         SDL_WINDOWPOS_CENTERED,
         1200,
         675,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
     );
     assert(window != nullptr);
 
