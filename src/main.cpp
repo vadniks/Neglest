@@ -7,20 +7,10 @@ static void loop(SDL_Window* window) {
     SDL_Event event;
 
     while (true) {
-        SDL_Keycode keyCode;
-        bool keyPressed = false;
-
         while (SDL_PollEvent(&event) == 1) {
             switch (event.type) {
                 case SDL_QUIT:
                     return;
-                case SDL_KEYDOWN:
-                    keyCode = event.key.keysym.sym;
-                    keyPressed = true;
-                    break;
-                case SDL_KEYUP:
-                    keyPressed = false;
-                    break;
             }
         }
 
