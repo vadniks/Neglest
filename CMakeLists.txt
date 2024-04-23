@@ -17,7 +17,7 @@ add_compile_options("-Wno-c99-extensions")
 file(GLOB PROJECT_SOURCES CONFIGURE_DEPENDS src/*.cpp src/*.hpp)
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW glm ${PROJECT_SOURCE_DIR}/libs/cglm/bin/libcglm.so)
+target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW ${PROJECT_SOURCE_DIR}/libs/cglm/bin/libcglm.so)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/libs/cglm/include)
 
 file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})
