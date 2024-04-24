@@ -1,6 +1,6 @@
 
-#include "CompoundShader.hpp"
-#include <iostream>
+#include "defs.h"
+#include "compoundShader.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -10,14 +10,11 @@
 static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
-static std::tuple<int, int> measureText(const std::string& text) {
-    int w, h;
-    TTF_SizeUTF8(gFont, text.c_str(), &w, &h);
-    return {w, h};
-}
+static void measureText(const char* text, int* w, int* h)
+{ TTF_SizeUTF8(gFont, text, w, h); }
 
-static void drawText(int x, int y, const std::string& text) {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, text.c_str(), (SDL_Color) {255, 255, 255, 255});
+static void drawText(int x, int y, const char* text) {
+    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, text, (SDL_Color) {255, 255, 255, 255});
     assert(surfaceArgb != nullptr);
 
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
@@ -45,13 +42,13 @@ static void drawText(int x, int y, const std::string& text) {
     );
 
     mat4 projection;
-    glm_ortho(0.0f, static_cast<float>(gWidth), 0.0f, static_cast<float>(gHeight), -1.0, 1.0f, projection);
+    glm_ortho(0.0f, (float) gWidth, 0.0f, (float) gHeight, -1.0f, 1.0f, projection);
 
-    CompoundShader compoundShader("shaders/vertex.glsl", "shaders/fragment.glsl");
-    compoundShader.use();
-    glUniformMatrix4fv(glGetUniformLocation(compoundShader.id, "projection"), 1, GL_FALSE, &(projection[0][0]));
+    CompoundShader* shader = compoundShaderCreate("shaders/vertex.glsl", "shaders/fragment.glsl");
+    compoundShaderUse(shader);
+    compoundShaderSetMat4(shader, "projection", projection);
 
-    const auto xPos = static_cast<float>(x), yPos = static_cast<float>(y), w = static_cast<float>(surface->w), h = static_cast<float>(surface->h);
+    const autoType xPos = (float) x, yPos = (float) y, w = (float) surface->w, h = (float) surface->h;
     float vertices[6][4] = {
         {xPos, yPos + h, 0.0f, 0.0f},
         {xPos, yPos, 0.0f, 1.0f},
@@ -71,7 +68,7 @@ static void drawText(int x, int y, const std::string& text) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), reinterpret_cast<void*>(0));
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -81,13 +78,16 @@ static void drawText(int x, int y, const std::string& text) {
 
     glDeleteVertexArrays(1, &vao);
 
+    compoundShaderDestroy(shader);
+
     SDL_FreeSurface(surface);
 }
 
 static void renderFrame() {
-    const std::string text = "Hello World!";
-    const auto measures = measureText(text);
-    drawText(gWidth / 2 - std::get<0>(measures) / 2, gHeight / 2 - std::get<1>(measures) / 2, text);
+    const char* text = "Hello World!";
+    int w, h;
+    measureText(text, &w, &h);
+    drawText(gWidth / 2 - w / 2, gHeight / 2 - h / 2, text);
 }
 
 static void renderLoop(SDL_Window* window) {
