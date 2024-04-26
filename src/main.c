@@ -1,5 +1,4 @@
 
-#include "defs.h"
 #include "compoundShader.h"
 #include "spriteRenderer.h"
 #include "texture.h"
