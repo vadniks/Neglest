@@ -1,6 +1,8 @@
 
 #include "defs.h"
 #include "compoundShader.h"
+#include "spriteRenderer.h"
+#include "texture.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -10,84 +12,25 @@
 static int gWidth = 0, gHeight = 0;
 static TTF_Font* gFont = nullptr;
 
-static void measureText(const char* text, int* w, int* h)
-{ TTF_SizeUTF8(gFont, text, w, h); }
-
-static void drawText(int x, int y, const char* text) {
-    SDL_Surface* surfaceArgb = TTF_RenderUTF8_Blended(gFont, text, (SDL_Color) {255, 255, 255, 255});
-    assert(surfaceArgb != nullptr);
-
-    SDL_Surface* surface = SDL_ConvertSurfaceFormat(surfaceArgb, SDL_PIXELFORMAT_RGBA32, 0);
-    assert(surface != nullptr);
-    SDL_FreeSurface(surfaceArgb);
-
-    unsigned texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glActiveTexture(GL_TEXTURE0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(
-        GL_TEXTURE_2D,
-        0,
-        GL_RGBA,
-        surface->w,
-        surface->h,
-        0,
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        surface->pixels
-    );
-
+static void renderFrame() {
     mat4 projection;
     glm_ortho(0.0f, (float) gWidth, 0.0f, (float) gHeight, -1.0f, 1.0f, projection);
 
-    CompoundShader* shader = compoundShaderCreate("shaders/vertex.glsl", "shaders/fragment.glsl");
+    CompoundShader* shader = compoundShaderCreate("shaders/spriteVertex.glsl", "shaders/spriteFragment.glsl");
     compoundShaderUse(shader);
+    compoundShaderSetInt(shader, "sprite", 0);
     compoundShaderSetMat4(shader, "projection", projection);
 
-    const autoType xPos = (float) x, yPos = (float) y, w = (float) surface->w, h = (float) surface->h;
-    float vertices[6][4] = {
-        {xPos, yPos + h, 0.0f, 0.0f},
-        {xPos, yPos, 0.0f, 1.0f},
-        {xPos + w, yPos, 1.0f, 1.0f},
-        {xPos, yPos + h, 0.0f, 0.0f},
-        {xPos + w, yPos, 1.0f, 1.0f},
-        {xPos + w, yPos + h, 1.0f, 0.0f}
-    };
-
-    unsigned vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    unsigned vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glDeleteTextures(1, &texture);
-
-    glDeleteBuffers(1, &vbo);
-
-    glDeleteVertexArrays(1, &vao);
-
-    compoundShaderDestroy(shader);
-
+    SDL_Surface* surface = IMG_Load("res/awesomeface.png");
+    Texture* texture = textureCreate(gWidth, gHeight, surface->pixels);
     SDL_FreeSurface(surface);
-}
 
-static void renderFrame() {
-    const char* text = "Hello World!";
-    int w, h;
-    measureText(text, &w, &h);
-    drawText(gWidth / 2 - w / 2, gHeight / 2 - h / 2, text);
+    SpriteRenderer* renderer = spriteRendererCreate(shader);
+    spriteRendererDraw(renderer, texture, (vec2) {200.0f, 200.0f}, (vec2) {300.0f, 400.0f}, 45.0f, (vec4) {0.0f, 1.0f, 0.0f, 1.0f});
+
+    textureDestroy(texture);
+    spriteRendererDestroy(renderer);
+    compoundShaderDestroy(shader);
 }
 
 static void renderLoop(SDL_Window* window) {

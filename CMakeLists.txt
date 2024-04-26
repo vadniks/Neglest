@@ -20,7 +20,7 @@ add_compile_options("-Wno-gnu-auto-type")
 file(GLOB PROJECT_SOURCES CONFIGURE_DEPENDS src/*.c src/*.h)
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW ${PROJECT_SOURCE_DIR}/libs/cglm/bin/libcglm.so)
+target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW m ${PROJECT_SOURCE_DIR}/libs/cglm/bin/libcglm.so)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/libs/cglm/include)
 
 file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})

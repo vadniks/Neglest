@@ -68,6 +68,15 @@ void compoundShaderSetInt(const CompoundShader* shader, const char* name, int va
 void compoundShaderSetFloat(const CompoundShader* shader, const char* name, float value)
 { glUniform1f(glGetUniformLocation(shader->programId, name), value); }
 
+void compoundShaderSetVec2(const CompoundShader* shader, const char* name, const vec2 value)
+{ glUniform2f(glGetUniformLocation(shader->programId, name), value[0], value[1]); }
+
+void compoundShaderSetVec3(const CompoundShader* shader, const char* name, const vec3 value)
+{ glUniform3f(glGetUniformLocation(shader->programId, name), value[0], value[1], value[2]); }
+
+void compoundShaderSetVec4(const CompoundShader* shader, const char* name, const vec4 value)
+{ glUniform4f(glGetUniformLocation(shader->programId, name), value[0], value[1], value[2], value[3]); }
+
 void compoundShaderSetMat3(const CompoundShader* shader, const char* name, const mat3 value)
 { glUniformMatrix3fv(glGetUniformLocation(shader->programId, name), 1, GL_FALSE, &(value[0][0])); }
 
