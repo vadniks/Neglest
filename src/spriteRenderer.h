@@ -18,3 +18,11 @@ void spriteRendererDraw(
     float rotation,
     const vec4 color
 );
+void spriteRendererDrawMirrored(
+    const SpriteRenderer* renderer,
+    const Texture* texture,
+    const vec2 position,
+    const vec2 size,
+    float rotation,
+    const vec4 color
+);

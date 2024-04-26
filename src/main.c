@@ -20,12 +20,16 @@ static void renderFrame() {
     compoundShaderSetInt(shader, "sprite", 0);
     compoundShaderSetMat4(shader, "projection", projection);
 
-    SDL_Surface* surface = IMG_Load("res/awesomeface.png");
+    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {255, 255, 255, 255});
+    SDL_Surface* surface = SDL_ConvertSurfaceFormat(textSurface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(textSurface);
+
     Texture* texture = textureCreate(surface->w, surface->h, surface->pixels);
+    int surfaceWidth = surface->w, surfaceHeight = surface->h;
     SDL_FreeSurface(surface);
 
     SpriteRenderer* renderer = spriteRendererCreate(shader);
-    spriteRendererDraw(renderer, texture, (vec2) {200.0f, 200.0f}, (vec2) {300.0f, 400.0f}, 135.0f, (vec4) {0.0f, 1.0f, 0.0f, 1.0f});
+    spriteRendererDrawMirrored(renderer, texture, (vec2) {200.0f, 200.0f}, (vec2) {(float) surfaceWidth, (float) surfaceHeight}, 0.0f, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
 
     textureDestroy(texture);
     spriteRendererDestroy(renderer);
