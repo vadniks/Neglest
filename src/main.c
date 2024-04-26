@@ -20,7 +20,7 @@ static void renderFrame() {
     compoundShaderSetInt(shader, "sprite", 0);
     compoundShaderSetMat4(shader, "projection", projection);
 
-    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(gFont, "Hello World!", (SDL_Color) {255, 255, 255, 255});
+    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(gFont, "Hello OpenGL!", (SDL_Color) {255, 255, 255, 255});
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(textSurface, SDL_PIXELFORMAT_RGBA32, 0);
     SDL_FreeSurface(textSurface);
 
@@ -47,7 +47,7 @@ static void renderFrame() {
     spriteRendererDraw(
         renderer,
         texture2,
-        (vec2) {500.0f, 200.0f},
+        (vec2) {550.0f, 200.0f},
         (vec2) {300.0f, 300.0f},
         180.0f,
         0.0f,
