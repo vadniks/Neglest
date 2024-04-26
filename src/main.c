@@ -26,7 +26,7 @@ static void renderFrame() {
     SDL_FreeSurface(surface);
 
     SpriteRenderer* renderer = spriteRendererCreate(shader);
-    spriteRendererDraw(renderer, texture, (vec2) {200.0f, 200.0f}, (vec2) {300.0f, 400.0f}, 45.0f, (vec4) {0.0f, 1.0f, 0.0f, 1.0f});
+    spriteRendererDraw(renderer, texture, (vec2) {200.0f, 200.0f}, (vec2) {300.0f, 400.0f}, 135.0f, (vec4) {0.0f, 1.0f, 0.0f, 1.0f});
 
     textureDestroy(texture);
     spriteRendererDestroy(renderer);
