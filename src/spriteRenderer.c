@@ -53,7 +53,9 @@ void spriteRendererDraw(
     const Texture* texture,
     const vec2 position,
     const vec2 size,
-    float rotation,
+    float rotationX,
+    float rotationY,
+    float rotationZ,
     const vec4 color
 ) {
     compoundShaderUse(renderer->shader);
@@ -63,39 +65,9 @@ void spriteRendererDraw(
     glm_translate(model, (vec3) {position[0], position[1], 0.0f});
 
     glm_translate(model, (vec3) {0.5f * size[0], 0.5f * size[1], 0.0f});
-    glm_rotate(model, glm_rad(rotation), (vec3) {0.0f, 0.0f, 1.0f});
-    glm_translate(model, (vec3) {-0.5f * size[0], -0.5f * size[1], 0.0f});
-
-    glm_scale(model, (vec3) {size[0], size[1], 1.0f});
-
-    compoundShaderSetMat4(renderer->shader, "model", model);
-    compoundShaderSetVec4(renderer->shader, "spriteColor", color);
-
-    glActiveTexture(GL_TEXTURE0);
-    textureBind(texture);
-
-    glBindVertexArray(renderer->vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
-}
-
-void spriteRendererDrawMirrored(
-    const SpriteRenderer* renderer,
-    const Texture* texture,
-    const vec2 position,
-    const vec2 size,
-    float rotation,
-    const vec4 color
-) {
-    compoundShaderUse(renderer->shader);
-
-    mat4 model;
-    glm_mat4_identity(model);
-    glm_translate(model, (vec3) {position[0], position[1], 0.0f});
-
-    glm_translate(model, (vec3) {0.5f * size[0], 0.5f * size[1], 0.0f});
-    glm_rotate(model, glm_rad(180.0f), (vec3) {1.0f, 0.0f, 0.0f});
-    glm_rotate(model, glm_rad(rotation), (vec3) {0.0f, 0.0f, 1.0f});
+    glm_rotate(model, glm_rad(rotationX), (vec3) {1.0f, 0.0f, 0.0f});
+    glm_rotate(model, glm_rad(rotationY), (vec3) {0.0f, 1.0f, 0.0f});
+    glm_rotate(model, glm_rad(rotationZ), (vec3) {0.0f, 0.0f, 1.0f});
     glm_translate(model, (vec3) {-0.5f * size[0], -0.5f * size[1], 0.0f});
 
     glm_scale(model, (vec3) {size[0], size[1], 1.0f});
