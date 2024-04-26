@@ -22,7 +22,7 @@ static void renderFrame() {
     compoundShaderSetMat4(shader, "projection", projection);
 
     SDL_Surface* surface = IMG_Load("res/awesomeface.png");
-    Texture* texture = textureCreate(gWidth, gHeight, surface->pixels);
+    Texture* texture = textureCreate(surface->w, surface->h, surface->pixels);
     SDL_FreeSurface(surface);
 
     SpriteRenderer* renderer = spriteRendererCreate(shader);
