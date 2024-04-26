@@ -28,6 +28,10 @@ static void renderFrame() {
     int surfaceWidth = surface->w, surfaceHeight = surface->h;
     SDL_FreeSurface(surface);
 
+    SDL_Surface* surface2 = IMG_Load("res/awesomeface.png");
+    Texture* texture2 = textureCreate(surface2->w, surface2->h, surface2->pixels);
+    SDL_FreeSurface(surface2);
+
     SpriteRenderer* renderer = spriteRendererCreate(shader);
     spriteRendererDraw(
         renderer,
@@ -40,7 +44,19 @@ static void renderFrame() {
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
 
+    spriteRendererDraw(
+        renderer,
+        texture2,
+        (vec2) {500.0f, 200.0f},
+        (vec2) {300.0f, 300.0f},
+        180.0f,
+        0.0f,
+        0.0f,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+
     textureDestroy(texture);
+    textureDestroy(texture2);
     spriteRendererDestroy(renderer);
     compoundShaderDestroy(shader);
 }
