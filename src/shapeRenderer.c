@@ -139,10 +139,11 @@ void shapeRendererDrawRectangle(
     glBindVertexArray(0);
 }
 
-void shapeRendererDrawHorizontalLine(
+void shapeRendererDrawLine(
     const ShapeRenderer* renderer,
     const vec2 position,
     const vec2 size,
+    float rotationZ,
     const vec4 color
 ) {
     glBindVertexArray(renderer->vao);
@@ -161,6 +162,7 @@ void shapeRendererDrawHorizontalLine(
     mat4 model;
     glm_mat4_identity(model);
     glm_translate(model, (vec3) {position[0], position[1], 0.0f});
+    glm_rotate(model, glm_rad(rotationZ), (vec3) {0.0f, 0.0f, 1.0f});
     glm_scale(model, (vec3) {size[0], size[1], 1.0f});
 
     compoundShaderUse(renderer->shader);
