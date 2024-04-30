@@ -84,9 +84,9 @@ static void renderFrame() {
 
     shapeRendererDrawLine(
         shapeRenderer,
-        (vec2) {300.0f, 300.0f},
+        (vec2) {200.0f, 50.0f},
         (vec2) {100.0f, 100.0f},
-        0.0f,
+        (float) SDL_GetTicks(),
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
 
