@@ -6,19 +6,21 @@
 
 struct ShapeRenderer {
     const CompoundShader* shader;
-    unsigned vbo, vao;
+    unsigned vbo, ebo, vao;
 };
 
 ShapeRenderer* shapeRendererCreate(const CompoundShader* shader) {
     ShapeRenderer* renderer = SDL_malloc(sizeof *renderer);
     renderer->shader = shader;
     glGenBuffers(1, &(renderer->vbo));
+    glGenBuffers(1, &(renderer->ebo));
     glGenVertexArrays(1, &((renderer->vao)));
     return renderer;
 }
 
 void shapeRendererDestroy(ShapeRenderer* renderer) {
     glDeleteBuffers(1, &(renderer->vbo));
+    glDeleteBuffers(1, &(renderer->ebo));
     glDeleteVertexArrays(1, &((renderer->vao)));
     SDL_free(renderer);
 }
@@ -81,22 +83,28 @@ void shapeRendererDrawRectangle(
     const vec4 color,
     bool fill
 ) {
+    glBindVertexArray(renderer->vao);
+
     const float vertices[] = {
-        -0.5f, 0.5f,
         0.5f, 0.5f,
         0.5f, -0.5f,
-        0.5f, -0.5f,
         -0.5f, -0.5f,
-        -0.5f, 0.5f
+        -0.5f, 0.5f,
     };
-
-    glBindVertexArray(renderer->vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, renderer->vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
+
+    const unsigned int indices[] = {
+        0, 1, 2, 3,
+        1, 2, 0, 3
+    };
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer->ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
 
     mat4 model;
     glm_mat4_identity(model);
@@ -115,7 +123,7 @@ void shapeRendererDrawRectangle(
     compoundShaderSetVec4(renderer->shader, "color", color);
 
     glPolygonMode(GL_FRONT_AND_BACK, fill ? GL_FILL : GL_LINE);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, nullptr);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);

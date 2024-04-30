@@ -39,3 +39,4 @@ void shapeRendererDrawCircle(
     const vec4 color,
     bool fill
 );
+// draw line, draw curve, draw point
