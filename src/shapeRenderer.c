@@ -135,18 +135,20 @@ void shapeRendererDrawRectangle(
     glDrawElements(fill ? GL_TRIANGLES : GL_LINES, fill ? 6 : 8, GL_UNSIGNED_INT, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
-void shapeRendererDrawCircle(
+void shapeRendererDrawHorizontalLine(
     const ShapeRenderer* renderer,
-    const vec2 position,
-    float radius,
-    float rotationX,
-    float rotationY,
-    float rotationZ,
-    const vec4 color,
-    bool fill
+    const vec2 positionStart,
+    const vec2 positionEnd,
+    const vec4 color
 ) {
+    const float vertices[] = {
+        -0.5f, 0.0f,
+        0.5f, 0.0f
+    };
+
 
 }

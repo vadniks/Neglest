@@ -29,14 +29,10 @@ void shapeRendererDrawRectangle(
     const vec4 color,
     bool fill
 );
-void shapeRendererDrawCircle(
+void shapeRendererDrawHorizontalLine(
     const ShapeRenderer* renderer,
-    const vec2 position,
-    float radius,
-    float rotationX,
-    float rotationY,
-    float rotationZ,
-    const vec4 color,
-    bool fill
+    const vec2 positionStart,
+    const vec2 positionEnd,
+    const vec4 color
 );
 // draw line, draw curve, draw point
