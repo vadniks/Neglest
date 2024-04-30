@@ -18,7 +18,7 @@ static void renderFrame() {
 
     // sprites
 
-    /*CompoundShader* spriteShader = compoundShaderCreate("shaders/spriteVertex.glsl", "shaders/spriteFragment.glsl");
+    CompoundShader* spriteShader = compoundShaderCreate("shaders/spriteVertex.glsl", "shaders/spriteFragment.glsl");
     compoundShaderUse(spriteShader);
     compoundShaderSetMat4(spriteShader, "projection", projection);
     compoundShaderSetInt(spriteShader, "sprite", 0);
@@ -61,7 +61,7 @@ static void renderFrame() {
     textureDestroy(texture);
     textureDestroy(texture2);
     spriteRendererDestroy(spriteRenderer);
-    compoundShaderDestroy(spriteShader);*/
+    compoundShaderDestroy(spriteShader);
 
     // shapes
 
