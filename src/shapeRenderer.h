@@ -26,7 +26,8 @@ void shapeRendererDrawRectangle(
     float rotationX,
     float rotationY,
     float rotationZ,
-    const vec4 color
+    const vec4 color,
+    bool fill
 );
 void shapeRendererDrawCircle(
     const ShapeRenderer* renderer,
@@ -35,5 +36,6 @@ void shapeRendererDrawCircle(
     float rotationX,
     float rotationY,
     float rotationZ,
-    const vec4 color
+    const vec4 color,
+    bool fill
 );

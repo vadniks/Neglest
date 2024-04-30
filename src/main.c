@@ -71,7 +71,7 @@ static void renderFrame() {
 
     ShapeRenderer* shapeRenderer = shapeRendererCreate(shapeShader);
 
-    shapeRendererDrawTriangle(
+    shapeRendererDrawRectangle(
         shapeRenderer,
         (vec2) {100.0f, 100.0f},
         (vec2) {100.0f, 100.0f},
