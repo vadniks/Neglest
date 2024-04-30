@@ -41,6 +41,18 @@ void gameInit(int blockSize, int width, int height) {
     SDL_FreeSurface(playerSurface);
     gPlayerTexture = textureCreate(xPlayerSurface->w, xPlayerSurface->h, xPlayerSurface->pixels);
     SDL_FreeSurface(xPlayerSurface);
+
+    SDL_Surface* enemySurface = IMG_Load("res/enemy_a.png");
+    SDL_Surface* xEnemySurface = SDL_ConvertSurfaceFormat(enemySurface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(enemySurface);
+    gEnemyTexture = textureCreate(xEnemySurface->w, xEnemySurface->h, xEnemySurface->pixels);
+    SDL_FreeSurface(xEnemySurface);
+
+    SDL_Surface* gemSurface = IMG_Load("res/gem.png");
+    SDL_Surface* xGemSurface = SDL_ConvertSurfaceFormat(gemSurface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(gemSurface);
+    gGemTexture = textureCreate(xGemSurface->w, xGemSurface->h, xGemSurface->pixels);
+    SDL_FreeSurface(xGemSurface);
 }
 
 void gameProcessInput(SDL_Keycode* nullable keycode, int deltaTime) {
@@ -56,7 +68,7 @@ void gameRender(void) {
         for (int j = 0; j < gHeight / gBlockSize; j++)
             spriteRendererDraw(
                 gSpriteRenderer,
-                gPlayerTexture,
+                gGemTexture,
                 (vec2) {(float) (gBlockSize * i), (float) (gBlockSize * j)},
                 (vec2) {(float) gBlockSize, (float) gBlockSize},
                 0.0f,
@@ -71,4 +83,6 @@ void gameClean(void) {
     spriteRendererDestroy(gSpriteRenderer);
     textureDestroy(gBoxTexture);
     textureDestroy(gPlayerTexture);
+    textureDestroy(gEnemyTexture);
+    textureDestroy(gGemTexture);
 }
