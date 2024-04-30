@@ -11,7 +11,7 @@ static void renderLoop(SDL_Window* window) {
     SDL_Event event;
 
     while (true) {
-        const int currentFrame = SDL_GetTicks();
+        const int currentFrame = (int) SDL_GetTicks();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
