@@ -35,13 +35,13 @@ void shapeRendererDrawTriangle(
     const vec4 color,
     bool fill
 ) {
+    glBindVertexArray(renderer->vao);
+
     const float vertices[] = {
         -0.5f, -0.5f,
         0.5f, -0.5f,
         0.0f, 0.5f,
     };
-
-    glBindVertexArray(renderer->vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, renderer->vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
@@ -109,7 +109,12 @@ void shapeRendererDrawRectangle(
     };
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer->ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, fill ? sizeof(indicesFilled) : sizeof(indicesUnfilled), fill ? indicesFilled : indicesUnfilled, GL_DYNAMIC_DRAW);
+    glBufferData(
+        GL_ELEMENT_ARRAY_BUFFER,
+        fill ? sizeof(indicesFilled) : sizeof(indicesUnfilled),
+        fill ? indicesFilled : indicesUnfilled,
+        GL_DYNAMIC_DRAW
+    );
 
     mat4 model;
     glm_mat4_identity(model);
