@@ -27,9 +27,11 @@ void gameInit(int blockSize, int width, int height) {
 
     gSpriteRenderer = spriteRendererCreate(gSpriteShader);
 
-    SDL_Surface* faceSurface = IMG_Load("res/awesomeface.png");
-    gFaceTexture = textureCreate(faceSurface->w, faceSurface->h, faceSurface->pixels);
+    SDL_Surface* faceSurface = IMG_Load("res/box.png");
+    SDL_Surface* xFaceSurface = SDL_ConvertSurfaceFormat(faceSurface, SDL_PIXELFORMAT_RGBA32, 0);
     SDL_FreeSurface(faceSurface);
+    gFaceTexture = textureCreate(xFaceSurface->w, xFaceSurface->h, xFaceSurface->pixels);
+    SDL_FreeSurface(xFaceSurface);
 }
 
 void gameProcessInput(SDL_Keycode* nullable keycode, int deltaTime) {
@@ -41,16 +43,18 @@ void gameUpdate(int deltaTime) {
 }
 
 void gameRender(void) {
-    spriteRendererDraw(
-        gSpriteRenderer,
-        gFaceTexture,
-        (vec2) {200.0f, 200.0f},
-        (vec2) {(float) gBlockSize, (float) gBlockSize},
-        0.0f,
-        0.0f,
-        0.0f,
-        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
-    );
+    for (int i = 0; i < gWidth / gBlockSize; i++)
+        for (int j = 0; j < gHeight / gBlockSize; j++)
+            spriteRendererDraw(
+                gSpriteRenderer,
+                gFaceTexture,
+                (vec2) {(float) (gBlockSize * i), (float) (gBlockSize * j)},
+                (vec2) {(float) gBlockSize, (float) gBlockSize},
+                0.0f,
+                0.0f,
+                0.0f,
+                (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+            );
 }
 
 void gameClean(void) {
