@@ -10,7 +10,7 @@
 static int gBlockSize = 0, gWidth = 0, gHeight = 0;
 static CompoundShader* gSpriteShader = nullptr;
 static SpriteRenderer* gSpriteRenderer = nullptr;
-static Texture* gFaceTexture = nullptr;
+static Texture* gBoxTexture = nullptr;
 
 void gameInit(int blockSize, int width, int height) {
     gBlockSize = blockSize;
@@ -27,11 +27,11 @@ void gameInit(int blockSize, int width, int height) {
 
     gSpriteRenderer = spriteRendererCreate(gSpriteShader);
 
-    SDL_Surface* faceSurface = IMG_Load("res/box.png");
-    SDL_Surface* xFaceSurface = SDL_ConvertSurfaceFormat(faceSurface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(faceSurface);
-    gFaceTexture = textureCreate(xFaceSurface->w, xFaceSurface->h, xFaceSurface->pixels);
-    SDL_FreeSurface(xFaceSurface);
+    SDL_Surface* boxSurface = IMG_Load("res/box.png");
+    SDL_Surface* xBoxSurface = SDL_ConvertSurfaceFormat(boxSurface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(boxSurface);
+    gBoxTexture = textureCreate(xBoxSurface->w, xBoxSurface->h, xBoxSurface->pixels);
+    SDL_FreeSurface(xBoxSurface);
 }
 
 void gameProcessInput(SDL_Keycode* nullable keycode, int deltaTime) {
@@ -47,7 +47,7 @@ void gameRender(void) {
         for (int j = 0; j < gHeight / gBlockSize; j++)
             spriteRendererDraw(
                 gSpriteRenderer,
-                gFaceTexture,
+                gBoxTexture,
                 (vec2) {(float) (gBlockSize * i), (float) (gBlockSize * j)},
                 (vec2) {(float) gBlockSize, (float) gBlockSize},
                 0.0f,
@@ -60,5 +60,5 @@ void gameRender(void) {
 void gameClean(void) {
     compoundShaderDestroy(gSpriteShader);
     spriteRendererDestroy(gSpriteRenderer);
-    textureDestroy(gFaceTexture);
+    textureDestroy(gBoxTexture);
 }
