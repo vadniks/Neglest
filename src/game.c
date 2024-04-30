@@ -24,6 +24,16 @@ static Texture* gEnemyTexture = nullptr;
 static Texture* gGemTexture = nullptr;
 static Entity* gField = nullptr;
 
+static Texture* loadTextureAndConvertFormat(const char* path) {
+    SDL_Surface* surface = IMG_Load(path);
+    SDL_Surface* xSurface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(surface);
+
+    Texture* texture = textureCreate(xSurface->w, xSurface->h, xSurface->pixels);
+    SDL_FreeSurface(xSurface);
+    return texture;
+}
+
 void gameInit(int blockSize, int width, int height) {
     gBlockSize = blockSize;
     gWidth = width;
@@ -40,30 +50,10 @@ void gameInit(int blockSize, int width, int height) {
     compoundShaderSetInt(gSpriteShader, "sprite", 0);
 
     gSpriteRenderer = spriteRendererCreate(gSpriteShader);
-
-    SDL_Surface* boxSurface = IMG_Load("res/box.png");
-    SDL_Surface* xBoxSurface = SDL_ConvertSurfaceFormat(boxSurface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(boxSurface);
-    gBoxTexture = textureCreate(xBoxSurface->w, xBoxSurface->h, xBoxSurface->pixels);
-    SDL_FreeSurface(xBoxSurface);
-
-    SDL_Surface* playerSurface = IMG_Load("res/player_a.png");
-    SDL_Surface* xPlayerSurface = SDL_ConvertSurfaceFormat(playerSurface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(playerSurface);
-    gPlayerTexture = textureCreate(xPlayerSurface->w, xPlayerSurface->h, xPlayerSurface->pixels);
-    SDL_FreeSurface(xPlayerSurface);
-
-    SDL_Surface* enemySurface = IMG_Load("res/enemy_a.png");
-    SDL_Surface* xEnemySurface = SDL_ConvertSurfaceFormat(enemySurface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(enemySurface);
-    gEnemyTexture = textureCreate(xEnemySurface->w, xEnemySurface->h, xEnemySurface->pixels);
-    SDL_FreeSurface(xEnemySurface);
-
-    SDL_Surface* gemSurface = IMG_Load("res/gem.png");
-    SDL_Surface* xGemSurface = SDL_ConvertSurfaceFormat(gemSurface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(gemSurface);
-    gGemTexture = textureCreate(xGemSurface->w, xGemSurface->h, xGemSurface->pixels);
-    SDL_FreeSurface(xGemSurface);
+    gBoxTexture = loadTextureAndConvertFormat("res/box.png");
+    gPlayerTexture = loadTextureAndConvertFormat("res/player_a.png");
+    gEnemyTexture = loadTextureAndConvertFormat("res/enemy_a.png");
+    gGemTexture = loadTextureAndConvertFormat("res/gem.png");
 
     gField = SDL_malloc(gBlocksPerXAxis * gBlocksPerYAxis * sizeof(Entity));
     for (int i = 0; i < gBlocksPerXAxis; i++) {
