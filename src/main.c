@@ -1,12 +1,16 @@
 
+#include "game.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <GL/glew.h>
 #include <cglm/cam.h>
 
+static const int WIDTH = 1200;
+static const int HEIGHT = 675;
+
 static void renderLoop(SDL_Window* window) {
-    int deltaTime = 0, lastFrame = 0;
+    int deltaTime, lastFrame = 0;
     int width, height;
     SDL_Event event;
 
@@ -15,8 +19,6 @@ static void renderLoop(SDL_Window* window) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        (void) deltaTime;
-
         SDL_GL_GetDrawableSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
@@ -24,17 +26,26 @@ static void renderLoop(SDL_Window* window) {
             switch (event.type) {
                 case SDL_QUIT:
                     return;
+                case SDL_KEYDOWN:
+                    gameProcessInput(&(event.key.keysym.sym), deltaTime);
+                    break;
+                case SDL_KEYUP:
+                    gameProcessInput(nullptr, deltaTime);
+                    break;
             }
         }
 
+        gameUpdate(deltaTime);
+
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        gameRender();
 
         SDL_GL_SwapWindow(window);
     }
 }
 
-int main() {
+int main(void) {
     assert(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == 0);
     assert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) > 0);
     assert(TTF_Init() == 0);
@@ -53,9 +64,9 @@ int main() {
         "OpenGL",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        1200,
-        675,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+        WIDTH,
+        HEIGHT,
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
     );
     assert(window != nullptr);
 
@@ -69,7 +80,10 @@ int main() {
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
     SDL_GL_SetSwapInterval(1);
+
+    gameInit(WIDTH, HEIGHT);
     renderLoop(window);
+    gameClean();
 
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
