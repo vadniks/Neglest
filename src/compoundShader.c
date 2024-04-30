@@ -9,7 +9,7 @@ struct CompoundShader {
 };
 
 CompoundShader* compoundShaderCreate(const char* vertexPath, const char* fragmentPath) {
-    SDL_RWops* vertexFile = SDL_RWFromFile(vertexPath, "r");
+    SDL_RWops* vertexFile = SDL_RWFromFile(vertexPath, "r"); // TODO: it's a mess
     assert(vertexFile != nullptr);
     const unsigned vertexSize = SDL_RWsize(vertexFile);
     char vertexCode[vertexSize + 1];
@@ -17,7 +17,7 @@ CompoundShader* compoundShaderCreate(const char* vertexPath, const char* fragmen
     vertexCode[vertexSize] = 0;
     SDL_RWclose(vertexFile);
 
-    SDL_RWops* fragmentFile = SDL_RWFromFile(fragmentPath, "r");
+    SDL_RWops* fragmentFile = SDL_RWFromFile(fragmentPath, "r"); // TODO: it's a mess
     assert(fragmentFile != nullptr);
     const unsigned fragmentSize = SDL_RWsize(fragmentFile);
     char fragmentCode[fragmentSize + 1];
