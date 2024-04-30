@@ -6,10 +6,17 @@
 #include <cglm/cam.h>
 
 static void renderLoop(SDL_Window* window) {
+    int deltaTime = 0, lastFrame = 0;
     int width, height;
     SDL_Event event;
 
     while (true) {
+        const int currentFrame = SDL_GetTicks();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        (void) deltaTime;
+
         SDL_GL_GetDrawableSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
