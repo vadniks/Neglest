@@ -98,13 +98,18 @@ void shapeRendererDrawRectangle(
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
-    const unsigned int indices[] = {
+    const unsigned indicesFilled[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    const unsigned indicesUnfilled[] = {
         0, 1, 2, 3,
         1, 2, 0, 3
     };
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer->ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(fill ? indicesFilled : indicesUnfilled), fill ? indicesFilled : indicesUnfilled, GL_DYNAMIC_DRAW);
 
     mat4 model;
     glm_mat4_identity(model);
@@ -122,9 +127,7 @@ void shapeRendererDrawRectangle(
     compoundShaderSetMat4(renderer->shader, "model", model);
     compoundShaderSetVec4(renderer->shader, "color", color);
 
-    glPolygonMode(GL_FRONT_AND_BACK, fill ? GL_FILL : GL_LINE);
-    glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, nullptr);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glDrawElements(fill ? GL_TRIANGLES : GL_LINES, fill ? 6 : 8, GL_UNSIGNED_INT, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
