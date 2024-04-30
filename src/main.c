@@ -6,8 +6,9 @@
 #include <GL/glew.h>
 #include <cglm/cam.h>
 
-static const int WIDTH = 1200;
-static const int HEIGHT = 675;
+static const int BLOCK_SIZE = 50;
+static const int WIDTH = BLOCK_SIZE * 24;
+static const int HEIGHT = BLOCK_SIZE * 14;
 
 static void renderLoop(SDL_Window* window) {
     int deltaTime, lastFrame = 0;
@@ -81,7 +82,7 @@ int main(void) {
 
     SDL_GL_SetSwapInterval(1);
 
-    gameInit(WIDTH, HEIGHT);
+    gameInit(BLOCK_SIZE, WIDTH, HEIGHT);
     renderLoop(window);
     gameClean();
 
