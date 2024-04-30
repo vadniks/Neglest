@@ -16,7 +16,8 @@ void shapeRendererDrawTriangle(
     float rotationX,
     float rotationY,
     float rotationZ,
-    const vec4 color
+    const vec4 color,
+    bool fill
 );
 void shapeRendererDrawRectangle(
     const ShapeRenderer* renderer,

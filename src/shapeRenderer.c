@@ -30,7 +30,8 @@ void shapeRendererDrawTriangle(
     float rotationX,
     float rotationY,
     float rotationZ,
-    const vec4 color
+    const vec4 color,
+    bool fill
 ) {
     const float vertices[] = {
         -0.5f, -0.5f,
@@ -62,7 +63,9 @@ void shapeRendererDrawTriangle(
     compoundShaderSetMat4(renderer->shader, "model", model);
     compoundShaderSetVec4(renderer->shader, "color", color);
 
+    glPolygonMode(GL_FRONT_AND_BACK, fill ? GL_FILL : GL_LINE);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
