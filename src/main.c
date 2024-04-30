@@ -48,7 +48,7 @@ int main() {
         SDL_WINDOWPOS_CENTERED,
         1200,
         675,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
     );
     assert(window != nullptr);
 
