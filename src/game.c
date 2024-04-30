@@ -11,6 +11,9 @@ static int gBlockSize = 0, gWidth = 0, gHeight = 0;
 static CompoundShader* gSpriteShader = nullptr;
 static SpriteRenderer* gSpriteRenderer = nullptr;
 static Texture* gBoxTexture = nullptr;
+static Texture* gPlayerTexture = nullptr;
+static Texture* gEnemyTexture = nullptr;
+static Texture* gGemTexture = nullptr;
 
 void gameInit(int blockSize, int width, int height) {
     gBlockSize = blockSize;
@@ -32,6 +35,12 @@ void gameInit(int blockSize, int width, int height) {
     SDL_FreeSurface(boxSurface);
     gBoxTexture = textureCreate(xBoxSurface->w, xBoxSurface->h, xBoxSurface->pixels);
     SDL_FreeSurface(xBoxSurface);
+
+    SDL_Surface* playerSurface = IMG_Load("res/player_a.png");
+    SDL_Surface* xPlayerSurface = SDL_ConvertSurfaceFormat(playerSurface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(playerSurface);
+    gPlayerTexture = textureCreate(xPlayerSurface->w, xPlayerSurface->h, xPlayerSurface->pixels);
+    SDL_FreeSurface(xPlayerSurface);
 }
 
 void gameProcessInput(SDL_Keycode* nullable keycode, int deltaTime) {
@@ -47,7 +56,7 @@ void gameRender(void) {
         for (int j = 0; j < gHeight / gBlockSize; j++)
             spriteRendererDraw(
                 gSpriteRenderer,
-                gBoxTexture,
+                gPlayerTexture,
                 (vec2) {(float) (gBlockSize * i), (float) (gBlockSize * j)},
                 (vec2) {(float) gBlockSize, (float) gBlockSize},
                 0.0f,
@@ -61,4 +70,5 @@ void gameClean(void) {
     compoundShaderDestroy(gSpriteShader);
     spriteRendererDestroy(gSpriteRenderer);
     textureDestroy(gBoxTexture);
+    textureDestroy(gPlayerTexture);
 }
