@@ -76,7 +76,7 @@ static void renderLoop(SDL_Window* window) {
         }
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         renderFrame();
 
@@ -98,10 +98,7 @@ int main() {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-
-        SDL_SetHint(SDL_HINT_MOUSE_AUTO_CAPTURE, "1");
 
         SDL_Window* window = SDL_CreateWindow(
             "OpenGL",
@@ -117,7 +114,6 @@ int main() {
                 glewExperimental = GL_TRUE;
                 assert(glewInit() == GLEW_OK);
 
-                glEnable(GL_DEPTH_TEST);
                 glEnable(GL_MULTISAMPLE);
                 glEnable(GL_BLEND);
 
