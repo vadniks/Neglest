@@ -82,6 +82,13 @@ static void renderFrame() {
         true
     );
 
+    shapeRendererDrawHorizontalLine(
+        shapeRenderer,
+        (vec2) {300.0f, 300.0f},
+        (vec2) {100.0f, 100.0f},
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+
     shapeRendererDestroy(shapeRenderer);
     compoundShaderDestroy(shapeShader);
 }

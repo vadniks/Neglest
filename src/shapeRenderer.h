@@ -31,8 +31,8 @@ void shapeRendererDrawRectangle(
 );
 void shapeRendererDrawHorizontalLine(
     const ShapeRenderer* renderer,
-    const vec2 positionStart,
-    const vec2 positionEnd,
+    const vec2 position,
+    const vec2 size,
     const vec4 color
 );
-// draw line, draw curve, draw point
+// draw point
