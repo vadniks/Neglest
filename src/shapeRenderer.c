@@ -109,7 +109,7 @@ void shapeRendererDrawRectangle(
     };
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer->ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(fill ? indicesFilled : indicesUnfilled), fill ? indicesFilled : indicesUnfilled, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, fill ? sizeof(indicesFilled) : sizeof(indicesUnfilled), fill ? indicesFilled : indicesUnfilled, GL_DYNAMIC_DRAW);
 
     mat4 model;
     glm_mat4_identity(model);
