@@ -58,8 +58,6 @@ void spriteRendererDraw(
     float rotationZ,
     const vec4 color
 ) {
-    compoundShaderUse(renderer->shader);
-
     mat4 model;
     glm_mat4_identity(model);
     glm_translate(model, (vec3) {position[0], position[1], 0.0f});
@@ -72,6 +70,7 @@ void spriteRendererDraw(
 
     glm_scale(model, (vec3) {size[0], size[1], 1.0f});
 
+    compoundShaderUse(renderer->shader);
     compoundShaderSetMat4(renderer->shader, "model", model);
     compoundShaderSetVec4(renderer->shader, "spriteColor", color);
 

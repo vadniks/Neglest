@@ -2,6 +2,7 @@
 #include "compoundShader.h"
 #include "spriteRenderer.h"
 #include "texture.h"
+#include "shapeRenderer.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -15,10 +16,12 @@ static void renderFrame() {
     mat4 projection;
     glm_ortho(0.0f, (float) gWidth, 0.0f, (float) gHeight, -1.0f, 1.0f, projection);
 
-    CompoundShader* shader = compoundShaderCreate("shaders/spriteVertex.glsl", "shaders/spriteFragment.glsl");
-    compoundShaderUse(shader);
-    compoundShaderSetInt(shader, "sprite", 0);
-    compoundShaderSetMat4(shader, "projection", projection);
+    // sprites
+
+    /*CompoundShader* spriteShader = compoundShaderCreate("shaders/spriteVertex.glsl", "shaders/spriteFragment.glsl");
+    compoundShaderUse(spriteShader);
+    compoundShaderSetMat4(spriteShader, "projection", projection);
+    compoundShaderSetInt(spriteShader, "sprite", 0);
 
     SDL_Surface* textSurface = TTF_RenderUTF8_Blended(gFont, "Hello OpenGL!", (SDL_Color) {255, 255, 255, 255});
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(textSurface, SDL_PIXELFORMAT_RGBA32, 0);
@@ -32,9 +35,9 @@ static void renderFrame() {
     Texture* texture2 = textureCreate(surface2->w, surface2->h, surface2->pixels);
     SDL_FreeSurface(surface2);
 
-    SpriteRenderer* renderer = spriteRendererCreate(shader);
+    SpriteRenderer* spriteRenderer = spriteRendererCreate(spriteShader);
     spriteRendererDraw(
-        renderer,
+        spriteRenderer,
         texture,
         (vec2) {200.0f, 200.0f},
         (vec2) {(float) surfaceWidth, (float) surfaceHeight},
@@ -45,7 +48,7 @@ static void renderFrame() {
     );
 
     spriteRendererDraw(
-        renderer,
+        spriteRenderer,
         texture2,
         (vec2) {550.0f, 200.0f},
         (vec2) {300.0f, 300.0f},
@@ -57,8 +60,29 @@ static void renderFrame() {
 
     textureDestroy(texture);
     textureDestroy(texture2);
-    spriteRendererDestroy(renderer);
-    compoundShaderDestroy(shader);
+    spriteRendererDestroy(spriteRenderer);
+    compoundShaderDestroy(spriteShader);*/
+
+    // shapes
+
+    CompoundShader* shapeShader = compoundShaderCreate("shaders/shapeVertex.glsl", "shaders/shapeFragment.glsl");
+    compoundShaderUse(shapeShader);
+    compoundShaderSetMat4(shapeShader, "projection", projection);
+
+    ShapeRenderer* shapeRenderer = shapeRendererCreate(shapeShader);
+
+    shapeRendererDrawRectangle(
+        shapeRenderer,
+        (vec2) {100.0f, 100.0f},
+        (vec2) {100.0f, 100.0f},
+        0.0f,
+        0.0f,
+        0.0f,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+
+    shapeRendererDestroy(shapeRenderer);
+    compoundShaderDestroy(shapeShader);
 }
 
 static void renderLoop(SDL_Window* window) {
