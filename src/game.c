@@ -68,7 +68,7 @@ void gameRender(void) {
         for (int j = 0; j < gHeight / gBlockSize; j++)
             spriteRendererDraw(
                 gSpriteRenderer,
-                gGemTexture,
+                gBoxTexture,
                 (vec2) {(float) (gBlockSize * i), (float) (gBlockSize * j)},
                 (vec2) {(float) gBlockSize, (float) gBlockSize},
                 0.0f,
