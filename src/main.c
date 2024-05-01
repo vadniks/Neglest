@@ -7,8 +7,8 @@
 #include <cglm/cam.h>
 
 static const int BLOCK_SIZE = 50;
-static const int WIDTH = BLOCK_SIZE * 24;
-static const int HEIGHT = BLOCK_SIZE * 14;
+static const int WIDTH = BLOCK_SIZE * 32;
+static const int HEIGHT = BLOCK_SIZE * 18;
 
 static void renderLoop(SDL_Window* window) {
     int deltaTime, lastFrame = 0;
