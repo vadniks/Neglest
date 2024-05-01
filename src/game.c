@@ -2,7 +2,7 @@
 #include "game.h"
 #include "compoundShader.h"
 #include "spriteRenderer.h"
-#include "texture.h"
+#include "gameLevel.h"
 #include <cglm/cam.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -16,6 +16,7 @@ static Texture* gBoxTexture = nullptr;
 static Texture* gPlayerTexture = nullptr;
 static Texture* gEnemyTexture = nullptr;
 static Texture* gGemTexture = nullptr;
+static GameLevel* gGameLevel = nullptr;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -46,6 +47,30 @@ void gameInit(void) {
     gPlayerTexture = loadTextureAndConvertFormat("res/player_a.png");
     gEnemyTexture = loadTextureAndConvertFormat("res/enemy_a.png");
     gGemTexture = loadTextureAndConvertFormat("res/gem.png");
+
+    gGameLevel = gameLevelCreate(0);
+}
+
+int gameBlocksPerXAxis(void) {
+    return gBlocksPerXAxis;
+}
+
+int gameBlocksPerYAxis(void) {
+    return gBlocksPerYAxis;
+}
+
+const Texture* gameTexture(GameTexture texture) {
+    switch (texture) {
+        case GAME_TEXTURE_BOX:
+            return gBoxTexture;
+        case GAME_TEXTURE_PLAYER:
+            return gPlayerTexture;
+        case GAME_TEXTURE_ENEMY:
+            return gEnemyTexture;
+        case GAME_TEXTURE_GEM:
+            return gGemTexture;
+    }
+    return nullptr; // not gonna happen
 }
 
 void gameProcessInput(SDL_Keycode* nullable keycode, int deltaTime) {
@@ -57,10 +82,12 @@ void gameUpdate(int deltaTime) {
 }
 
 void gameRender(void) {
-
+    gameLevelDraw(gGameLevel, gSpriteRenderer);
 }
 
 void gameClean(void) {
+    gameLevelDestroy(gGameLevel);
+
     compoundShaderDestroy(gSpriteShader);
 
     spriteRendererDestroy(gSpriteRenderer);

@@ -14,7 +14,7 @@ typedef enum {
 struct GameLevel;
 typedef struct GameLevel GameLevel;
 
-GameLevel* gameLevelCreate(int gBlocksPerXAxis, int gBlocksPerYAxis, int which);
+GameLevel* gameLevelCreate(int which);
 void gameLevelDestroy(GameLevel* level);
 void gameLevelDraw(const GameLevel* level, const SpriteRenderer* renderer);
 bool gameLevelCompleted(const GameLevel* level);
