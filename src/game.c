@@ -16,7 +16,7 @@ typedef enum {
 } Entity;
 
 const int GAME_BLOCK_SIZE = 50, GAME_WINDOW_WIDTH = GAME_BLOCK_SIZE * 32, GAME_WINDOW_HEIGHT = GAME_BLOCK_SIZE * 18;
-static const int FIELD_ROWS = 100, FIELD_COLUMNS = 100;
+static const int FIELD_ROWS = 50, FIELD_COLUMNS = 50;
 //         columns              rows
 static int gBlocksPerXAxis = 0, gBlocksPerYAxis = 0;
 static CompoundShader* gSpriteShader = nullptr;
