@@ -1,6 +1,7 @@
 
 #include "gameLevel.h"
 #include "game.h"
+#include <assert.h>
 #include <SDL2/SDL.h>
 
 struct GameLevel {
@@ -10,6 +11,17 @@ struct GameLevel {
 static const int FIELD_ROWS = 50, FIELD_COLUMNS = 50;
 
 GameLevel* gameLevelCreate(int which) {
+    const int levelNameMaxSize = 64;
+    char levelName[levelNameMaxSize];
+    assert(SDL_snprintf(levelName, levelNameMaxSize, "res/level%d.txt", which) > 0);
+
+    char data[FIELD_ROWS * FIELD_COLUMNS];
+
+    SDL_RWops* file = SDL_RWFromFile(levelName, "r");
+    assert(file != nullptr);
+    assert(SDL_RWread(file, data, 1, sizeof data) > 0);
+    SDL_RWclose(file);
+
     GameLevel* level = SDL_malloc(sizeof *level);
 
     level->field = SDL_malloc(FIELD_ROWS * FIELD_COLUMNS * sizeof(GameLevelEntity));
