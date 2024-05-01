@@ -16,5 +16,5 @@ typedef struct GameLevel GameLevel;
 
 GameLevel* gameLevelCreate(int which);
 void gameLevelDestroy(GameLevel* level);
-void gameLevelDraw(const GameLevel* level, const SpriteRenderer* renderer);
+void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level, const SpriteRenderer* renderer);
 bool gameLevelCompleted(const GameLevel* level);

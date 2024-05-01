@@ -17,6 +17,7 @@ static Texture* gPlayerTexture = nullptr;
 static Texture* gEnemyTexture = nullptr;
 static Texture* gGemTexture = nullptr;
 static GameLevel* gGameLevel = nullptr;
+static int gCameraOffsetX = 0, gCameraOffsetY = 0;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -73,8 +74,26 @@ const Texture* gameTexture(GameTexture texture) {
     return nullptr; // not gonna happen
 }
 
-void gameProcessInput(SDL_Keycode* nullable keycode, int deltaTime) {
-
+void gameProcessInput(const SDL_Keycode* nullable keycode, int deltaTime) {
+    if (keycode == nullptr) return;
+    switch (*keycode) {
+        case SDLK_w:
+            if (gCameraOffsetY > 0)
+                gCameraOffsetY--;
+            break;
+        case SDLK_a:
+            if (gCameraOffsetX > 0)
+                gCameraOffsetX--;
+            break;
+        case SDLK_s:
+            if (gCameraOffsetY + 1 < gBlocksPerYAxis)
+                gCameraOffsetY++;
+            break;
+        case SDLK_d:
+            if (gCameraOffsetX + 1 < gBlocksPerXAxis)
+                gCameraOffsetX++;
+            break;
+    }
 }
 
 void gameUpdate(int deltaTime) {
@@ -82,7 +101,7 @@ void gameUpdate(int deltaTime) {
 }
 
 void gameRender(void) {
-    gameLevelDraw(gGameLevel, gSpriteRenderer);
+    gameLevelDraw(gCameraOffsetX, gCameraOffsetY, gGameLevel, gSpriteRenderer);
 }
 
 void gameClean(void) {

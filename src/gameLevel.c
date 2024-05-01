@@ -59,13 +59,13 @@ void gameLevelDestroy(GameLevel* level) {
     SDL_free(level);
 }
 
-void gameLevelDraw(const GameLevel* level, const SpriteRenderer* renderer) {
-    for (int i = 0; i < gameBlocksPerXAxis(); i++) {
-        for (int j = 0; j < gameBlocksPerYAxis(); j++) {
+void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level, const SpriteRenderer* renderer) {
+    for (int i = 0; i < gameBlocksPerYAxis(); i++) {
+        for (int j = 0; j < gameBlocksPerXAxis(); j++) {
             const Texture* nullable texture = nullptr;
             vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-            switch (level->field[i * j]) {
+            switch (level->field[(i + cameraOffsetY) * (j + cameraOffsetX)]) {
                 case GAME_LEVEL_ENTITY_EMPTY:
                     texture = nullptr;
                     break;
@@ -89,7 +89,7 @@ void gameLevelDraw(const GameLevel* level, const SpriteRenderer* renderer) {
             spriteRendererDraw(
                 renderer,
                 texture,
-                (vec2) {(float) (GAME_BLOCK_SIZE * i), (float) (GAME_BLOCK_SIZE * j)},
+                (vec2) {(float) (GAME_BLOCK_SIZE * j), (float) (GAME_BLOCK_SIZE * i)},
                 (vec2) {(float) GAME_BLOCK_SIZE, (float) GAME_BLOCK_SIZE},
                 0.0f,
                 0.0f,
