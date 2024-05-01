@@ -1,6 +1,6 @@
 
 #include "compoundShader.h"
-#include "defs.h"
+#include <assert.h>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 

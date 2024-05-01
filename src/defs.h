@@ -16,9 +16,3 @@ typedef unsigned char byte;
 
 #define nullable
 #define autoType __auto_type
-
-#ifdef assert
-#   undef assert
-#endif
-
-inline void assert(bool condition) { if (!condition) abort(); }

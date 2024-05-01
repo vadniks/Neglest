@@ -16,6 +16,7 @@ add_compile_options("-O3")
 #add_link_options("-s")
 
 add_compile_options("-Wno-gnu-auto-type")
+add_compile_options("-Wno-logical-op-parentheses")
 
 file(GLOB PROJECT_SOURCES CONFIGURE_DEPENDS src/*.c src/*.h)
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
