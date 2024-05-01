@@ -27,7 +27,7 @@ GameLevel* gameLevelCreate(int which) {
     level->field = SDL_malloc(FIELD_ROWS * FIELD_COLUMNS * sizeof(GameLevelEntity));
 
     for (int xChar = 0, i = 0, j = 0; xChar < dataSize; xChar++) {
-        switch (data[xChar++]) {
+        switch (data[xChar]) {
             case 'b':
                 level->field[i * j] = GAME_LEVEL_ENTITY_BOX;
                 j++;
@@ -45,14 +45,17 @@ GameLevel* gameLevelCreate(int which) {
                 j++;
                 break;
             case '\n':
-                [[gnu::fallthrough]];
-            case 0:
                 i++;
+                j = 0;
                 break;
+            case '\0':
+                SDL_Log("%d %d %d %d", i, gameBlocksPerYAxis(), j, gameBlocksPerXAxis());
+                goto end;
             default:
                 assert(false);
         }
     }
+    end:
 
     return level;
 }
