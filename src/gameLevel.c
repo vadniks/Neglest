@@ -23,11 +23,32 @@ GameLevel* gameLevelCreate(int which) {
     SDL_RWclose(file);
 
     GameLevel* level = SDL_malloc(sizeof *level);
-
     level->field = SDL_malloc(FIELD_ROWS * FIELD_COLUMNS * sizeof(GameLevelEntity));
+
+    int xChar = 0;
     for (int i = 0; i < FIELD_ROWS; i++) {
-        for (int j = 0; j < FIELD_COLUMNS; j++)
-            level->field[i * j] = GAME_LEVEL_ENTITY_BOX;
+        for (int j = 0; j < FIELD_COLUMNS; j++) {
+            switch (data[xChar++]) {
+                case 'b':
+                    level->field[i * j] = GAME_LEVEL_ENTITY_BOX;
+                    break;
+                case '.':
+                    level->field[i * j] = GAME_LEVEL_ENTITY_EMPTY;
+                    break;
+                case 'e':
+                    level->field[i * j] = GAME_LEVEL_ENTITY_ENEMY;
+                    break;
+                case 'g':
+                    level->field[i * j] = GAME_LEVEL_ENTITY_GEM;
+                    break;
+                case '\n':
+                    continue;
+                case 0:
+                    break;
+                default:
+                    assert(false);
+            }
+        }
     }
 
     return level;
