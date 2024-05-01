@@ -38,7 +38,7 @@ void gameLevelDraw(const GameLevel* level, const SpriteRenderer* renderer) {
                     break;
                 case GAME_LEVEL_ENTITY_BOX:
                     texture = gameTexture(GAME_TEXTURE_BOX);
-                    SDL_memcpy(color, (vec4) {0.4f, 0.5f, 0.5f, 1.0f}, 4 * sizeof(float));
+                    SDL_memcpy(color, (vec4) {0.3f, 0.5f, 0.7f, 1.0f}, 4 * sizeof(float));
                     break;
                 case GAME_LEVEL_ENTITY_PLAYER:
                     texture = gameTexture(GAME_TEXTURE_PLAYER);
