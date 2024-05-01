@@ -15,39 +15,42 @@ GameLevel* gameLevelCreate(int which) {
     char levelName[levelNameMaxSize];
     assert(SDL_snprintf(levelName, levelNameMaxSize, "res/level%d.txt", which) > 0);
 
-    char data[FIELD_ROWS * FIELD_COLUMNS];
+    char data[FIELD_ROWS * FIELD_COLUMNS * 2];
 
     SDL_RWops* file = SDL_RWFromFile(levelName, "r");
     assert(file != nullptr);
-    assert(SDL_RWread(file, data, 1, sizeof data) > 0);
+    const int dataSize = (int) SDL_RWread(file, data, 1, sizeof data);
+    assert(dataSize > 0);
     SDL_RWclose(file);
 
     GameLevel* level = SDL_malloc(sizeof *level);
     level->field = SDL_malloc(FIELD_ROWS * FIELD_COLUMNS * sizeof(GameLevelEntity));
 
-    int xChar = 0;
-    for (int i = 0; i < FIELD_ROWS; i++) {
-        for (int j = 0; j < FIELD_COLUMNS; j++) {
-            switch (data[xChar++]) {
-                case 'b':
-                    level->field[i * j] = GAME_LEVEL_ENTITY_BOX;
-                    break;
-                case '.':
-                    level->field[i * j] = GAME_LEVEL_ENTITY_EMPTY;
-                    break;
-                case 'e':
-                    level->field[i * j] = GAME_LEVEL_ENTITY_ENEMY;
-                    break;
-                case 'g':
-                    level->field[i * j] = GAME_LEVEL_ENTITY_GEM;
-                    break;
-                case '\n':
-                    continue;
-                case 0:
-                    break;
-                default:
-                    assert(false);
-            }
+    for (int xChar = 0, i = 0, j = 0; xChar < dataSize; xChar++) {
+        switch (data[xChar++]) {
+            case 'b':
+                level->field[i * j] = GAME_LEVEL_ENTITY_BOX;
+                j++;
+                break;
+            case '.':
+                level->field[i * j] = GAME_LEVEL_ENTITY_EMPTY;
+                j++;
+                break;
+            case 'e':
+                level->field[i * j] = GAME_LEVEL_ENTITY_ENEMY;
+                j++;
+                break;
+            case 'g':
+                level->field[i * j] = GAME_LEVEL_ENTITY_GEM;
+                j++;
+                break;
+            case '\n':
+                [[gnu::fallthrough]];
+            case 0:
+                i++;
+                break;
+            default:
+                assert(false);
         }
     }
 
