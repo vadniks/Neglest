@@ -76,6 +76,7 @@ void gameRender(void) {
     for (int i = 0; i < gBlocksPerXAxis; i++) {
         for (int j = 0; j < gBlocksPerYAxis; j++) {
             const Texture* nullable texture = nullptr;
+            vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
             switch (gField[i * j]) {
                 case ENTITY_EMPTY:
@@ -83,6 +84,7 @@ void gameRender(void) {
                     break;
                 case ENTITY_BOX:
                     texture = gBoxTexture;
+                    SDL_memcpy(color, (vec4) {0.4f, 0.5f, 0.5f, 1.0f}, 4 * sizeof(float));
                     break;
                 case ENTITY_PLAYER:
                     texture = gPlayerTexture;
@@ -105,7 +107,7 @@ void gameRender(void) {
                 0.0f,
                 0.0f,
                 0.0f,
-                (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+                color
             );
         }
     }
