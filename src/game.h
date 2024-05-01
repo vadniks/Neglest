@@ -4,11 +4,9 @@
 #include "defs.h"
 #include <SDL2/SDL.h>
 
-typedef enum {
-    GAME_BLOCK_SIZE = 50
-} GameConsts;
+extern const int GAME_BLOCK_SIZE, GAME_WIDTH, GAME_HEIGHT;
 
-void gameInit(int blockSize, int width, int height);
+void gameInit(void);
 void gameProcessInput(SDL_Keycode* nullable keycode, int deltaTime);
 void gameUpdate(int deltaTime);
 void gameRender(void);

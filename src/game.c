@@ -15,8 +15,9 @@ typedef enum {
     ENTITY_GEM
 } Entity;
 
-//                                                  columns              rows
-static int gBlockSize = 0, gWidth = 0, gHeight = 0, gBlocksPerXAxis = 0, gBlocksPerYAxis;
+const int GAME_BLOCK_SIZE = 50, GAME_WIDTH = GAME_BLOCK_SIZE * 32, GAME_HEIGHT = GAME_BLOCK_SIZE * 18;
+//         columns              rows
+static int gBlocksPerXAxis = 0, gBlocksPerYAxis;
 static CompoundShader* gSpriteShader = nullptr;
 static SpriteRenderer* gSpriteRenderer = nullptr;
 static Texture* gBoxTexture = nullptr;
@@ -37,15 +38,12 @@ static Texture* loadTextureAndConvertFormat(const char* path) {
     return texture;
 }
 
-void gameInit(int blockSize, int width, int height) {
-    gBlockSize = blockSize;
-    gWidth = width;
-    gHeight = height;
-    gBlocksPerXAxis = gWidth / gBlockSize;
-    gBlocksPerYAxis = gHeight / gBlockSize;
+void gameInit(void) {
+    gBlocksPerXAxis = GAME_WIDTH / GAME_BLOCK_SIZE;
+    gBlocksPerYAxis = GAME_HEIGHT / GAME_BLOCK_SIZE;
 
     mat4 projection;
-    glm_ortho(0.0f, (float) width, (float) height, 0.0f, -1.0f, 1.0f, projection);
+    glm_ortho(0.0f, (float) GAME_WIDTH, (float) GAME_HEIGHT, 0.0f, -1.0f, 1.0f, projection);
 
     gSpriteShader = compoundShaderCreate("shaders/spriteVertex.glsl", "shaders/spriteFragment.glsl");
     compoundShaderUse(gSpriteShader);
@@ -101,8 +99,8 @@ void gameRender(void) {
             spriteRendererDraw(
                 gSpriteRenderer,
                 texture,
-                (vec2) {(float) (gBlockSize * i), (float) (gBlockSize * j)},
-                (vec2) {(float) gBlockSize, (float) gBlockSize},
+                (vec2) {(float) (GAME_BLOCK_SIZE * i), (float) (GAME_BLOCK_SIZE * j)},
+                (vec2) {(float) GAME_BLOCK_SIZE, (float) GAME_BLOCK_SIZE},
                 0.0f,
                 0.0f,
                 0.0f,
