@@ -61,8 +61,8 @@ int main(void) {
         "OpenGL",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        GAME_WIDTH,
-        GAME_HEIGHT,
+        GAME_WINDOW_WIDTH,
+        GAME_WINDOW_HEIGHT,
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
     );
     assert(window != nullptr);
