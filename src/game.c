@@ -15,6 +15,7 @@ typedef enum {
     ENTITY_GEM
 } Entity;
 
+//                                                  columns              rows
 static int gBlockSize = 0, gWidth = 0, gHeight = 0, gBlocksPerXAxis = 0, gBlocksPerYAxis;
 static CompoundShader* gSpriteShader = nullptr;
 static SpriteRenderer* gSpriteRenderer = nullptr;
