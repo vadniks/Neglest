@@ -8,14 +8,14 @@ struct GameLevel {
     GameLevelEntity** field;
 };
 
-static const int FIELD_ROWS = 50, FIELD_COLUMNS = 50;
+const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
 
 GameLevel* gameLevelCreate(int which) {
     const int levelNameMaxSize = 64;
     char levelName[levelNameMaxSize];
     assert(SDL_snprintf(levelName, levelNameMaxSize, "res/level%d.txt", which) > 0);
 
-    int dataSize = FIELD_ROWS * FIELD_COLUMNS + FIELD_ROWS - 1; // + '\n's
+    int dataSize = GAME_LEVEL_FIELD_ROWS * GAME_LEVEL_FIELD_COLUMNS + GAME_LEVEL_FIELD_ROWS - 1; // + '\n's
     char data[dataSize];
 
     SDL_RWops* file = SDL_RWFromFile(levelName, "r");
@@ -26,10 +26,10 @@ GameLevel* gameLevelCreate(int which) {
 
     GameLevel* level = SDL_malloc(sizeof *level);
 
-    level->field = SDL_malloc(FIELD_ROWS * sizeof(GameLevelEntity*));
-    for (int i = 0; i < FIELD_ROWS; i++) {
-        level->field[i] = SDL_malloc(FIELD_COLUMNS * sizeof(GameLevelEntity));
-        for (int j = 0; j < FIELD_COLUMNS; j++)
+    level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(GameLevelEntity*));
+    for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++) {
+        level->field[i] = SDL_malloc(GAME_LEVEL_FIELD_COLUMNS * sizeof(GameLevelEntity));
+        for (int j = 0; j < GAME_LEVEL_FIELD_COLUMNS; j++)
             level->field[i][j] = GAME_LEVEL_ENTITY_EMPTY;
     }
 
@@ -64,7 +64,7 @@ GameLevel* gameLevelCreate(int which) {
 }
 
 void gameLevelDestroy(GameLevel* level) {
-    for (int i = 0; i < FIELD_ROWS; i++)
+    for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++)
         SDL_free(level->field[i]);
     SDL_free(level->field);
     SDL_free(level);
