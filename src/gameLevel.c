@@ -48,14 +48,10 @@ GameLevel* gameLevelCreate(int which) {
                 i++;
                 j = 0;
                 break;
-            case '\0':
-                SDL_Log("%d %d %d %d", i, gameBlocksPerYAxis(), j, gameBlocksPerXAxis());
-                goto end;
             default:
                 assert(false);
         }
     }
-    end:
 
     return level;
 }
