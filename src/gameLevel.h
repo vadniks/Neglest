@@ -39,5 +39,8 @@ extern const int GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS;
 
 GameLevel* gameLevelCreate(int which);
 void gameLevelDestroy(GameLevel* level);
-void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level, const SpriteRenderer* renderer);
+int gameLevelPlayerPositionX(const GameLevel* level);
+int gameLevelPlayerPositionY(const GameLevel* level);
+void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY);
+void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY, const SpriteRenderer* renderer);
 bool gameLevelCompleted(const GameLevel* level);

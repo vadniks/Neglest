@@ -35,7 +35,6 @@ static Texture* gEnemyTexture = nullptr;
 static Texture* gGemTexture = nullptr;
 static GameLevel* gGameLevel = nullptr;
 static int gCameraOffsetX = 0, gCameraOffsetY = 0;
-static int gPlayerPositionX = 0, gPlayerPositionY = 0;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -94,30 +93,31 @@ const Texture* gameTexture(GameTexture texture) {
 
 void gameProcessInput(const SDL_Keycode* nullable keycode, int deltaTime) {
     if (keycode == nullptr) return;
+
+    const int
+        playerPositionX = gameLevelPlayerPositionX(gGameLevel),
+        playerPositionY = gameLevelPlayerPositionY(gGameLevel);
+
     switch (*keycode) {
         case SDLK_w:
-            if (gCameraOffsetY > 0) {
+            if (gCameraOffsetY > 0)
                 gCameraOffsetY--;
-                gPlayerPositionY--;
-            }
+            gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY - 1);
             break;
         case SDLK_a:
-            if (gCameraOffsetX > 0) {
+            if (gCameraOffsetX > 0)
                 gCameraOffsetX--;
-                gPlayerPositionX--;
-            }
+            gameLevelTryMovePlayer(gGameLevel, playerPositionX - 1, playerPositionY);
             break;
         case SDLK_s:
-            if (gCameraOffsetY < GAME_LEVEL_FIELD_ROWS - gBlocksPerYAxis) {
+            if (gCameraOffsetY < GAME_LEVEL_FIELD_ROWS - gBlocksPerYAxis)
                 gCameraOffsetY++;
-                gPlayerPositionY++;
-            }
+            gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY + 1);
             break;
         case SDLK_d:
-            if (gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - gBlocksPerXAxis) {
+            if (gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - gBlocksPerXAxis)
                 gCameraOffsetX++;
-                gPlayerPositionX++;
-            }
+            gameLevelTryMovePlayer(gGameLevel, playerPositionX + 1, playerPositionY);
             break;
     }
 }
@@ -127,7 +127,7 @@ void gameUpdate(int deltaTime) {
 }
 
 void gameRender(void) {
-    gameLevelDraw(gCameraOffsetX, gCameraOffsetY, gGameLevel, gSpriteRenderer);
+    gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
 }
 
 void gameClean(void) {

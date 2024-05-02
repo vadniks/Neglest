@@ -23,6 +23,7 @@
 
 struct GameLevel {
     GameLevelEntity** field;
+    int playerPositionX, playerPositionY;
 };
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
@@ -61,6 +62,8 @@ GameLevel* gameLevelCreate(int which) {
                 break;
             case 'p':
                 level->field[y][x] = GAME_LEVEL_ENTITY_PLAYER;
+                level->playerPositionX = x;
+                level->playerPositionY = y;
                 x++;
                 break;
             case '1':
@@ -106,7 +109,27 @@ void gameLevelDestroy(GameLevel* level) {
     SDL_free(level);
 }
 
-void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level, const SpriteRenderer* renderer) {
+int gameLevelPlayerPositionX(const GameLevel* level) {
+    return level->playerPositionX;
+}
+
+int gameLevelPlayerPositionY(const GameLevel* level) {
+    return level->playerPositionY;
+}
+
+void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
+    if (level->field[newPositionY][newPositionX] != GAME_LEVEL_ENTITY_EMPTY) return;
+    if (newPositionX < 0 || newPositionX >= GAME_LEVEL_FIELD_COLUMNS) return;
+    if (newPositionY < 0 || newPositionY >= GAME_LEVEL_FIELD_ROWS) return;
+
+    level->field[newPositionY][newPositionX] = GAME_LEVEL_ENTITY_PLAYER;
+    level->field[level->playerPositionY][level->playerPositionX] = GAME_LEVEL_ENTITY_EMPTY;
+
+    level->playerPositionX = newPositionX;
+    level->playerPositionY = newPositionY;
+}
+
+void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY, const SpriteRenderer* renderer) {
     const int
         blocksPerYAxis = gameBlocksPerYAxis(),
         blocksPerXAxis = gameBlocksPerXAxis();
