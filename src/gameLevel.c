@@ -70,13 +70,20 @@ void gameLevelDestroy(GameLevel* level) {
     SDL_free(level);
 }
 
+static int normalizeY(int y) { return y < GAME_LEVEL_FIELD_ROWS ? y : 0; }
+static int normalizeX(int x) { return x < GAME_LEVEL_FIELD_COLUMNS ? x : 0; }
+
 void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level, const SpriteRenderer* renderer) {
-    for (int y = 0; y < gameBlocksPerYAxis(); y++) {
-        for (int x = 0; x < gameBlocksPerXAxis(); x++) {
+    const int
+        blocksPerYAxis = gameBlocksPerYAxis(),
+        blocksPerXAxis = gameBlocksPerXAxis();
+
+    for (int y = 0; y < blocksPerYAxis; y++) {
+        for (int x = 0; x < blocksPerXAxis; x++) {
             const Texture* nullable texture = nullptr;
             vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-            switch (level->field[y + cameraOffsetY][x + cameraOffsetX]) {
+            switch (level->field[normalizeY(y + cameraOffsetY)][normalizeX(x + cameraOffsetX)]) {
                 case GAME_LEVEL_ENTITY_EMPTY:
                     texture = nullptr;
                     break;

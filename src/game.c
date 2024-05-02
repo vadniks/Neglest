@@ -86,11 +86,11 @@ void gameProcessInput(const SDL_Keycode* nullable keycode, int deltaTime) {
                 gCameraOffsetX--;
             break;
         case SDLK_s:
-            if (gCameraOffsetY + 1 < gBlocksPerYAxis)
+            if (gCameraOffsetY < GAME_LEVEL_FIELD_ROWS)
                 gCameraOffsetY++;
             break;
         case SDLK_d:
-            if (gCameraOffsetX + 1 < gBlocksPerXAxis)
+            if (gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS)
                 gCameraOffsetX++;
             break;
     }
