@@ -66,7 +66,6 @@ GameLevel* gameLevelCreate(int which) {
 void gameLevelDestroy(GameLevel* level) {
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++)
         SDL_free(level->field[i]);
-
     SDL_free(level->field);
     SDL_free(level);
 }
@@ -81,12 +80,10 @@ void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level,
             const Texture* nullable texture = nullptr;
             vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-            GameLevelEntity entity =
-                y + cameraOffsetY < GAME_LEVEL_FIELD_ROWS - 1 && x + cameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - 1
-                    ? level->field[y + cameraOffsetY][x + cameraOffsetX]
-                    : GAME_LEVEL_ENTITY_BOX;
+            if (y + cameraOffsetY >= GAME_LEVEL_FIELD_ROWS) return;
+            if (x + cameraOffsetX >= GAME_LEVEL_FIELD_COLUMNS) break;
 
-            switch (entity) {
+            switch (level->field[y + cameraOffsetY][x + cameraOffsetX]) {
                 case GAME_LEVEL_ENTITY_EMPTY:
                     texture = nullptr;
                     break;
