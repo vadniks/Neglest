@@ -80,7 +80,7 @@ int main(void) {
         SDL_WINDOWPOS_CENTERED,
         GAME_WINDOW_WIDTH,
         GAME_WINDOW_HEIGHT,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
     );
     assert(window != nullptr);
 
