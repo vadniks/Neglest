@@ -80,8 +80,9 @@ void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level,
             const Texture* nullable texture = nullptr;
             vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-            if (y + cameraOffsetY >= GAME_LEVEL_FIELD_ROWS) return;
-            if (x + cameraOffsetX >= GAME_LEVEL_FIELD_COLUMNS) break;
+            // not gonna happen
+//            if (y + cameraOffsetY >= GAME_LEVEL_FIELD_ROWS) return;
+//            if (x + cameraOffsetX >= GAME_LEVEL_FIELD_COLUMNS) break;
 
             switch (level->field[y + cameraOffsetY][x + cameraOffsetX]) {
                 case GAME_LEVEL_ENTITY_EMPTY:
