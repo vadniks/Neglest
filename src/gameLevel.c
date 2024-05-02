@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 
 struct GameLevel {
-    GameLevelEntity* field;
+    GameLevelEntity** field;
 };
 
 static const int FIELD_ROWS = 50, FIELD_COLUMNS = 50;
@@ -15,38 +15,45 @@ GameLevel* gameLevelCreate(int which) {
     char levelName[levelNameMaxSize];
     assert(SDL_snprintf(levelName, levelNameMaxSize, "res/level%d.txt", which) > 0);
 
-    char data[FIELD_ROWS * FIELD_COLUMNS * 2];
+    int dataSize = FIELD_ROWS * FIELD_COLUMNS + FIELD_ROWS - 1; // + '\n's
+    char data[dataSize];
 
     SDL_RWops* file = SDL_RWFromFile(levelName, "r");
     assert(file != nullptr);
-    const int dataSize = (int) SDL_RWread(file, data, 1, sizeof data);
+    dataSize = (int) SDL_RWread(file, data, 1, dataSize);
     assert(dataSize > 0);
     SDL_RWclose(file);
 
     GameLevel* level = SDL_malloc(sizeof *level);
-    level->field = SDL_malloc(FIELD_ROWS * FIELD_COLUMNS * sizeof(GameLevelEntity));
 
-    for (int xChar = 0, i = 0, j = 0; xChar < dataSize; xChar++) {
+    level->field = SDL_malloc(FIELD_ROWS * sizeof(GameLevelEntity*));
+    for (int i = 0; i < FIELD_ROWS; i++) {
+        level->field[i] = SDL_malloc(FIELD_COLUMNS * sizeof(GameLevelEntity));
+        for (int j = 0; j < FIELD_COLUMNS; j++)
+            level->field[i][j] = GAME_LEVEL_ENTITY_EMPTY;
+    }
+
+    for (int xChar = 0, y = 0, x = 0; xChar < dataSize; xChar++) {
         switch (data[xChar]) {
             case 'b':
-                level->field[i * j] = GAME_LEVEL_ENTITY_BOX;
-                j++;
+                level->field[y][x] = GAME_LEVEL_ENTITY_BOX;
+                x++;
                 break;
             case '.':
-                level->field[i * j] = GAME_LEVEL_ENTITY_EMPTY;
-                j++;
+                level->field[y][x] = GAME_LEVEL_ENTITY_EMPTY;
+                x++;
                 break;
             case 'e':
-                level->field[i * j] = GAME_LEVEL_ENTITY_ENEMY;
-                j++;
+                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY;
+                x++;
                 break;
             case 'g':
-                level->field[i * j] = GAME_LEVEL_ENTITY_GEM;
-                j++;
+                level->field[y][x] = GAME_LEVEL_ENTITY_GEM;
+                x++;
                 break;
             case '\n':
-                i++;
-                j = 0;
+                y++;
+                x = 0;
                 break;
             default:
                 assert(false);
@@ -57,17 +64,19 @@ GameLevel* gameLevelCreate(int which) {
 }
 
 void gameLevelDestroy(GameLevel* level) {
+    for (int i = 0; i < FIELD_ROWS; i++)
+        SDL_free(level->field[i]);
     SDL_free(level->field);
     SDL_free(level);
 }
 
 void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level, const SpriteRenderer* renderer) {
-    for (int i = 0; i < gameBlocksPerYAxis(); i++) {
-        for (int j = 0; j < gameBlocksPerXAxis(); j++) {
+    for (int y = 0; y < gameBlocksPerYAxis(); y++) {
+        for (int x = 0; x < gameBlocksPerXAxis(); x++) {
             const Texture* nullable texture = nullptr;
             vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-            switch (level->field[(i + cameraOffsetY) * (j + cameraOffsetX)]) {
+            switch (level->field[y + cameraOffsetY][x + cameraOffsetX]) {
                 case GAME_LEVEL_ENTITY_EMPTY:
                     texture = nullptr;
                     break;
@@ -91,7 +100,7 @@ void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level,
             spriteRendererDraw(
                 renderer,
                 texture,
-                (vec2) {(float) (GAME_BLOCK_SIZE * j), (float) (GAME_BLOCK_SIZE * i)},
+                (vec2) {(float) (GAME_BLOCK_SIZE * x), (float) (GAME_BLOCK_SIZE * y)},
                 (vec2) {(float) GAME_BLOCK_SIZE, (float) GAME_BLOCK_SIZE},
                 0.0f,
                 0.0f,
