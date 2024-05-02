@@ -41,10 +41,10 @@ static void renderLoop(SDL_Window* window) {
                 case SDL_QUIT:
                     return;
                 case SDL_KEYDOWN:
-                    gameProcessInput(&(event.key.keysym.sym), deltaTime);
+                    gameProcessInput(&(event.key.keysym.sym));
                     break;
                 case SDL_KEYUP:
-                    gameProcessInput(nullptr, deltaTime);
+                    gameProcessInput(nullptr);
                     break;
             }
         }

@@ -91,7 +91,7 @@ const Texture* gameTexture(GameTexture texture) {
     return nullptr; // not gonna happen
 }
 
-void gameProcessInput(const SDL_Keycode* nullable keycode, int deltaTime) {
+void gameProcessInput(const SDL_Keycode* nullable keycode) {
     if (keycode == nullptr) return;
 
     const int

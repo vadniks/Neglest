@@ -12,7 +12,7 @@ bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbb................................bbbbbbbbbbbbb
 bb...................................bbbbbbbbbbbbb
-p........................1........................
+p...............g........1........................
 bb.......................2...........bbbbbbbbbbbbb
 bbbbbbb..................3...........bbbbbbbbbbbbb
 bbbbbbbbbb...............4...........bbbbbbbbbbbbb
