@@ -1,5 +1,4 @@
 
-Learning OpenGL by trying to make a 2d game, it's gonna take much time... 
+# Neglest - An OpenGL 2D roguelike game
 
-The 'Learn OpenGL - Graphics programming' book by Joey de Vries is used, 
-as well as examples from there (https://github.com/JoeyDeVries/LearnOpenGL). 
+## The project is currently in active development stage
