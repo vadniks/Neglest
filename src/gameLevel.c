@@ -20,7 +20,7 @@ GameLevel* gameLevelCreate(int which) {
 
     SDL_RWops* file = SDL_RWFromFile(levelName, "r");
     assert(file != nullptr);
-    assert(SDL_RWread(file, data, 1, dataSize) == (long) dataSize);
+    assert(SDL_RWread(file, data, 1, dataSize) == dataSize);
     SDL_RWclose(file);
 
     GameLevel* level = SDL_malloc(sizeof *level);
