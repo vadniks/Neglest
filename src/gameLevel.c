@@ -66,6 +66,7 @@ GameLevel* gameLevelCreate(int which) {
 void gameLevelDestroy(GameLevel* level) {
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++)
         SDL_free(level->field[i]);
+
     SDL_free(level->field);
     SDL_free(level);
 }
