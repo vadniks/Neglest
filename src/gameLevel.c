@@ -47,8 +47,24 @@ GameLevel* gameLevelCreate(int which) {
                 level->field[y][x] = GAME_LEVEL_ENTITY_PLAYER;
                 x++;
                 break;
-            case 'e':
-                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY;
+            case '1':
+                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_1;
+                x++;
+                break;
+            case '2':
+                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_2;
+                x++;
+                break;
+            case '3':
+                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_3;
+                x++;
+                break;
+            case '4':
+                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_4;
+                x++;
+                break;
+            case '5':
+                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_5;
                 x++;
                 break;
             case 'g':
@@ -95,8 +111,25 @@ void gameLevelDraw(int cameraOffsetX, int cameraOffsetY, const GameLevel* level,
                 case GAME_LEVEL_ENTITY_PLAYER:
                     texture = gameTexture(GAME_TEXTURE_PLAYER);
                     break;
-                case GAME_LEVEL_ENTITY_ENEMY:
+                case GAME_LEVEL_ENTITY_ENEMY_1:
                     texture = gameTexture(GAME_TEXTURE_ENEMY);
+                    SDL_memcpy(color, (vec4) {0.2f, 1.0f, 1.0f, 1.0f}, 4 * sizeof(float));
+                    break;
+                case GAME_LEVEL_ENTITY_ENEMY_2:
+                    texture = gameTexture(GAME_TEXTURE_ENEMY);
+                    SDL_memcpy(color, (vec4) {0.4f, 0.8f, 0.8f, 1.0f}, 4 * sizeof(float));
+                    break;
+                case GAME_LEVEL_ENTITY_ENEMY_3:
+                    texture = gameTexture(GAME_TEXTURE_ENEMY);
+                    SDL_memcpy(color, (vec4) {0.6f, 0.6f, 0.6f, 1.0f}, 4 * sizeof(float));
+                    break;
+                case GAME_LEVEL_ENTITY_ENEMY_4:
+                    texture = gameTexture(GAME_TEXTURE_ENEMY);
+                    SDL_memcpy(color, (vec4) {0.8f, 0.4f, 0.4f, 1.0f}, 4 * sizeof(float));
+                    break;
+                case GAME_LEVEL_ENTITY_ENEMY_5:
+                    texture = gameTexture(GAME_TEXTURE_ENEMY);
+                    SDL_memcpy(color, (vec4) {1.0f, 0.2f, 0.2f, 1.0f}, 4 * sizeof(float));
                     break;
                 case GAME_LEVEL_ENTITY_GEM:
                     texture = gameTexture(GAME_TEXTURE_GEM);

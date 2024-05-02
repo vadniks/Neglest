@@ -12,11 +12,11 @@ bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbb................................bbbbbbbbbbbbb
 bb...................................bbbbbbbbbbbbb
-p....................................bbbbbbbbbbbbb
-bb...................................bbbbbbbbbbbbb
-bbbbbbb..............................bbbbbbbbbbbbb
-bbbbbbbbbb...........................bbbbbbbbbbbbb
-bbbbbbbbbb...........................bbbbbbbbbbbbb
+p........................1...........bbbbbbbbbbbbb
+bb.......................2...........bbbbbbbbbbbbb
+bbbbbbb..................3...........bbbbbbbbbbbbb
+bbbbbbbbbb...............4...........bbbbbbbbbbbbb
+bbbbbbbbbb...............5...........bbbbbbbbbbbbb
 bbbbbbbbbb...........................bbbbbbbbbbbbb
 bbbbbbbbbb............bbb............bbbbbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb..........bbbbbbbbbbbbb
