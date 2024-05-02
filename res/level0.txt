@@ -1,4 +1,4 @@
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb..........bbbbbbb....bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
@@ -12,7 +12,7 @@ bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbb................................bbbbbbbbbbbbb
 bb...................................bbbbbbbbbbbbb
-p........................1...........bbbbbbbbbbbbb
+p........................1........................
 bb.......................2...........bbbbbbbbbbbbb
 bbbbbbb..................3...........bbbbbbbbbbbbb
 bbbbbbbbbb...............4...........bbbbbbbbbbbbb
@@ -47,4 +47,4 @@ bbbbbbbbbb..........bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb..........bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb....bb....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb..bbbbbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbb.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
