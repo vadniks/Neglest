@@ -15,13 +15,12 @@ GameLevel* gameLevelCreate(int which) {
     char levelName[levelNameMaxSize];
     assert(SDL_snprintf(levelName, levelNameMaxSize, "res/level%d.txt", which) > 0);
 
-    int dataSize = GAME_LEVEL_FIELD_ROWS * GAME_LEVEL_FIELD_COLUMNS + GAME_LEVEL_FIELD_ROWS - 1; // + '\n's
+    const int dataSize = GAME_LEVEL_FIELD_ROWS * GAME_LEVEL_FIELD_COLUMNS + GAME_LEVEL_FIELD_ROWS - 1;
     char data[dataSize];
 
     SDL_RWops* file = SDL_RWFromFile(levelName, "r");
     assert(file != nullptr);
-    dataSize = (int) SDL_RWread(file, data, 1, dataSize);
-    assert(dataSize > 0);
+    assert(SDL_RWread(file, data, 1, dataSize) == (long) dataSize);
     SDL_RWclose(file);
 
     GameLevel* level = SDL_malloc(sizeof *level);
