@@ -43,6 +43,10 @@ GameLevel* gameLevelCreate(int which) {
                 level->field[y][x] = GAME_LEVEL_ENTITY_EMPTY;
                 x++;
                 break;
+            case 'p':
+                level->field[y][x] = GAME_LEVEL_ENTITY_PLAYER;
+                x++;
+                break;
             case 'e':
                 level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY;
                 x++;
