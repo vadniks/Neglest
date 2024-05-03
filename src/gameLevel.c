@@ -183,28 +183,31 @@ void gameLevelUpdate(GameLevel* level) {
             }
 
             if (!enemy) continue;
-            const unsigned rnd = rand() % 4;
-
-            if (1 >= rnd) {
-                if (y > 0 && level->field[y - 1][x] == ENTITY_EMPTY) {
-                    level->field[y - 1][x] = level->field[y][x];
-                    level->field[y][x] = ENTITY_EMPTY;
-                }
-            } else if (2 >= rnd) {
-                if (x > 0 && level->field[y][x - 1] == ENTITY_EMPTY) {
-                    level->field[y][x - 1] = level->field[y][x];
-                    level->field[y][x] = ENTITY_EMPTY;
-                }
-            } else if (3 >= rnd) {
-                if (y < GAME_LEVEL_FIELD_ROWS - 1 && level->field[y + 1][x] == ENTITY_EMPTY) {
-                    level->field[y + 1][x] = level->field[y][x];
-                    level->field[y][x] = ENTITY_EMPTY;
-                }
-            } else {
-                if (y < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
-                    level->field[y][x + 1] = level->field[y][x];
-                    level->field[y][x] = ENTITY_EMPTY;
-                }
+            switch (rand() / (RAND_MAX / 4)) {
+                case 0: // up
+                    if (y > 0 && level->field[y - 1][x] == ENTITY_EMPTY) {
+                        level->field[y - 1][x] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
+                case 1: // left
+                    if (x > 0 && level->field[y][x - 1] == ENTITY_EMPTY) {
+                        level->field[y][x - 1] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
+                case 2: // down
+                    if (y < GAME_LEVEL_FIELD_ROWS - 1 && level->field[y + 1][x] == ENTITY_EMPTY) {
+                        level->field[y + 1][x] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
+                case 3: // right
+                    if (y < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
+                        level->field[y][x + 1] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
             }
         }
     }
