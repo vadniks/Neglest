@@ -36,6 +36,6 @@ int gameBlocksPerXAxis(void);
 int gameBlocksPerYAxis(void);
 const Texture* gameTexture(GameTexture texture);
 void gameProcessInput(const SDL_Keycode* nullable keycode);
-void gameUpdate(int deltaTime);
+void gameUpdate(void);
 void gameRender(void);
 void gameClean(void);

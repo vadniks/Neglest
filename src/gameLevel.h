@@ -31,5 +31,6 @@ int gameLevelPlayerPositionX(const GameLevel* level);
 int gameLevelPlayerPositionY(const GameLevel* level);
 void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY);
 int gameLevelGems(const GameLevel* level);
+void gameLevelUpdate(GameLevel* level);
 void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY, const SpriteRenderer* renderer);
 bool gameLevelCompleted(const GameLevel* level);

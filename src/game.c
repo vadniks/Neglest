@@ -73,13 +73,9 @@ void gameInit(void) {
     gGameLevel = gameLevelCreate(0);
 }
 
-int gameBlocksPerXAxis(void) {
-    return gBlocksPerXAxis;
-}
+int gameBlocksPerXAxis(void) { return gBlocksPerXAxis; }
 
-int gameBlocksPerYAxis(void) {
-    return gBlocksPerYAxis;
-}
+int gameBlocksPerYAxis(void) { return gBlocksPerYAxis; }
 
 const Texture* gameTexture(GameTexture texture) {
     switch (texture) {
@@ -126,9 +122,7 @@ void gameProcessInput(const SDL_Keycode* nullable keycode) {
     }
 }
 
-void gameUpdate(int deltaTime) {
-
-}
+void gameUpdate(void) { gameLevelUpdate(gGameLevel); }
 
 static void drawText(vec2 position, const char* text, const vec4 color) {
     SDL_Surface* xSurface = TTF_RenderUTF8_Blended(gFont, text, (SDL_Color) {255, 255, 255, 255});

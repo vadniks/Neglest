@@ -20,6 +20,7 @@
 #include "game.h"
 #include <assert.h>
 #include <SDL2/SDL.h>
+#include <stdlib.h>
 
 typedef enum {
     ENTITY_EMPTY,
@@ -37,6 +38,7 @@ struct GameLevel {
     Entity** field;
     int playerPositionX, playerPositionY;
     int gems;
+    int ticks;
 };
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
@@ -54,8 +56,11 @@ GameLevel* gameLevelCreate(int which) {
     assert(SDL_RWread(file, data, 1, dataSize) == dataSize);
     SDL_RWclose(file);
 
+    srand(SDL_GetTicks());
+
     GameLevel* level = SDL_malloc(sizeof *level);
     level->gems = 0;
+    level->ticks = 0;
 
     level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(Entity*));
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++) {
@@ -123,13 +128,9 @@ void gameLevelDestroy(GameLevel* level) {
     SDL_free(level);
 }
 
-int gameLevelPlayerPositionX(const GameLevel* level) {
-    return level->playerPositionX;
-}
+int gameLevelPlayerPositionX(const GameLevel* level) { return level->playerPositionX; }
 
-int gameLevelPlayerPositionY(const GameLevel* level) {
-    return level->playerPositionY;
-}
+int gameLevelPlayerPositionY(const GameLevel* level) { return level->playerPositionY; }
 
 void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
     const Entity entity = level->field[newPositionY][newPositionX];
@@ -148,8 +149,67 @@ void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY
     level->playerPositionY = newPositionY;
 }
 
-int gameLevelGems(const GameLevel* level) {
-    return level->gems;
+int gameLevelGems(const GameLevel* level) { return level->gems; }
+
+void gameLevelUpdate(GameLevel* level) {
+    level->ticks++;
+    if (level->ticks < 100) return;
+    level->ticks = 0;
+
+    const int
+        blocksPerYAxis = gameBlocksPerYAxis(),
+        blocksPerXAxis = gameBlocksPerXAxis();
+
+    for (int y = 0; y < blocksPerYAxis; y++) {
+        for (int x = 0; x < blocksPerXAxis; x++) {
+            bool enemy;
+
+            switch (level->field[y][x]) {
+                case ENTITY_ENEMY_1:
+                    [[gnu::fallthrough]];
+                case ENTITY_ENEMY_2:
+                    [[gnu::fallthrough]];
+                case ENTITY_ENEMY_3:
+                    [[gnu::fallthrough]];
+                case ENTITY_ENEMY_4:
+                    [[gnu::fallthrough]];
+                case ENTITY_ENEMY_5:
+                    enemy = true;
+                    break;
+                default:
+                    enemy = false;
+                    break;
+            }
+
+            if (!enemy) continue;
+            switch (rand() / (RAND_MAX / 4)) {
+                case 0: // up
+                    if (y > 0 && level->field[y - 1][x] == ENTITY_EMPTY) {
+                        level->field[y - 1][x] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
+                case 1: // left
+                    if (x > 0 && level->field[y][x - 1] == ENTITY_EMPTY) {
+                        level->field[y][x - 1] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
+                case 2: // down
+                    if (y < GAME_LEVEL_FIELD_ROWS - 1 && level->field[y + 1][x] == ENTITY_EMPTY) {
+                        level->field[y + 1][x] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
+                case 3: // right
+                    if (y < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
+                        level->field[y][x + 1] = level->field[y][x];
+                        level->field[y][x] = ENTITY_EMPTY;
+                    }
+                    break;
+            }
+        }
+    }
 }
 
 void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY, const SpriteRenderer* renderer) {
@@ -214,6 +274,4 @@ void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY,
     }
 }
 
-bool gameLevelCompleted(const GameLevel* level) {
-    return false;
-}
+bool gameLevelCompleted(const GameLevel* level) { return false; }

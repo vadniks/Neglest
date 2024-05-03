@@ -24,15 +24,10 @@
 #include <cglm/cam.h>
 
 static void renderLoop(SDL_Window* window) {
-    int deltaTime, lastFrame = 0;
     int width, height;
     SDL_Event event;
 
     while (true) {
-        const int currentFrame = (int) SDL_GetTicks();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-
         SDL_GL_GetDrawableSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
@@ -49,7 +44,7 @@ static void renderLoop(SDL_Window* window) {
             }
         }
 
-        gameUpdate(deltaTime);
+        gameUpdate();
 
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
