@@ -23,6 +23,7 @@
 #include <cglm/cam.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 const int GAME_BLOCK_SIZE = 50, GAME_WINDOW_WIDTH = GAME_BLOCK_SIZE * 32, GAME_WINDOW_HEIGHT = GAME_BLOCK_SIZE * 18;
 //         columns              rows
@@ -35,6 +36,7 @@ static Texture* gEnemyTexture = nullptr;
 static Texture* gGemTexture = nullptr;
 static GameLevel* gGameLevel = nullptr;
 static int gCameraOffsetX = 0, gCameraOffsetY = 0;
+static TTF_Font* gFont = nullptr;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -65,6 +67,8 @@ void gameInit(void) {
     gPlayerTexture = loadTextureAndConvertFormat("res/player_a.png");
     gEnemyTexture = loadTextureAndConvertFormat("res/enemy_a.png");
     gGemTexture = loadTextureAndConvertFormat("res/gem.png");
+
+    gFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
 
     gGameLevel = gameLevelCreate(0);
 }
@@ -126,12 +130,30 @@ void gameUpdate(int deltaTime) {
 
 }
 
+static void drawText(vec2 position, const char* text, const vec4 color) {
+    SDL_Surface* xSurface = TTF_RenderUTF8_Blended(gFont, text, (SDL_Color) {255, 255, 255, 255});
+    SDL_Surface* surface = SDL_ConvertSurfaceFormat(xSurface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(xSurface);
+
+    Texture* texture = textureCreate(surface->w, surface->h, surface->pixels);
+    spriteRendererDraw(gSpriteRenderer, texture, position, (vec2) {(float) surface->w, (float) surface->h}, 0.0f, 0.0f, 0.0f, color);
+
+    SDL_FreeSurface(surface);
+    textureDestroy(texture);
+}
+
 void gameRender(void) {
     gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
+
+    char text[16];
+    SDL_itoa(gameLevelGems(gGameLevel), text, 10);
+    drawText((vec2) {100.0f, 100.0f}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
 }
 
 void gameClean(void) {
     gameLevelDestroy(gGameLevel);
+
+    TTF_CloseFont(gFont);
 
     compoundShaderDestroy(gSpriteShader);
 

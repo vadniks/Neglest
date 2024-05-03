@@ -24,6 +24,7 @@
 struct GameLevel {
     GameLevelEntity** field;
     int playerPositionX, playerPositionY;
+    int gems;
 };
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
@@ -42,6 +43,7 @@ GameLevel* gameLevelCreate(int which) {
     SDL_RWclose(file);
 
     GameLevel* level = SDL_malloc(sizeof *level);
+    level->gems = 0;
 
     level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(GameLevelEntity*));
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++) {
@@ -118,15 +120,24 @@ int gameLevelPlayerPositionY(const GameLevel* level) {
 }
 
 void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
-    if (level->field[newPositionY][newPositionX] != GAME_LEVEL_ENTITY_EMPTY) return;
+    const GameLevelEntity entity = level->field[newPositionY][newPositionX];
+    if (entity != GAME_LEVEL_ENTITY_EMPTY && entity != GAME_LEVEL_ENTITY_GEM) return;
+
     if (newPositionX < 0 || newPositionX >= GAME_LEVEL_FIELD_COLUMNS) return;
     if (newPositionY < 0 || newPositionY >= GAME_LEVEL_FIELD_ROWS) return;
+
+    if (entity == GAME_LEVEL_ENTITY_GEM)
+        level->gems++;
 
     level->field[newPositionY][newPositionX] = GAME_LEVEL_ENTITY_PLAYER;
     level->field[level->playerPositionY][level->playerPositionX] = GAME_LEVEL_ENTITY_EMPTY;
 
     level->playerPositionX = newPositionX;
     level->playerPositionY = newPositionY;
+}
+
+int gameLevelGems(const GameLevel* level) {
+    return level->gems;
 }
 
 void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY, const SpriteRenderer* renderer) {
