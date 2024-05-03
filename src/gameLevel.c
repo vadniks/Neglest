@@ -38,8 +38,9 @@ typedef enum {
 struct GameLevel {
     Entity** field;
     int playerPositionX, playerPositionY;
-    int gems;
+    int collectedGems;
     int ticks;
+    int totalGems;
 };
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
@@ -58,11 +59,11 @@ GameLevel* gameLevelCreate(int which) {
     SDL_RWclose(file);
 
     int entropy;
-    getentropy(&entropy, sizeof(entropy));
+    assert(getentropy(&entropy, sizeof(entropy)) == 0);
     srand(entropy);
 
     GameLevel* level = SDL_malloc(sizeof *level);
-    level->gems = 0;
+    level->collectedGems = 0;
     level->ticks = 0;
 
     level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(Entity*));
@@ -143,7 +144,7 @@ bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY
     if (entity != ENTITY_EMPTY && entity != ENTITY_GEM) return false;
 
     if (entity == ENTITY_GEM)
-        level->gems++;
+        level->collectedGems++;
 
     level->field[newPositionY][newPositionX] = ENTITY_PLAYER;
     level->field[level->playerPositionY][level->playerPositionX] = ENTITY_EMPTY;
@@ -154,7 +155,7 @@ bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY
     return true;
 }
 
-int gameLevelGems(const GameLevel* level) { return level->gems; }
+int gameLevelGems(const GameLevel* level) { return level->collectedGems; }
 
 void gameLevelUpdate(GameLevel* level) {
     level->ticks++;
