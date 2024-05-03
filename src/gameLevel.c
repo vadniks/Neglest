@@ -19,8 +19,9 @@
 #include "gameLevel.h"
 #include "game.h"
 #include <assert.h>
-#include <SDL2/SDL.h>
 #include <stdlib.h>
+#include <time.h>
+#include <SDL2/SDL.h>
 
 typedef enum {
     ENTITY_EMPTY,
@@ -56,7 +57,7 @@ GameLevel* gameLevelCreate(int which) {
     assert(SDL_RWread(file, data, 1, dataSize) == dataSize);
     SDL_RWclose(file);
 
-    srand(SDL_GetTicks());
+    srand(time(nullptr));
 
     GameLevel* level = SDL_malloc(sizeof *level);
     level->gems = 0;
