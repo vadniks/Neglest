@@ -19,6 +19,7 @@
 #include "game.h"
 #include "compoundShader.h"
 #include "spriteRenderer.h"
+#include "shapeRenderer.h"
 #include "gameLevel.h"
 #include <cglm/cam.h>
 #include <SDL2/SDL.h>
@@ -30,6 +31,8 @@ const int GAME_BLOCK_SIZE = 50, GAME_WINDOW_WIDTH = GAME_BLOCK_SIZE * 32, GAME_W
 static int gBlocksPerXAxis = 0, gBlocksPerYAxis = 0;
 static CompoundShader* gSpriteShader = nullptr;
 static SpriteRenderer* gSpriteRenderer = nullptr;
+static CompoundShader* gShapeShader = nullptr;
+static ShapeRenderer* gShapeRenderer = nullptr;
 static Texture* gBoxTexture = nullptr;
 static Texture* gPlayerTexture = nullptr;
 static Texture* gEnemyTexture = nullptr;
@@ -61,6 +64,12 @@ void gameInit(void) {
     compoundShaderUse(gSpriteShader);
     compoundShaderSetMat4(gSpriteShader, "projection", projection);
     compoundShaderSetInt(gSpriteShader, "sprite", 0);
+
+    gShapeShader = compoundShaderCreate("shaders/shapeVertex.glsl", "shaders/shapeFragment.glsl");
+    compoundShaderUse(gShapeShader);
+    compoundShaderSetMat4(gShapeShader, "projection", projection);
+
+    gShapeRenderer = shapeRendererCreate(gShapeShader);
 
     gSpriteRenderer = spriteRendererCreate(gSpriteShader);
     gBoxTexture = loadTextureAndConvertFormat("res/box.png");
@@ -145,6 +154,15 @@ static void drawGemsCounter(void) {
 
 void gameRender(void) {
     gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
+
+    shapeRendererDrawLine(
+        gShapeRenderer,
+        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4), (float) GAME_BLOCK_SIZE},
+        (vec2) {(float) GAME_WINDOW_HEIGHT * 2.0f, 5.0f},
+        90.0f,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+
     drawGemsCounter();
 }
 
@@ -154,8 +172,10 @@ void gameClean(void) {
     TTF_CloseFont(gFont);
 
     compoundShaderDestroy(gSpriteShader);
+    compoundShaderDestroy(gShapeShader);
 
     spriteRendererDestroy(gSpriteRenderer);
+    shapeRendererDestroy(gShapeRenderer);
 
     textureDestroy(gBoxTexture);
     textureDestroy(gPlayerTexture);
