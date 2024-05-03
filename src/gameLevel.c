@@ -21,8 +21,20 @@
 #include <assert.h>
 #include <SDL2/SDL.h>
 
+typedef enum {
+    ENTITY_EMPTY,
+    ENTITY_BOX,
+    ENTITY_PLAYER,
+    ENTITY_ENEMY_1,
+    ENTITY_ENEMY_2,
+    ENTITY_ENEMY_3,
+    ENTITY_ENEMY_4,
+    ENTITY_ENEMY_5,
+    ENTITY_GEM
+} Entity;
+
 struct GameLevel {
-    GameLevelEntity** field;
+    Entity** field;
     int playerPositionX, playerPositionY;
     int gems;
 };
@@ -45,51 +57,51 @@ GameLevel* gameLevelCreate(int which) {
     GameLevel* level = SDL_malloc(sizeof *level);
     level->gems = 0;
 
-    level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(GameLevelEntity*));
+    level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(Entity*));
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++) {
-        level->field[i] = SDL_malloc(GAME_LEVEL_FIELD_COLUMNS * sizeof(GameLevelEntity));
+        level->field[i] = SDL_malloc(GAME_LEVEL_FIELD_COLUMNS * sizeof(Entity));
         for (int j = 0; j < GAME_LEVEL_FIELD_COLUMNS; j++)
-            level->field[i][j] = GAME_LEVEL_ENTITY_EMPTY;
+            level->field[i][j] = ENTITY_EMPTY;
     }
 
     for (int xChar = 0, y = 0, x = 0; xChar < dataSize; xChar++) {
         switch (data[xChar]) {
             case 'b':
-                level->field[y][x] = GAME_LEVEL_ENTITY_BOX;
+                level->field[y][x] = ENTITY_BOX;
                 x++;
                 break;
             case '.':
-                level->field[y][x] = GAME_LEVEL_ENTITY_EMPTY;
+                level->field[y][x] = ENTITY_EMPTY;
                 x++;
                 break;
             case 'p':
-                level->field[y][x] = GAME_LEVEL_ENTITY_PLAYER;
+                level->field[y][x] = ENTITY_PLAYER;
                 level->playerPositionX = x;
                 level->playerPositionY = y;
                 x++;
                 break;
             case '1':
-                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_1;
+                level->field[y][x] = ENTITY_ENEMY_1;
                 x++;
                 break;
             case '2':
-                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_2;
+                level->field[y][x] = ENTITY_ENEMY_2;
                 x++;
                 break;
             case '3':
-                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_3;
+                level->field[y][x] = ENTITY_ENEMY_3;
                 x++;
                 break;
             case '4':
-                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_4;
+                level->field[y][x] = ENTITY_ENEMY_4;
                 x++;
                 break;
             case '5':
-                level->field[y][x] = GAME_LEVEL_ENTITY_ENEMY_5;
+                level->field[y][x] = ENTITY_ENEMY_5;
                 x++;
                 break;
             case 'g':
-                level->field[y][x] = GAME_LEVEL_ENTITY_GEM;
+                level->field[y][x] = ENTITY_GEM;
                 x++;
                 break;
             case '\n':
@@ -120,17 +132,17 @@ int gameLevelPlayerPositionY(const GameLevel* level) {
 }
 
 void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
-    const GameLevelEntity entity = level->field[newPositionY][newPositionX];
-    if (entity != GAME_LEVEL_ENTITY_EMPTY && entity != GAME_LEVEL_ENTITY_GEM) return;
+    const Entity entity = level->field[newPositionY][newPositionX];
+    if (entity != ENTITY_EMPTY && entity != ENTITY_GEM) return;
 
     if (newPositionX < 0 || newPositionX >= GAME_LEVEL_FIELD_COLUMNS) return;
     if (newPositionY < 0 || newPositionY >= GAME_LEVEL_FIELD_ROWS) return;
 
-    if (entity == GAME_LEVEL_ENTITY_GEM)
+    if (entity == ENTITY_GEM)
         level->gems++;
 
-    level->field[newPositionY][newPositionX] = GAME_LEVEL_ENTITY_PLAYER;
-    level->field[level->playerPositionY][level->playerPositionX] = GAME_LEVEL_ENTITY_EMPTY;
+    level->field[newPositionY][newPositionX] = ENTITY_PLAYER;
+    level->field[level->playerPositionY][level->playerPositionX] = ENTITY_EMPTY;
 
     level->playerPositionX = newPositionX;
     level->playerPositionY = newPositionY;
@@ -151,37 +163,37 @@ void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY,
             vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
             switch (level->field[y + cameraOffsetY][x + cameraOffsetX]) {
-                case GAME_LEVEL_ENTITY_EMPTY:
+                case ENTITY_EMPTY:
                     texture = nullptr;
                     break;
-                case GAME_LEVEL_ENTITY_BOX:
+                case ENTITY_BOX:
                     texture = gameTexture(GAME_TEXTURE_BOX);
                     SDL_memcpy(color, (vec4) {0.3f, 0.5f, 0.7f, 1.0f}, 4 * sizeof(float));
                     break;
-                case GAME_LEVEL_ENTITY_PLAYER:
+                case ENTITY_PLAYER:
                     texture = gameTexture(GAME_TEXTURE_PLAYER);
                     break;
-                case GAME_LEVEL_ENTITY_ENEMY_1:
+                case ENTITY_ENEMY_1:
                     texture = gameTexture(GAME_TEXTURE_ENEMY);
                     SDL_memcpy(color, (vec4) {0.2f, 1.0f, 1.0f, 1.0f}, 4 * sizeof(float));
                     break;
-                case GAME_LEVEL_ENTITY_ENEMY_2:
+                case ENTITY_ENEMY_2:
                     texture = gameTexture(GAME_TEXTURE_ENEMY);
                     SDL_memcpy(color, (vec4) {0.4f, 0.8f, 0.8f, 1.0f}, 4 * sizeof(float));
                     break;
-                case GAME_LEVEL_ENTITY_ENEMY_3:
+                case ENTITY_ENEMY_3:
                     texture = gameTexture(GAME_TEXTURE_ENEMY);
                     SDL_memcpy(color, (vec4) {0.6f, 0.6f, 0.6f, 1.0f}, 4 * sizeof(float));
                     break;
-                case GAME_LEVEL_ENTITY_ENEMY_4:
+                case ENTITY_ENEMY_4:
                     texture = gameTexture(GAME_TEXTURE_ENEMY);
                     SDL_memcpy(color, (vec4) {0.8f, 0.4f, 0.4f, 1.0f}, 4 * sizeof(float));
                     break;
-                case GAME_LEVEL_ENTITY_ENEMY_5:
+                case ENTITY_ENEMY_5:
                     texture = gameTexture(GAME_TEXTURE_ENEMY);
                     SDL_memcpy(color, (vec4) {1.0f, 0.2f, 0.2f, 1.0f}, 4 * sizeof(float));
                     break;
-                case GAME_LEVEL_ENTITY_GEM:
+                case ENTITY_GEM:
                     texture = gameTexture(GAME_TEXTURE_GEM);
                     break;
             }
