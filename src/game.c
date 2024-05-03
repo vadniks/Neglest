@@ -159,9 +159,24 @@ static void drawTotalGems(void) {
     drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
 }
 
+static void drawFinish(void) {
+    const char* text = "Finish!";
+
+    int w, h;
+    TTF_SizeUTF8(gFont, text, &w, &h);
+
+    drawText(
+        (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f - (float) h / 2.0f},
+        text,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+}
+
 void gameRender(void) {
-    if (gGameLevel == nullptr)
+    if (gGameLevel == nullptr) {
+        drawFinish();
         return;
+    }
 
     gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
 
