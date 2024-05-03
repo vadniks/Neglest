@@ -51,7 +51,7 @@ static Texture* loadTextureAndConvertFormat(const char* path) {
 }
 
 void gameInit(void) {
-    gBlocksPerXAxis = GAME_WINDOW_WIDTH / GAME_BLOCK_SIZE;
+    gBlocksPerXAxis = (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4) / GAME_BLOCK_SIZE;
     gBlocksPerYAxis = GAME_WINDOW_HEIGHT / GAME_BLOCK_SIZE;
 
     mat4 projection;
@@ -132,12 +132,20 @@ static void drawText(vec2 position, const char* text, const vec4 color) {
     textureDestroy(texture);
 }
 
-void gameRender(void) {
-    gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
-
+static void drawGemsCounter(void) {
     char text[16] = "Gems: ";
     SDL_itoa(gameLevelGems(gGameLevel), text + 6, 10);
-    drawText((vec2) {100.0f, 100.0f}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
+
+    int w, h;
+    TTF_SizeUTF8(gFont, text, &w, &h);
+
+    drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
+
+}
+
+void gameRender(void) {
+    gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
+    drawGemsCounter();
 }
 
 void gameClean(void) {
