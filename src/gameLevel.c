@@ -206,7 +206,7 @@ void gameLevelUpdate(GameLevel* level) {
                     }
                     break;
                 case 3: // right
-                    if (y < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
+                    if (x < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
                         level->field[y][x + 1] = level->field[y][x];
                         level->field[y][x] = ENTITY_EMPTY;
                     }
