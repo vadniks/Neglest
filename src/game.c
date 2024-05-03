@@ -41,7 +41,8 @@ static Texture* gGemTexture = nullptr;
 static int gCurrentLevel = 0;
 static GameLevel* nullable gGameLevel = nullptr;
 static int gCameraOffsetX = 0, gCameraOffsetY = 0;
-static TTF_Font* gFont = nullptr;
+static TTF_Font* gSmallFont = nullptr;
+static TTF_Font* gBigFont = nullptr;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -79,7 +80,8 @@ void gameInit(void) {
     gEnemyTexture = loadTextureAndConvertFormat("res/enemy_a.png");
     gGemTexture = loadTextureAndConvertFormat("res/gem.png");
 
-    gFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
+    gSmallFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
+    gBigFont = TTF_OpenFont("res/Roboto-Regular.ttf", 40);
 
     gGameLevel = gameLevelCreate(gCurrentLevel);
 }
@@ -135,8 +137,8 @@ void gameUpdate(void) {
     gameLevelUpdate(gGameLevel);
 }
 
-static void drawText(const vec2 position, const char* text, const vec4 color) {
-    SDL_Surface* xSurface = TTF_RenderUTF8_Blended(gFont, text, (SDL_Color) {255, 255, 255, 255});
+static void drawText(TTF_Font* font, const vec2 position, const char* text, const vec4 color) {
+    SDL_Surface* xSurface = TTF_RenderUTF8_Blended(font, text, (SDL_Color) {255, 255, 255, 255});
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(xSurface, SDL_PIXELFORMAT_RGBA32, 0);
     SDL_FreeSurface(xSurface);
 
@@ -150,22 +152,33 @@ static void drawText(const vec2 position, const char* text, const vec4 color) {
 static void drawCollectedGems(void) {
     char text[16] = "Gems: ";
     SDL_itoa(gameLevelCollectedGems(gGameLevel), text + 6, 10);
-    drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
+    drawText(
+        gSmallFont,
+        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE},
+        text,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
 }
 
 static void drawTotalGems(void) {
     char text[16] = "Total: ";
     SDL_itoa(gameLevelTotalGems(gGameLevel), text + 6, 10);
-    drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
+    drawText(
+        gSmallFont,
+        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f},
+        text,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
 }
 
 static void drawFinish(void) {
     const char* text = "Finish!";
 
     int w, h;
-    TTF_SizeUTF8(gFont, text, &w, &h);
+    TTF_SizeUTF8(gSmallFont, text, &w, &h);
 
     drawText(
+        gBigFont,
         (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f - (float) h / 2.0f},
         text,
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
@@ -208,7 +221,8 @@ void gameClean(void) {
     if (gGameLevel != nullptr)
         gameLevelDestroy(gGameLevel);
 
-    TTF_CloseFont(gFont);
+    TTF_CloseFont(gSmallFont);
+    TTF_CloseFont(gBigFont);
 
     compoundShaderDestroy(gSpriteShader);
     compoundShaderDestroy(gShapeShader);
