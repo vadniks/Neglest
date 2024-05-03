@@ -127,9 +127,7 @@ GameLevel* gameLevelCreate(int which) {
     return level;
 }
 
-void gameLevelDestroy(GameLevel* nullable level) {
-    if (level == nullptr) return;
-
+void gameLevelDestroy(GameLevel* level) {
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++)
         SDL_free(level->field[i]);
     SDL_free(level->field);

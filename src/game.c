@@ -39,7 +39,7 @@ static Texture* gPlayerTexture = nullptr;
 static Texture* gEnemyTexture = nullptr;
 static Texture* gGemTexture = nullptr;
 static int gCurrentLevel = 0;
-static GameLevel* gGameLevel = nullptr;
+static GameLevel* nullable gGameLevel = nullptr;
 static int gCameraOffsetX = 0, gCameraOffsetY = 0;
 static TTF_Font* gFont = nullptr;
 
@@ -129,7 +129,11 @@ void gameProcessInput(const SDL_Keycode* nullable keycode) {
     }
 }
 
-void gameUpdate(void) { gameLevelUpdate(gGameLevel); }
+void gameUpdate(void) {
+    if (gGameLevel == nullptr)
+        return;
+    gameLevelUpdate(gGameLevel);
+}
 
 static void drawText(vec2 position, const char* text, const vec4 color) {
     SDL_Surface* xSurface = TTF_RenderUTF8_Blended(gFont, text, (SDL_Color) {255, 255, 255, 255});
@@ -156,6 +160,9 @@ static void drawTotalGems(void) {
 }
 
 void gameRender(void) {
+    if (gGameLevel == nullptr)
+        return;
+
     gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
 
     shapeRendererDrawLine(
@@ -179,11 +186,12 @@ void gameChangeLevel(void) {
     if (++gCurrentLevel < LEVELS)
         gGameLevel = gameLevelCreate(gCurrentLevel);
     else
-        SDL_Log("finish");
+        gGameLevel = nullptr;
 }
 
 void gameClean(void) {
-    gameLevelDestroy(gGameLevel);
+    if (gGameLevel != nullptr)
+        gameLevelDestroy(gGameLevel);
 
     TTF_CloseFont(gFont);
 
