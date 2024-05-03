@@ -25,8 +25,8 @@ typedef struct GameLevel GameLevel;
 
 extern const int GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS;
 
-GameLevel* gameLevelCreate(int which);
-void gameLevelDestroy(GameLevel* level);
+GameLevel* nullable gameLevelCreate(int which);
+void gameLevelDestroy(GameLevel* nullable level);
 int gameLevelPlayerPositionX(const GameLevel* level);
 int gameLevelPlayerPositionY(const GameLevel* level);
 bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY);

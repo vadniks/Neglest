@@ -45,7 +45,7 @@ struct GameLevel {
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
 
-GameLevel* gameLevelCreate(int which) {
+GameLevel* nullable gameLevelCreate(int which) {
     const int levelNameMaxSize = 64;
     char levelName[levelNameMaxSize];
     assert(SDL_snprintf(levelName, levelNameMaxSize, "res/level%d.txt", which) > 0);
@@ -54,7 +54,7 @@ GameLevel* gameLevelCreate(int which) {
     char data[dataSize];
 
     SDL_RWops* file = SDL_RWFromFile(levelName, "r");
-    assert(file != nullptr);
+    if (file == nullptr) return nullptr;
     assert(SDL_RWread(file, data, 1, dataSize) == dataSize);
     SDL_RWclose(file);
 
@@ -126,7 +126,9 @@ GameLevel* gameLevelCreate(int which) {
     return level;
 }
 
-void gameLevelDestroy(GameLevel* level) {
+void gameLevelDestroy(GameLevel* nullable level) {
+    if (level == nullptr) return;
+
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++)
         SDL_free(level->field[i]);
     SDL_free(level->field);

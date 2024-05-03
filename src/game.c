@@ -37,6 +37,7 @@ static Texture* gBoxTexture = nullptr;
 static Texture* gPlayerTexture = nullptr;
 static Texture* gEnemyTexture = nullptr;
 static Texture* gGemTexture = nullptr;
+static int gCurrentLevel = 0;
 static GameLevel* gGameLevel = nullptr;
 static int gCameraOffsetX = 0, gCameraOffsetY = 0;
 static TTF_Font* gFont = nullptr;
@@ -79,7 +80,7 @@ void gameInit(void) {
 
     gFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
 
-    gGameLevel = gameLevelCreate(0);
+    gGameLevel = gameLevelCreate(gCurrentLevel);
 }
 
 int gameBlocksPerXAxis(void) { return gBlocksPerXAxis; }
@@ -167,7 +168,13 @@ void gameRender(void) {
 }
 
 void gameChangeLevel(void) {
-    SDL_Log("change level");
+    gameLevelDestroy(gGameLevel);
+
+    gCameraOffsetX = 0;
+    gCameraOffsetY = 0;
+
+    if ((gGameLevel = gameLevelCreate(++gCurrentLevel)) == nullptr)
+        SDL_Log("finish");
 }
 
 void gameClean(void) {
