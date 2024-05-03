@@ -135,22 +135,13 @@ void gameUpdate(void) {
     gameLevelUpdate(gGameLevel);
 }
 
-static void drawText(const vec2 position, const char* text, const vec2 size, const vec4 color) {
+static void drawText(const vec2 position, const char* text, const vec4 color) {
     SDL_Surface* xSurface = TTF_RenderUTF8_Blended(gFont, text, (SDL_Color) {255, 255, 255, 255});
     SDL_Surface* surface = SDL_ConvertSurfaceFormat(xSurface, SDL_PIXELFORMAT_RGBA32, 0);
     SDL_FreeSurface(xSurface);
 
     Texture* texture = textureCreate(surface->w, surface->h, surface->pixels);
-    spriteRendererDraw(
-        gSpriteRenderer,
-        texture,
-        position,
-        (vec2) {size[0] != 0 ? size[0] : (float) surface->w, size[1] != 0 ? size[1] : (float) surface->h},
-        0.0f,
-        0.0f,
-        0.0f,
-        color
-    );
+    spriteRendererDraw(gSpriteRenderer, texture, position, (vec2) {(float) surface->w, (float) surface->h}, 0.0f, 0.0f, 0.0f, color);
 
     SDL_FreeSurface(surface);
     textureDestroy(texture);
@@ -159,23 +150,13 @@ static void drawText(const vec2 position, const char* text, const vec2 size, con
 static void drawCollectedGems(void) {
     char text[16] = "Gems: ";
     SDL_itoa(gameLevelCollectedGems(gGameLevel), text + 6, 10);
-    drawText(
-        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE},
-        text,
-        (vec2) {0.0f, 0.0f},
-        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
-    );
+    drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
 }
 
 static void drawTotalGems(void) {
     char text[16] = "Total: ";
     SDL_itoa(gameLevelTotalGems(gGameLevel), text + 6, 10);
-    drawText(
-        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f},
-        text,
-        (vec2) {0.0f, 0.0f},
-        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
-    );
+    drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
 }
 
 static void drawFinish(void) {
@@ -187,7 +168,6 @@ static void drawFinish(void) {
     drawText(
         (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f - (float) h / 2.0f},
         text,
-        (vec2) {(float) w * 2.0f, (float) h * 2.0f},
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
 }
