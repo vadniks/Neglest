@@ -142,15 +142,16 @@ static void drawText(vec2 position, const char* text, const vec4 color) {
     textureDestroy(texture);
 }
 
-static void drawGemsCounter(void) {
+static void drawCollectedGems(void) {
     char text[16] = "Gems: ";
     SDL_itoa(gameLevelCollectedGems(gGameLevel), text + 6, 10);
-
-    int w, h;
-    TTF_SizeUTF8(gFont, text, &w, &h);
-
     drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
+}
 
+static void drawTotalGems(void) {
+    char text[16] = "Total: ";
+    SDL_itoa(gameLevelTotalGems(gGameLevel), text + 6, 10);
+    drawText((vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
 }
 
 void gameRender(void) {
@@ -164,7 +165,8 @@ void gameRender(void) {
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
 
-    drawGemsCounter();
+    drawCollectedGems();
+    drawTotalGems();
 }
 
 void gameChangeLevel(void) {
@@ -173,8 +175,7 @@ void gameChangeLevel(void) {
     gCameraOffsetX = 0;
     gCameraOffsetY = 0;
 
-    if ((gGameLevel = gameLevelCreate(++gCurrentLevel)) == nullptr)
-        SDL_Log("finish");
+    gGameLevel = gameLevelCreate(++gCurrentLevel);
 }
 
 void gameClean(void) {
