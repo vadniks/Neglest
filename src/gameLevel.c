@@ -65,6 +65,7 @@ GameLevel* gameLevelCreate(int which) {
     GameLevel* level = SDL_malloc(sizeof *level);
     level->collectedGems = 0;
     level->ticks = 0;
+    level->totalGems = 0;
 
     level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(Entity*));
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++) {

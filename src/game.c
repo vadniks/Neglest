@@ -27,6 +27,7 @@
 #include <SDL2/SDL_ttf.h>
 
 const int GAME_BLOCK_SIZE = 50, GAME_WINDOW_WIDTH = GAME_BLOCK_SIZE * 32, GAME_WINDOW_HEIGHT = GAME_BLOCK_SIZE * 18;
+const int LEVELS = 2;
 //         columns              rows
 static int gBlocksPerXAxis = 0, gBlocksPerYAxis = 0;
 static CompoundShader* gSpriteShader = nullptr;
@@ -175,7 +176,10 @@ void gameChangeLevel(void) {
     gCameraOffsetX = 0;
     gCameraOffsetY = 0;
 
-    gGameLevel = gameLevelCreate(++gCurrentLevel);
+    if (++gCurrentLevel < LEVELS)
+        gGameLevel = gameLevelCreate(gCurrentLevel);
+    else
+        SDL_Log("finish");
 }
 
 void gameClean(void) {
