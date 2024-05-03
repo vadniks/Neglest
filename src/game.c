@@ -157,8 +157,8 @@ void gameRender(void) {
 
     shapeRendererDrawLine(
         gShapeRenderer,
-        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4), (float) GAME_BLOCK_SIZE},
-        (vec2) {(float) GAME_WINDOW_HEIGHT * 2.0f, 1.0f},
+        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4), (float) GAME_WINDOW_HEIGHT / 2.0f},
+        (vec2) {(float) GAME_WINDOW_HEIGHT, 1.0f},
         90.0f,
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
