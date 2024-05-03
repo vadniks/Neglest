@@ -145,8 +145,8 @@ static void drawText(vec2 position, const char* text, const vec4 color) {
 void gameRender(void) {
     gameLevelDraw(gGameLevel, gCameraOffsetX, gCameraOffsetY, gSpriteRenderer);
 
-    char text[16];
-    SDL_itoa(gameLevelGems(gGameLevel), text, 10);
+    char text[16] = "Gems: ";
+    SDL_itoa(gameLevelGems(gGameLevel), text + 6, 10);
     drawText((vec2) {100.0f, 100.0f}, text, (vec4) {1.0f, 1.0f, 1.0f, 1.0f});
 }
 
