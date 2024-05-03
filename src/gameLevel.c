@@ -183,6 +183,7 @@ void gameLevelUpdate(GameLevel* level) {
             }
 
             if (!enemy) continue;
+
             switch (rand() / (RAND_MAX / 4)) {
                 case 0: // up
                     if (y > 0 && level->field[y - 1][x] == ENTITY_EMPTY) {
