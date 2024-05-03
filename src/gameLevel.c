@@ -35,12 +35,19 @@ typedef enum {
     ENTITY_GEM
 } Entity;
 
+typedef struct {
+    int x, y;
+    Entity entity;
+} Enemy;
+
 struct GameLevel {
     Entity** field;
     int playerPositionX, playerPositionY;
     int collectedGems;
     int ticks;
     int totalGems;
+    int enemiesSize;
+    Enemy* enemies;
 };
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
@@ -66,6 +73,8 @@ GameLevel* gameLevelCreate(int which) {
     level->collectedGems = 0;
     level->ticks = 0;
     level->totalGems = 0;
+    level->enemiesSize = 0;
+    level->enemies = nullptr;
 
     level->field = SDL_malloc(GAME_LEVEL_FIELD_ROWS * sizeof(Entity*));
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++) {
@@ -92,22 +101,37 @@ GameLevel* gameLevelCreate(int which) {
                 break;
             case '1':
                 level->field[y][x] = ENTITY_ENEMY_1;
+                level->enemiesSize++;
+                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
+                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_1};
                 x++;
                 break;
             case '2':
                 level->field[y][x] = ENTITY_ENEMY_2;
+                level->enemiesSize++;
+                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
+                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_2};
                 x++;
                 break;
             case '3':
                 level->field[y][x] = ENTITY_ENEMY_3;
+                level->enemiesSize++;
+                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
+                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_3};
                 x++;
                 break;
             case '4':
                 level->field[y][x] = ENTITY_ENEMY_4;
+                level->enemiesSize++;
+                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
+                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_4};
                 x++;
                 break;
             case '5':
                 level->field[y][x] = ENTITY_ENEMY_5;
+                level->enemiesSize++;
+                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
+                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_5};
                 x++;
                 break;
             case 'g':
@@ -130,6 +154,7 @@ GameLevel* gameLevelCreate(int which) {
 void gameLevelDestroy(GameLevel* level) {
     for (int i = 0; i < GAME_LEVEL_FIELD_ROWS; i++)
         SDL_free(level->field[i]);
+    SDL_free(level->enemies);
     SDL_free(level->field);
     SDL_free(level);
 }
@@ -166,59 +191,38 @@ static void processEnemies(GameLevel* level) {
     if (level->ticks < 100) return;
     level->ticks = 0;
 
-    const int
-        blocksPerYAxis = gameBlocksPerYAxis(),
-        blocksPerXAxis = gameBlocksPerXAxis();
+    for (int i = 0; i < level->enemiesSize; i++) {
+        int x = level->enemies[i].x, y = level->enemies[i].y;
 
-    for (int y = 0; y < blocksPerYAxis; y++) {
-        for (int x = 0; x < blocksPerXAxis; x++) {
-            bool enemy;
-
-            switch (level->field[y][x]) {
-                case ENTITY_ENEMY_1:
-                    [[gnu::fallthrough]];
-                case ENTITY_ENEMY_2:
-                    [[gnu::fallthrough]];
-                case ENTITY_ENEMY_3:
-                    [[gnu::fallthrough]];
-                case ENTITY_ENEMY_4:
-                    [[gnu::fallthrough]];
-                case ENTITY_ENEMY_5:
-                    enemy = true;
-                    break;
-                default:
-                    enemy = false;
-                    break;
-            }
-
-            if (!enemy) continue;
-
-            switch (rand() / (RAND_MAX / 4)) {
-                case 0:
-                    if (y > 0 && level->field[y - 1][x] == ENTITY_EMPTY) {
-                        level->field[y - 1][x] = level->field[y][x];
-                        level->field[y][x] = ENTITY_EMPTY;
-                    }
-                    break;
-                case 1:
-                    if (x > 0 && level->field[y][x - 1] == ENTITY_EMPTY) {
-                        level->field[y][x - 1] = level->field[y][x];
-                        level->field[y][x] = ENTITY_EMPTY;
-                    }
-                    break;
-                case 2:
-                    if (y < GAME_LEVEL_FIELD_ROWS - 1 && level->field[y + 1][x] == ENTITY_EMPTY) {
-                        level->field[y + 1][x] = level->field[y][x];
-                        level->field[y][x] = ENTITY_EMPTY;
-                    }
-                    break;
-                case 3:
-                    if (x < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
-                        level->field[y][x + 1] = level->field[y][x];
-                        level->field[y][x] = ENTITY_EMPTY;
-                    }
-                    break;
-            }
+        switch (rand() / (RAND_MAX / 4)) {
+            case 0:
+                if (y > 0 && level->field[y - 1][x] == ENTITY_EMPTY) {
+                    level->field[y - 1][x] = level->field[y][x];
+                    level->field[y][x] = ENTITY_EMPTY;
+                    level->enemies[i].y = y - 1;
+                }
+                break;
+            case 1:
+                if (x > 0 && level->field[y][x - 1] == ENTITY_EMPTY) {
+                    level->field[y][x - 1] = level->field[y][x];
+                    level->field[y][x] = ENTITY_EMPTY;
+                    level->enemies[i].x = x - 1;
+                }
+                break;
+            case 2:
+                if (y < GAME_LEVEL_FIELD_ROWS - 1 && level->field[y + 1][x] == ENTITY_EMPTY) {
+                    level->field[y + 1][x] = level->field[y][x];
+                    level->field[y][x] = ENTITY_EMPTY;
+                    level->enemies[i].y = y + 1;
+                }
+                break;
+            case 3:
+                if (x < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
+                    level->field[y][x + 1] = level->field[y][x];
+                    level->field[y][x] = ENTITY_EMPTY;
+                    level->enemies[i].x = x + 1;
+                }
+                break;
         }
     }
 }
