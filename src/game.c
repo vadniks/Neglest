@@ -102,22 +102,26 @@ void gameProcessInput(const SDL_Keycode* nullable keycode) {
         case SDLK_w:
             if (gCameraOffsetY > 0)
                 gCameraOffsetY--;
-            gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY - 1);
+            if (!gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY - 1))
+                gCameraOffsetY++;
             break;
         case SDLK_a:
             if (gCameraOffsetX > 0)
                 gCameraOffsetX--;
-            gameLevelTryMovePlayer(gGameLevel, playerPositionX - 1, playerPositionY);
+            if (!gameLevelTryMovePlayer(gGameLevel, playerPositionX - 1, playerPositionY))
+                gCameraOffsetX++;
             break;
         case SDLK_s:
             if (gCameraOffsetY < GAME_LEVEL_FIELD_ROWS - gBlocksPerYAxis)
                 gCameraOffsetY++;
-            gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY + 1);
+            if (!gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY + 1))
+                gCameraOffsetY--;
             break;
         case SDLK_d:
             if (gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - gBlocksPerXAxis)
                 gCameraOffsetX++;
-            gameLevelTryMovePlayer(gGameLevel, playerPositionX + 1, playerPositionY);
+            if (!gameLevelTryMovePlayer(gGameLevel, playerPositionX + 1, playerPositionY))
+                gCameraOffsetX--;
             break;
     }
 }

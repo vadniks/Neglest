@@ -135,12 +135,12 @@ int gameLevelPlayerPositionX(const GameLevel* level) { return level->playerPosit
 
 int gameLevelPlayerPositionY(const GameLevel* level) { return level->playerPositionY; }
 
-void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
+bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
     const Entity entity = level->field[newPositionY][newPositionX];
-    if (entity != ENTITY_EMPTY && entity != ENTITY_GEM) return;
+    if (entity != ENTITY_EMPTY && entity != ENTITY_GEM) return false;
 
-    if (newPositionX < 0 || newPositionX >= GAME_LEVEL_FIELD_COLUMNS) return;
-    if (newPositionY < 0 || newPositionY >= GAME_LEVEL_FIELD_ROWS) return;
+    if (newPositionX < 0 || newPositionX >= GAME_LEVEL_FIELD_COLUMNS) return false;
+    if (newPositionY < 0 || newPositionY >= GAME_LEVEL_FIELD_ROWS) return false;
 
     if (entity == ENTITY_GEM)
         level->gems++;
@@ -150,6 +150,8 @@ void gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY
 
     level->playerPositionX = newPositionX;
     level->playerPositionY = newPositionY;
+
+    return true;
 }
 
 int gameLevelGems(const GameLevel* level) { return level->gems; }
