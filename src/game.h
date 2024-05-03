@@ -38,4 +38,5 @@ const Texture* gameTexture(GameTexture texture);
 void gameProcessInput(const SDL_Keycode* nullable keycode);
 void gameUpdate(void);
 void gameRender(void);
+void gameChangeLevel(void);
 void gameClean(void);

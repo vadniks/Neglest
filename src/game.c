@@ -143,7 +143,7 @@ static void drawText(vec2 position, const char* text, const vec4 color) {
 
 static void drawGemsCounter(void) {
     char text[16] = "Gems: ";
-    SDL_itoa(gameLevelGems(gGameLevel), text + 6, 10);
+    SDL_itoa(gameLevelCollectedGems(gGameLevel), text + 6, 10);
 
     int w, h;
     TTF_SizeUTF8(gFont, text, &w, &h);
@@ -164,6 +164,10 @@ void gameRender(void) {
     );
 
     drawGemsCounter();
+}
+
+void gameChangeLevel(void) {
+    SDL_Log("change level");
 }
 
 void gameClean(void) {

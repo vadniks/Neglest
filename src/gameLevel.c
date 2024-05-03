@@ -111,6 +111,7 @@ GameLevel* gameLevelCreate(int which) {
                 break;
             case 'g':
                 level->field[y][x] = ENTITY_GEM;
+                level->totalGems++;
                 x++;
                 break;
             case '\n':
@@ -155,9 +156,11 @@ bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY
     return true;
 }
 
-int gameLevelGems(const GameLevel* level) { return level->collectedGems; }
+int gameLevelCollectedGems(const GameLevel* level) { return level->collectedGems; }
 
-void gameLevelUpdate(GameLevel* level) {
+int gameLevelTotalGems(const GameLevel* level) { return level->totalGems; }
+
+static void processEnemies(GameLevel* level) {
     level->ticks++;
     if (level->ticks < 100) return;
     level->ticks = 0;
@@ -190,25 +193,25 @@ void gameLevelUpdate(GameLevel* level) {
             if (!enemy) continue;
 
             switch (rand() / (RAND_MAX / 4)) {
-                case 0: // up
+                case 0:
                     if (y > 0 && level->field[y - 1][x] == ENTITY_EMPTY) {
                         level->field[y - 1][x] = level->field[y][x];
                         level->field[y][x] = ENTITY_EMPTY;
                     }
                     break;
-                case 1: // left
+                case 1:
                     if (x > 0 && level->field[y][x - 1] == ENTITY_EMPTY) {
                         level->field[y][x - 1] = level->field[y][x];
                         level->field[y][x] = ENTITY_EMPTY;
                     }
                     break;
-                case 2: // down
+                case 2:
                     if (y < GAME_LEVEL_FIELD_ROWS - 1 && level->field[y + 1][x] == ENTITY_EMPTY) {
                         level->field[y + 1][x] = level->field[y][x];
                         level->field[y][x] = ENTITY_EMPTY;
                     }
                     break;
-                case 3: // right
+                case 3:
                     if (x < GAME_LEVEL_FIELD_COLUMNS - 1 && level->field[y][x + 1] == ENTITY_EMPTY) {
                         level->field[y][x + 1] = level->field[y][x];
                         level->field[y][x] = ENTITY_EMPTY;
@@ -217,6 +220,13 @@ void gameLevelUpdate(GameLevel* level) {
             }
         }
     }
+}
+
+void gameLevelUpdate(GameLevel* level) {
+    processEnemies(level);
+
+    if (level->collectedGems == level->totalGems)
+        gameChangeLevel();
 }
 
 void gameLevelDraw(const GameLevel* level, int cameraOffsetX, int cameraOffsetY, const SpriteRenderer* renderer) {
