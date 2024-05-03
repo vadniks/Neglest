@@ -70,7 +70,7 @@ int main(void) {
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
     SDL_Window* window = SDL_CreateWindow(
-        "OpenGL",
+        "Neglest",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         GAME_WINDOW_WIDTH,
