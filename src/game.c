@@ -42,6 +42,8 @@ static GameLevel* nullable gGameLevel = nullptr;
 static int gCameraOffsetX = 0, gCameraOffsetY = 0;
 static TTF_Font* gSmallFont = nullptr;
 static TTF_Font* gBigFont = nullptr;
+static int gMouseX = 0, gMouseY = 0;
+static bool gMouseButtonPressed = false;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -105,7 +107,7 @@ const Texture* gameTexture(GameTexture texture) {
     return nullptr; // not gonna happen
 }
 
-void gameProcessInput(const SDL_Keycode* nullable keycode) {
+void gameProcessKeyboardInput(const SDL_Keycode* nullable keycode) {
     if (gGameLevel == nullptr) return;
     if (keycode == nullptr) return;
 
@@ -132,6 +134,13 @@ void gameProcessInput(const SDL_Keycode* nullable keycode) {
             break;
     }
 }
+
+void gameProcessMouseMotion(int x, int y) {
+    gMouseX = x;
+    gMouseY = y;
+}
+
+void gameProcessMouseButton(bool pressed) { gMouseButtonPressed = pressed; }
 
 void gameUpdate(void) {
     if (gGameLevel == nullptr)
@@ -205,11 +214,22 @@ static void drawRestartButton(void) {
     int w, h;
     TTF_SizeUTF8(gSmallFont, text, &w, &h);
 
+    const vec2 textPosition = {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f + (float) h * 2.0f};
+
+    const bool mouseHovered =
+        gMouseX >= (int) textPosition[0] && gMouseX <= (int) textPosition[0] + w + 5 &&
+        gMouseY >= (int) textPosition[1] && gMouseY <= (int) textPosition[1] + h + 5;
+
+    if (mouseHovered && gMouseButtonPressed) {
+        gMouseButtonPressed = false;
+        SDL_Log("finish");
+    }
+
     drawText(
         gSmallFont,
-        (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f + (float) h * 2.0f},
+        textPosition,
         text,
-        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+        (vec4) {1.0f, 1.0f, 1.0f, mouseHovered ? 0.5f : 1.0f}
     );
 
     shapeRendererDrawRectangle(
@@ -219,7 +239,7 @@ static void drawRestartButton(void) {
         0.0f,
         0.0f,
         0.0f,
-        (vec4) {1.0f, 1.0f, 1.0f, 1.0f},
+        (vec4) {1.0f, 1.0f, 1.0f, mouseHovered ? 0.5f : 1.0f},
         false
     );
 }

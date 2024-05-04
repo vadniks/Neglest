@@ -36,10 +36,19 @@ static void renderLoop(SDL_Window* window) {
                 case SDL_QUIT:
                     return;
                 case SDL_KEYDOWN:
-                    gameProcessInput(&(event.key.keysym.sym));
+                    gameProcessKeyboardInput(&(event.key.keysym.sym));
                     break;
                 case SDL_KEYUP:
-                    gameProcessInput(nullptr);
+                    gameProcessKeyboardInput(nullptr);
+                    break;
+                case SDL_MOUSEMOTION:
+                    gameProcessMouseMotion(event.motion.x, event.motion.y);
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    gameProcessMouseButton(true);
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    gameProcessMouseButton(false);
                     break;
             }
         }
