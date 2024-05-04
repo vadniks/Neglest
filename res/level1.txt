@@ -1,7 +1,7 @@
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbbp.......ggg.bbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbp.......gg..bbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbb..........g.bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb...............................bb
