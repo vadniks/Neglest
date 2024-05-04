@@ -18,4 +18,4 @@
 
 #include "defs.h"
 
-const bool DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT = true;
+const bool DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT = false;

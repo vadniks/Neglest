@@ -1,12 +1,12 @@
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbbp...........bbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbp.......ggg.bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbb............................g..bb
-bbbbbbbbbbbbbbbbb............................g..bb
-bbbbbbbbbbbbbbbbb............................g..bb
+bbbbbbbbbbbbbbbbb...............................bb
+bbbbbbbbbbbbbbbbb...............................bb
+bbbbbbbbbbbbbbbbb...............................bb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb........1...bbbbbbbbbbbbbbbbbbbbb
