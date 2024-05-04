@@ -52,6 +52,13 @@ struct GameLevel {
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
 
+static void addEnemy(GameLevel* level, int x, int y, Entity entity) {
+    level->field[y][x] = entity;
+    level->enemiesSize++;
+    level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
+    level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, entity};
+}
+
 GameLevel* gameLevelCreate(int which) {
     const int levelNameMaxSize = 64;
     char levelName[levelNameMaxSize];
@@ -100,38 +107,23 @@ GameLevel* gameLevelCreate(int which) {
                 x++;
                 break;
             case '1':
-                level->field[y][x] = ENTITY_ENEMY_1;
-                level->enemiesSize++;
-                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
-                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_1};
+                addEnemy(level, x, y, ENTITY_ENEMY_1);
                 x++;
                 break;
             case '2':
-                level->field[y][x] = ENTITY_ENEMY_2;
-                level->enemiesSize++;
-                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
-                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_2};
+                addEnemy(level, x, y, ENTITY_ENEMY_2);
                 x++;
                 break;
             case '3':
-                level->field[y][x] = ENTITY_ENEMY_3;
-                level->enemiesSize++;
-                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
-                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_3};
+                addEnemy(level, x, y, ENTITY_ENEMY_3);
                 x++;
                 break;
             case '4':
-                level->field[y][x] = ENTITY_ENEMY_4;
-                level->enemiesSize++;
-                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
-                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_4};
+                addEnemy(level, x, y, ENTITY_ENEMY_4);
                 x++;
                 break;
             case '5':
-                level->field[y][x] = ENTITY_ENEMY_5;
-                level->enemiesSize++;
-                level->enemies = SDL_realloc(level->enemies, level->enemiesSize * sizeof(Enemy));
-                level->enemies[level->enemiesSize - 1] = (Enemy) {x, y, ENTITY_ENEMY_5};
+                addEnemy(level, x, y, ENTITY_ENEMY_5);
                 x++;
                 break;
             case 'g':
