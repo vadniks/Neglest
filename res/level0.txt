@@ -12,9 +12,9 @@ bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbb................................bbbbbbbbbbbbb
 bb...................................bbbbbbbbbbbbb
-p...............g........1........................
-bb..............g........2...........bbbbbbbbbbbbb
-bbbbbbb.........g........3...........bbbbbbbbbbbbb
+p...............g........1...................g.g.b
+bb.......................2...........bbbbbbbbbbbbb
+bbbbbbb..................3...........bbbbbbbbbbbbb
 bbbbbbbbbb...............4...........bbbbbbbbbbbbb
 bbbbbbbbbb...............5...........bbbbbbbbbbbbb
 bbbbbbbbbb...........................bbbbbbbbbbbbb

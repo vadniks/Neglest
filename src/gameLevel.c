@@ -170,10 +170,6 @@ int gameLevelCollectedGems(const GameLevel* level) { return level->collectedGems
 int gameLevelTotalGems(const GameLevel* level) { return level->totalGems; }
 
 static void processEnemies(GameLevel* level) {
-    level->ticks++;
-    if (level->ticks < 100) return;
-    level->ticks = 0;
-
     for (int i = 0; i < level->enemiesSize; i++) {
         int x = level->enemies[i].x, y = level->enemies[i].y;
 
@@ -222,8 +218,11 @@ static void processPlayer(GameLevel* level) {
 }
 
 void gameLevelUpdate(GameLevel* level) {
-    processPlayer(level);
+    level->ticks++;
+    if (level->ticks < 50) return;
+    level->ticks = 0;
 
+    processPlayer(level);
     processEnemies(level);
 
     if (level->collectedGems == level->totalGems)
