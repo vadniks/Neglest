@@ -6,3 +6,5 @@
 ## Screenshots
 
 ![](screenshots/a.png)
+![](screenshots/b.png)
+![](screenshots/c.png)
