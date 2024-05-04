@@ -107,25 +107,21 @@ const Texture* gameTexture(GameTexture texture) {
 void gameProcessInput(const SDL_Keycode* nullable keycode) {
     if (keycode == nullptr) return;
 
-//    const int
-//        playerPositionX = gameLevelPlayerPositionX(gGameLevel),
-//        playerPositionY = gameLevelPlayerPositionY(gGameLevel);
-
     switch (*keycode) {
         case SDLK_w:
-            if (/*gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY - 1) &&*/ gCameraOffsetY > 0)
+            if (gCameraOffsetY > 0)
                 gCameraOffsetY--;
             break;
         case SDLK_a:
-            if (/*gameLevelTryMovePlayer(gGameLevel, playerPositionX - 1, playerPositionY) &&*/ gCameraOffsetX > 0)
+            if (gCameraOffsetX > 0)
                 gCameraOffsetX--;
             break;
         case SDLK_s:
-            if (/*gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY + 1) &&*/ gCameraOffsetY < GAME_LEVEL_FIELD_ROWS - gBlocksPerYAxis)
+            if (gCameraOffsetY < GAME_LEVEL_FIELD_ROWS - gBlocksPerYAxis)
                 gCameraOffsetY++;
             break;
         case SDLK_d:
-            if (/*gameLevelTryMovePlayer(gGameLevel, playerPositionX + 1, playerPositionY) &&*/ gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - gBlocksPerXAxis)
+            if (gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - gBlocksPerXAxis)
                 gCameraOffsetX++;
             break;
     }

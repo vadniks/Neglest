@@ -210,7 +210,8 @@ static void processEnemies(GameLevel* level) {
 }
 
 void gameLevelUpdate(GameLevel* level) {
-    libMove(nullptr);
+    int x, y;
+    libMove(nullptr, 0, 0, &x, &y);
 
     processEnemies(level);
 
