@@ -22,6 +22,7 @@
 
 [[gnu::visibility("default")]]
 void gameLibMove(
+    int currentLevel,
     const Entity** field,
     int fieldRows,
     int fieldColumns,

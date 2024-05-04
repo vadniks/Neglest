@@ -213,7 +213,7 @@ static void processPlayer(GameLevel* level) {
     SDL_memcpy(field, level->field, fieldSize);
 
     int x, y;
-    gameLibMove(field, GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS, level->playerPositionX, level->playerPositionY, &x, &y);
+    gameLibMove(gameCurrentLevel(), field, GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS, level->playerPositionX, level->playerPositionY, &x, &y);
 
     gameLevelTryMovePlayer(level, x, y);
 }

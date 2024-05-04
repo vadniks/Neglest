@@ -34,6 +34,7 @@ extern const int GAME_BLOCK_SIZE, GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT;
 void gameInit(void);
 int gameBlocksPerXAxis(void);
 int gameBlocksPerYAxis(void);
+int gameCurrentLevel(void);
 const Texture* gameTexture(GameTexture texture);
 void gameProcessInput(const SDL_Keycode* nullable keycode);
 void gameUpdate(void);

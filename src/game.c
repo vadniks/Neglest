@@ -90,6 +90,8 @@ int gameBlocksPerXAxis(void) { return gBlocksPerXAxis; }
 
 int gameBlocksPerYAxis(void) { return gBlocksPerYAxis; }
 
+int gameCurrentLevel(void) { return gCurrentLevel; }
+
 const Texture* gameTexture(GameTexture texture) {
     switch (texture) {
         case GAME_TEXTURE_BOX:

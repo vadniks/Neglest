@@ -18,7 +18,12 @@
 
 #include "../include/gameLib.h"
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnusedParameter"
+#pragma clang diagnostic ignored "-Wunused-parameter"
+
 void gameLibMove(
+    int currentLevel,
     const Entity** field,
     int fieldRows,
     int fieldColumns,
@@ -32,3 +37,5 @@ void gameLibMove(
         *newY = oldY;
     }
 }
+
+#pragma clang diagnostic pop
