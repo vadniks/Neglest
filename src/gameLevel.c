@@ -42,6 +42,7 @@ struct GameLevel {
 };
 
 const int GAME_LEVEL_FIELD_ROWS = 50, GAME_LEVEL_FIELD_COLUMNS = 50;
+static const int MAX_TICKS = 25;
 
 static void addEnemy(GameLevel* level, int x, int y, Entity entity) {
     level->field[y][x] = entity;
@@ -219,7 +220,7 @@ static void processPlayer(GameLevel* level) {
 
 void gameLevelUpdate(GameLevel* level) {
     level->ticks++;
-    if (level->ticks < 50) return;
+    if (level->ticks < MAX_TICKS) return;
     level->ticks = 0;
 
     processPlayer(level);
