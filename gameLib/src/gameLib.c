@@ -32,7 +32,7 @@ void gameLibMove(
     int* newX,
     int* newY
 ) {
-    // TODO: Floyd-Warshall algorithm
+    // TODO: add Floyd-Warshall algorithm
     if (oldX + 1 < fieldColumns && field[oldY][oldX + 1] == ENTITY_EMPTY || field[oldY][oldX + 1] == ENTITY_GEM) {
         *newX = oldX + 1;
         *newY = oldY;
