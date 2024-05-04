@@ -16,12 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "../include/gameLib.h"
 
-#include "../../src/entity.h"
-
-[[gnu::visibility("default")]]
-void libMove(
+void gameLibMove(
     const Entity** field,
     int fieldRows,
     int fieldColumns,
@@ -29,4 +26,9 @@ void libMove(
     int oldY,
     int* newX,
     int* newY
-);
+) {
+    if (oldX + 1 < fieldColumns && field[oldY][oldX + 1] == ENTITY_EMPTY || field[oldY][oldX + 1] == ENTITY_GEM) {
+        *newX = oldX + 1;
+        *newY = oldY;
+    }
+}

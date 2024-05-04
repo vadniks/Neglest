@@ -19,7 +19,7 @@
 #include "gameLevel.h"
 #include "game.h"
 #include "entity.h"
-#include "../gameLib/include/lib.h"
+#include "../gameLib/include/gameLib.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -212,7 +212,8 @@ static void processPlayer(GameLevel* level) {
     SDL_memcpy(field, level->field, fieldSize);
 
     int x, y;
-    libMove(field, GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS, level->playerPositionX, level->playerPositionY, &x, &y);
+    gameLibMove(field, GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS, level->playerPositionX, level->playerPositionY,
+                &x, &y);
 
     gameLevelTryMovePlayer(level, x, y);
 }
