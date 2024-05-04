@@ -18,22 +18,12 @@
 
 #include "gameLevel.h"
 #include "game.h"
+#include "entity.h"
+#include "../lib/include/lib.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <SDL2/SDL.h>
-
-typedef enum {
-    ENTITY_EMPTY,
-    ENTITY_BOX,
-    ENTITY_PLAYER,
-    ENTITY_ENEMY_1,
-    ENTITY_ENEMY_2,
-    ENTITY_ENEMY_3,
-    ENTITY_ENEMY_4,
-    ENTITY_ENEMY_5,
-    ENTITY_GEM
-} Entity;
 
 typedef struct {
     int x, y;
@@ -220,6 +210,8 @@ static void processEnemies(GameLevel* level) {
 }
 
 void gameLevelUpdate(GameLevel* level) {
+    libMove(nullptr);
+
     processEnemies(level);
 
     if (level->collectedGems == level->totalGems)
