@@ -17,7 +17,6 @@
  */
 
 #include "../include/gameLib.h"
-#include <SDL2/SDL.h>
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "UnusedParameter"
