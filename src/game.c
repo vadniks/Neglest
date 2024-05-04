@@ -82,7 +82,7 @@ void gameInit(void) {
     gSmallFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
     gBigFont = TTF_OpenFont("res/Roboto-Regular.ttf", 40);
 
-    gGameLevel = gameLevelCreate(gCurrentLevel);
+//    gGameLevel = gameLevelCreate(gCurrentLevel);
 }
 
 int gameBlocksPerXAxis(void) { return gBlocksPerXAxis; }
@@ -106,6 +106,7 @@ const Texture* gameTexture(GameTexture texture) {
 }
 
 void gameProcessInput(const SDL_Keycode* nullable keycode) {
+    if (gGameLevel == nullptr) return;
     if (keycode == nullptr) return;
 
     const int
@@ -172,20 +173,6 @@ static void drawTotalGems(void) {
     );
 }
 
-static void drawFinish(void) {
-    const char* text = "Finish!";
-
-    int w, h;
-    TTF_SizeUTF8(gSmallFont, text, &w, &h);
-
-    drawText(
-        gBigFont,
-        (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f - (float) h / 2.0f},
-        text,
-        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
-    );
-}
-
 static void drawCurrentLevel(void) {
     char text[32];
     assert(SDL_snprintf(text, sizeof text, "Current level: %d", gCurrentLevel) > 0);
@@ -198,9 +185,49 @@ static void drawCurrentLevel(void) {
     );
 }
 
+static void drawFinish(void) {
+    const char* text = "Finish!";
+
+    int w, h;
+    TTF_SizeUTF8(gBigFont, text, &w, &h);
+
+    drawText(
+        gBigFont,
+        (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f - (float) h / 2.0f},
+        text,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+}
+
+static void drawRestartButton(void) {
+    const char* text = "Restart";
+
+    int w, h;
+    TTF_SizeUTF8(gSmallFont, text, &w, &h);
+
+    drawText(
+        gSmallFont,
+        (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f - (float) w / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f + (float) h * 2.0f},
+        text,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+
+    shapeRendererDrawRectangle(
+        gShapeRenderer,
+        (vec2) {(float) GAME_WINDOW_WIDTH / 2.0f, (float) GAME_WINDOW_HEIGHT / 2.0f + (float) h * 2.5f},
+        (vec2) {(float) w + 5.0f, (float) h + 5.0f},
+        0.0f,
+        0.0f,
+        0.0f,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f},
+        false
+    );
+}
+
 void gameRender(void) {
     if (gGameLevel == nullptr) {
         drawFinish();
+        drawRestartButton();
         return;
     }
 
