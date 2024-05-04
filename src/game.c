@@ -162,7 +162,7 @@ static void drawCollectedGems(void) {
 
 static void drawTotalGems(void) {
     char text[16] = "Total: ";
-    SDL_itoa(gameLevelTotalGems(gGameLevel), text + 6, 10);
+    SDL_itoa(gameLevelTotalGems(gGameLevel), text + 7, 10);
     drawText(
         gSmallFont,
         (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f},
