@@ -84,7 +84,7 @@ void gameInit(void) {
     gSmallFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
     gBigFont = TTF_OpenFont("res/Roboto-Regular.ttf", 40);
 
-//    gGameLevel = gameLevelCreate(gCurrentLevel);
+    gGameLevel = gameLevelCreate(gCurrentLevel);
 }
 
 int gameBlocksPerXAxis(void) { return gBlocksPerXAxis; }
@@ -208,6 +208,13 @@ static void drawFinish(void) {
     );
 }
 
+static void restart(void) {
+    gCameraOffsetX = 0;
+    gCameraOffsetY = 0;
+    gCurrentLevel = 0;
+    gGameLevel = gameLevelCreate(0);
+}
+
 static void drawRestartButton(void) {
     const char* text = "Restart";
 
@@ -222,7 +229,8 @@ static void drawRestartButton(void) {
 
     if (mouseHovered && gMouseButtonPressed) {
         gMouseButtonPressed = false;
-        SDL_Log("finish");
+        restart();
+        return;
     }
 
     drawText(
