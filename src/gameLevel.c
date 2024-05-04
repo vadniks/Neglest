@@ -146,7 +146,7 @@ int gameLevelPlayerPositionX(const GameLevel* level) { return level->playerPosit
 
 int gameLevelPlayerPositionY(const GameLevel* level) { return level->playerPositionY; }
 
-bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
+static bool tryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
     if (newPositionX < 0 || newPositionX >= GAME_LEVEL_FIELD_COLUMNS) return false;
     if (newPositionY < 0 || newPositionY >= GAME_LEVEL_FIELD_ROWS) return false;
 
@@ -163,6 +163,11 @@ bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY
     level->playerPositionY = newPositionY;
 
     return true;
+}
+
+bool gameLevelTryMovePlayer(GameLevel* level, int newPositionX, int newPositionY) {
+    if (!DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT) return true;
+    return tryMovePlayer(level, newPositionX, newPositionY);
 }
 
 int gameLevelCollectedGems(const GameLevel* level) { return level->collectedGems; }
@@ -207,6 +212,8 @@ static void processEnemies(GameLevel* level) {
 }
 
 static void processPlayer(GameLevel* level) {
+    if (DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT) return;
+
     const int fieldSize = GAME_LEVEL_FIELD_ROWS * GAME_LEVEL_FIELD_COLUMNS * (int) sizeof(Entity*);
     const Entity** field = (const Entity**) (const byte[fieldSize * sizeof(Entity)]) {};
     SDL_memcpy(field, level->field, fieldSize);
@@ -214,7 +221,7 @@ static void processPlayer(GameLevel* level) {
     int x, y;
     gameLibMove(gameCurrentLevel(), field, GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS, level->playerPositionX, level->playerPositionY, &x, &y);
 
-    gameLevelTryMovePlayer(level, x, y);
+    tryMovePlayer(level, x, y);
 }
 
 void gameLevelUpdate(GameLevel* level) {

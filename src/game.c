@@ -28,8 +28,7 @@
 
 const int GAME_BLOCK_SIZE = 50, GAME_WINDOW_WIDTH = GAME_BLOCK_SIZE * 32, GAME_WINDOW_HEIGHT = GAME_BLOCK_SIZE * 18;
 const int LEVELS = 2;
-//         columns              rows
-static int gBlocksPerXAxis = 0, gBlocksPerYAxis = 0;
+static int gBlocksPerXAxis = 0, gBlocksPerYAxis = 0; // columns, rows
 static CompoundShader* gSpriteShader = nullptr;
 static SpriteRenderer* gSpriteRenderer = nullptr;
 static CompoundShader* gShapeShader = nullptr;
@@ -109,21 +108,25 @@ const Texture* gameTexture(GameTexture texture) {
 void gameProcessInput(const SDL_Keycode* nullable keycode) {
     if (keycode == nullptr) return;
 
+    const int
+        playerPositionX = gameLevelPlayerPositionX(gGameLevel),
+        playerPositionY = gameLevelPlayerPositionY(gGameLevel);
+
     switch (*keycode) {
         case SDLK_w:
-            if (gCameraOffsetY > 0)
+            if (gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY - 1) && gCameraOffsetY > 0)
                 gCameraOffsetY--;
             break;
         case SDLK_a:
-            if (gCameraOffsetX > 0)
+            if (gameLevelTryMovePlayer(gGameLevel, playerPositionX - 1, playerPositionY) && gCameraOffsetX > 0)
                 gCameraOffsetX--;
             break;
         case SDLK_s:
-            if (gCameraOffsetY < GAME_LEVEL_FIELD_ROWS - gBlocksPerYAxis)
+            if (gameLevelTryMovePlayer(gGameLevel, playerPositionX, playerPositionY + 1) && gCameraOffsetY < GAME_LEVEL_FIELD_ROWS - gBlocksPerYAxis)
                 gCameraOffsetY++;
             break;
         case SDLK_d:
-            if (gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - gBlocksPerXAxis)
+            if (gameLevelTryMovePlayer(gGameLevel, playerPositionX + 1, playerPositionY) && gCameraOffsetX < GAME_LEVEL_FIELD_COLUMNS - gBlocksPerXAxis)
                 gCameraOffsetX++;
             break;
     }

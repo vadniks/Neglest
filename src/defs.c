@@ -16,22 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "defs.h"
 
-#include <stdlib.h>
-
-static_assert(
-    sizeof(char) == 1 &
-    sizeof(short) == 2 &
-    sizeof(int) == 4 &
-    sizeof(float) == 4 &
-    sizeof(long) == 8 &
-    sizeof(void*) == 8
-);
-
-typedef unsigned char byte;
-
-#define nullable
-#define autoType __auto_type
-
-extern const bool DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT;
+const bool DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT = true;
