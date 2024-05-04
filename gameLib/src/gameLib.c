@@ -17,7 +17,6 @@
  */
 
 #include "../include/gameLib.h"
-#include "queue.h"
 #include <SDL2/SDL.h>
 
 #pragma clang diagnostic push
@@ -38,28 +37,6 @@ void gameLibMove(
         *newX = oldX + 1;
         *newY = oldY;
     }
-
-    int values[5] = {0, 1, 2, 3, 4};
-    Queue* queue = queueCreate();
-
-    queuePush(queue, &(values[0]));
-    queuePush(queue, &(values[1]));
-    queuePush(queue, &(values[2]));
-    queuePush(queue, &(values[3]));
-    queuePush(queue, &(values[4]));
-
-    SDL_Log("%c", queueEmpty(queue) ? 't' : 'f');
-
-    SDL_Log("%d", *(int*) queuePull(queue));
-    SDL_Log("%d", *(int*) queuePull(queue));
-    SDL_Log("%d", *(int*) queuePull(queue));
-    SDL_Log("%d", *(int*) queuePull(queue));
-    SDL_Log("%d", *(int*) queuePull(queue));
-
-    SDL_Log("%c", queueEmpty(queue) ? 't' : 'f');
-
-    queueDestroy(queue);
-    SDL_Log("\n");
 }
 
 #pragma clang diagnostic pop
