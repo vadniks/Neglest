@@ -17,8 +17,18 @@
  */
 
 #include "../include/lib.h"
-#include <stdio.h>
 
-void libMove(const Entity* field, int oldX, int oldY, int* newX, int* newY) {
-    printf("libMove %p\n", field);
+void libMove(
+    const Entity** field,
+    int fieldRows,
+    int fieldColumns,
+    int oldX,
+    int oldY,
+    int* newX,
+    int* newY
+) {
+    if (oldX + 1 < fieldColumns && field[oldY][oldX + 1] == ENTITY_EMPTY || field[oldY][oldX + 1] == ENTITY_GEM) {
+        *newX = oldX + 1;
+        *newY = oldY;
+    }
 }

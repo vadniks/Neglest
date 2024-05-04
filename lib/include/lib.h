@@ -21,4 +21,12 @@
 #include "../../src/entity.h"
 
 [[gnu::visibility("default")]]
-void libMove(const Entity* field, int oldX, int oldY, int* newX, int* newY);
+void libMove(
+    const Entity** field,
+    int fieldRows,
+    int fieldColumns,
+    int oldX,
+    int oldY,
+    int* newX,
+    int* newY
+);

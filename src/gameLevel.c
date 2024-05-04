@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <alloca.h>
 #include <SDL2/SDL.h>
 
 typedef struct {
@@ -209,9 +210,19 @@ static void processEnemies(GameLevel* level) {
     }
 }
 
-void gameLevelUpdate(GameLevel* level) {
+static void processPlayer(GameLevel* level) {
+    const int fieldSize = GAME_LEVEL_FIELD_ROWS * GAME_LEVEL_FIELD_COLUMNS * (int) sizeof(Entity*);
+    const Entity** field = alloca(fieldSize);
+    SDL_memcpy(field, level->field, fieldSize);
+
     int x, y;
-    libMove(nullptr, 0, 0, &x, &y);
+    libMove(field, GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS, level->playerPositionX, level->playerPositionY, &x, &y);
+
+    gameLevelTryMovePlayer(level, x, y);
+}
+
+void gameLevelUpdate(GameLevel* level) {
+    processPlayer(level);
 
     processEnemies(level);
 
