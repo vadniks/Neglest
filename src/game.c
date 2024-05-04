@@ -181,6 +181,18 @@ static void drawFinish(void) {
     );
 }
 
+static void drawCurrentLevel(void) {
+    char text[32];
+    assert(SDL_snprintf(text, sizeof text, "Current level: %d", gCurrentLevel) > 0);
+
+    drawText(
+        gSmallFont,
+        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 2.0f},
+        text,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+}
+
 void gameRender(void) {
     if (gGameLevel == nullptr) {
         drawFinish();
@@ -199,6 +211,7 @@ void gameRender(void) {
 
     drawCollectedGems();
     drawTotalGems();
+    drawCurrentLevel();
 }
 
 void gameChangeLevel(void) {
