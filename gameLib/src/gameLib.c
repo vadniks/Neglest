@@ -22,6 +22,10 @@
 #include <assert.h>
 #include <SDL2/SDL.h>
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
+#pragma ide diagnostic ignored "UnusedValue"
+
 static int gCurrentLevel = 0;
 static const Entity* const* gField = nullptr;
 static int gFieldRows = 0, gFieldColumns = 0;
@@ -31,6 +35,8 @@ void gameLibInit(int currentLevel, int fieldRows, int fieldColumns) {
     gFieldRows = fieldRows;
     gFieldColumns = fieldColumns;
 }
+
+#pragma clang diagnostic pop
 
 static Direction move(int x, int y);
 
