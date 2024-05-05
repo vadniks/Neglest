@@ -19,8 +19,8 @@
 #pragma once
 
 typedef enum {
-    GAME_LIB_DIRECTION_UP,
-    GAME_LIB_DIRECTION_LEFT,
-    GAME_LIB_DIRECTION_DOWN,
-    GAME_LIB_DIRECTION_RIGHT
-} GameLibDirection;
+    DIRECTION_UP,
+    DIRECTION_LEFT,
+    DIRECTION_DOWN,
+    DIRECTION_RIGHT
+} Direction;

@@ -224,16 +224,16 @@ static void processPlayer(GameLevel* level) {
     int x = level->playerPositionX, y = level->playerPositionY;
 
     switch (gameLibMove(level->playerPositionX, level->playerPositionY)) {
-        case GAME_LIB_DIRECTION_UP:
+        case DIRECTION_UP:
             y--;
             break;
-        case GAME_LIB_DIRECTION_LEFT:
+        case DIRECTION_LEFT:
             x--;
             break;
-        case GAME_LIB_DIRECTION_DOWN:
+        case DIRECTION_DOWN:
             y++;
             break;
-        case GAME_LIB_DIRECTION_RIGHT:
+        case DIRECTION_RIGHT:
             x++;
             break;
     }

@@ -31,17 +31,19 @@ void gameLibInit(int currentLevel, const Entity* const* field, int fieldRows, in
     gFieldColumns = fieldColumns;
 }
 
-static GameLibDirection move(int x, int y);
+static Direction move(int x, int y);
 
-GameLibDirection gameLibMove(int x, int y) {
+Direction gameLibMove(int x, int y) {
     const int allocations = SDL_GetNumAllocations();
-    const GameLibDirection direction = move(x, y);
+    const Direction direction = move(x, y);
     assert(allocations == SDL_GetNumAllocations());
     return direction;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static GameLibDirection move(int x, int y) {
-    return GAME_LIB_DIRECTION_RIGHT;
+static Direction move(int x, int y) {
+    (void) x;
+    (void) y;
+    return DIRECTION_RIGHT;
 }
