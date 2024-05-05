@@ -21,10 +21,10 @@
 #include <SDL2/SDL.h>
 
 static int gCurrentLevel = 0;
-static const Entity** gField = nullptr;
+static const Entity* const* gField = nullptr;
 static int gFieldRows = 0, gFieldColumns = 0;
 
-void gameLibInit(int currentLevel, const Entity** field, int fieldRows, int fieldColumns) {
+void gameLibInit(int currentLevel, const Entity* const* field, int fieldRows, int fieldColumns) {
     gCurrentLevel = currentLevel;
     gField = field;
     gFieldRows = fieldRows;

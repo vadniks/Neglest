@@ -28,7 +28,7 @@ typedef enum {
 } GameLibDirection;
 
 [[gnu::visibility("default")]]
-void gameLibInit(int currentLevel, const Entity** field, int fieldRows, int fieldColumns);
+void gameLibInit(int currentLevel, const Entity* const* field, int fieldRows, int fieldColumns);
 
 [[gnu::visibility("default")]]
 GameLibDirection gameLibMove(int x, int y);
