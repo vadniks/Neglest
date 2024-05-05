@@ -28,6 +28,7 @@
 
 const int GAME_BLOCK_SIZE = 50, GAME_WINDOW_WIDTH = GAME_BLOCK_SIZE * 32, GAME_WINDOW_HEIGHT = GAME_BLOCK_SIZE * 18;
 const int LEVELS = 2;
+const int RIGHT_PADDING = GAME_BLOCK_SIZE * 5;
 static int gBlocksPerXAxis = 0, gBlocksPerYAxis = 0; // columns, rows
 static CompoundShader* gSpriteShader = nullptr;
 static SpriteRenderer* gSpriteRenderer = nullptr;
@@ -44,6 +45,7 @@ static TTF_Font* gSmallFont = nullptr;
 static TTF_Font* gBigFont = nullptr;
 static int gMouseX = 0, gMouseY = 0;
 static bool gMouseButtonPressed = false;
+static unsigned gLevelStartMillis = 0;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -58,7 +60,7 @@ static Texture* loadTextureAndConvertFormat(const char* path) {
 }
 
 void gameInit(void) {
-    gBlocksPerXAxis = (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4) / GAME_BLOCK_SIZE;
+    gBlocksPerXAxis = (GAME_WINDOW_WIDTH - RIGHT_PADDING) / GAME_BLOCK_SIZE;
     gBlocksPerYAxis = GAME_WINDOW_HEIGHT / GAME_BLOCK_SIZE;
 
     mat4 projection;
@@ -84,6 +86,7 @@ void gameInit(void) {
     gSmallFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
     gBigFont = TTF_OpenFont("res/Roboto-Regular.ttf", 40);
 
+    gLevelStartMillis = SDL_GetTicks();
     gGameLevel = gameLevelCreate(gCurrentLevel);
 }
 
@@ -165,7 +168,7 @@ static void drawCollectedGems(void) {
     SDL_itoa(gameLevelCollectedGems(gGameLevel), text + 6, 10);
     drawText(
         gSmallFont,
-        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE},
+        (vec2) {(float) (GAME_WINDOW_WIDTH - RIGHT_PADDING + 5), (float) GAME_BLOCK_SIZE},
         text,
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
@@ -176,7 +179,7 @@ static void drawTotalGems(void) {
     SDL_itoa(gameLevelTotalGems(gGameLevel), text + 7, 10);
     drawText(
         gSmallFont,
-        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 1.5f},
+        (vec2) {(float) (GAME_WINDOW_WIDTH - RIGHT_PADDING + 5), (float) GAME_BLOCK_SIZE * 1.5f},
         text,
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
@@ -188,7 +191,19 @@ static void drawCurrentLevel(void) {
 
     drawText(
         gSmallFont,
-        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4 + 5), (float) GAME_BLOCK_SIZE * 2.0f},
+        (vec2) {(float) (GAME_WINDOW_WIDTH - RIGHT_PADDING + 5), (float) GAME_BLOCK_SIZE * 2.0f},
+        text,
+        (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+    );
+}
+
+static void drawLevelTime(void) {
+    char text[64];
+    assert(SDL_snprintf(text, sizeof text, "Time: %u ms", SDL_GetTicks() - gLevelStartMillis) > 0);
+
+    drawText(
+        gSmallFont,
+        (vec2) {(float) (GAME_WINDOW_WIDTH - RIGHT_PADDING + 5), (float) GAME_BLOCK_SIZE * 3.0f},
         text,
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
@@ -212,6 +227,7 @@ static void restart(void) {
     gCameraOffsetX = 0;
     gCameraOffsetY = 0;
     gCurrentLevel = 0;
+    gLevelStartMillis = SDL_GetTicks();
     gGameLevel = gameLevelCreate(0);
 }
 
@@ -263,7 +279,7 @@ void gameRender(void) {
 
     shapeRendererDrawLine(
         gShapeRenderer,
-        (vec2) {(float) (GAME_WINDOW_WIDTH - GAME_BLOCK_SIZE * 4), (float) GAME_WINDOW_HEIGHT / 2.0f},
+        (vec2) {(float) (GAME_WINDOW_WIDTH - RIGHT_PADDING), (float) GAME_WINDOW_HEIGHT / 2.0f},
         (vec2) {(float) GAME_WINDOW_HEIGHT, 1.0f},
         90.0f,
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
@@ -272,6 +288,7 @@ void gameRender(void) {
     drawCollectedGems();
     drawTotalGems();
     drawCurrentLevel();
+    drawLevelTime();
 }
 
 void gameChangeLevel(void) {
