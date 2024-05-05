@@ -17,6 +17,12 @@
  */
 
 #include "../include/gameLib.h"
+#include <assert.h>
+#include <SDL2/SDL.h>
+
+typedef struct {
+    int x, y;
+} Gem;
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "UnusedParameter"
@@ -32,11 +38,27 @@ void gameLibMove(
     int* newX,
     int* newY
 ) {
-    // TODO: add Floyd-Warshall algorithm
-    if (oldX + 1 < fieldColumns && field[oldY][oldX + 1] == ENTITY_EMPTY || field[oldY][oldX + 1] == ENTITY_GEM) {
-        *newX = oldX + 1;
-        *newY = oldY;
+    const int allocations = SDL_GetNumAllocations();
+
+    Gem* gems = nullptr;
+    int gemsSize = 0;
+
+    for (int y = 0; y < fieldRows; y++) {
+        for (int x = 0; x < fieldColumns; x++) {
+            if (field[y][x] == ENTITY_GEM) {
+                gems = SDL_realloc(gems, ++gemsSize * sizeof(Entity));
+                gems[gemsSize - 1] = (Gem) {x, y};
+            }
+        }
     }
+
+    for (int i = 0; i < gemsSize; i++)
+        SDL_Log("x: %d, y: %d", gems[i].x, gems[i].y);
+    SDL_Log("");
+
+    SDL_free(gems);
+
+    assert(allocations == SDL_GetNumAllocations());
 }
 
 #pragma clang diagnostic pop
