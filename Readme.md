@@ -12,4 +12,3 @@ and it is the ideal algorithm for this game.
 
 ![](screenshots/a.png)
 ![](screenshots/b.png)
-![](screenshots/c.png)
