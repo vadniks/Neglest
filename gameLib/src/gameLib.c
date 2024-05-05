@@ -24,27 +24,18 @@ static int gCurrentLevel = 0;
 static const Entity** gField = nullptr;
 static int gFieldRows = 0, gFieldColumns = 0;
 
-void gameLibInit(
-    int currentLevel,
-    const Entity** field,
-    int fieldRows,
-    int fieldColumns
-) {
+void gameLibInit(int currentLevel, const Entity** field, int fieldRows, int fieldColumns) {
     gCurrentLevel = currentLevel;
     gField = field;
     gFieldRows = fieldRows;
     gFieldColumns = fieldColumns;
 }
 
-void gameLibMove(
-    int oldX,
-    int oldY,
-    int* newX,
-    int* newY
-) {
+GameLibDirection gameLibMove(int x, int y) {
     const int allocations = SDL_GetNumAllocations();
 
 
 
     assert(allocations == SDL_GetNumAllocations());
+    return GAME_LIB_DIRECTION_RIGHT;
 }

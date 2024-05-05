@@ -20,18 +20,15 @@
 
 #include "../../src/entity.h"
 
-[[gnu::visibility("default")]]
-void gameLibInit(
-    int currentLevel,
-    const Entity** field,
-    int fieldRows,
-    int fieldColumns
-);
+typedef enum {
+    GAME_LIB_DIRECTION_UP,
+    GAME_LIB_DIRECTION_LEFT,
+    GAME_LIB_DIRECTION_DOWN,
+    GAME_LIB_DIRECTION_RIGHT
+} GameLibDirection;
 
 [[gnu::visibility("default")]]
-void gameLibMove(
-    int oldX,
-    int oldY,
-    int* newX,
-    int* newY
-);
+void gameLibInit(int currentLevel, const Entity** field, int fieldRows, int fieldColumns);
+
+[[gnu::visibility("default")]]
+GameLibDirection gameLibMove(int x, int y);

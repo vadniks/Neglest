@@ -221,8 +221,22 @@ static void processEnemies(GameLevel* level) {
 static void processPlayer(GameLevel* level) {
     if (DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT) return;
 
-    int x, y;
-    gameLibMove(level->playerPositionX, level->playerPositionY, &x, &y);
+    int x = level->playerPositionX, y = level->playerPositionY;
+
+    switch (gameLibMove(level->playerPositionX, level->playerPositionY)) {
+        case GAME_LIB_DIRECTION_UP:
+            y--;
+            break;
+        case GAME_LIB_DIRECTION_LEFT:
+            x--;
+            break;
+        case GAME_LIB_DIRECTION_DOWN:
+            y++;
+            break;
+        case GAME_LIB_DIRECTION_RIGHT:
+            x++;
+            break;
+    }
 
     tryMovePlayer(level, x, y);
 }
