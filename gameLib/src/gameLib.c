@@ -88,6 +88,15 @@ static void addToQueue(Queue* queue, int x, int y, Direction direction) {
 
 static bool check(Entity entity, int x, int y) { return gField[y][x] == entity; }
 
+static bool listContainsCoordinates(const List* list, Coordinates coordinates) {
+    for (int i = 0; i < listSize(list); i++) {
+        const Coordinates* xCoordinates = listGet(list, i);
+        if (coordinates.x == xCoordinates->x && coordinates.y == xCoordinates->y)
+            return true;
+    }
+    return false;
+}
+
 static Direction move(int x, int y) {
     List* visited = listCreate(SDL_free);
     Queue* queue = baseQueue(x, y);
@@ -105,16 +114,7 @@ static Direction move(int x, int y) {
             goto end;
         }
 
-        bool xContinue = false;
-        for (int i = 0; i < listSize(visited); i++) {
-            Coordinates* xCoordinates = listGet(visited, i);
-            if (coordinates.x == xCoordinates->x && coordinates.y == xCoordinates->y)
-                xContinue = true;
-        }
-        if (check(ENTITY_BOX, coordinates.x, coordinates.y))
-            xContinue = true;
-
-        if (xContinue)
+        if (listContainsCoordinates(visited, coordinates) || !check(ENTITY_EMPTY, coordinates.x, coordinates.y))
             continue;
 
         addToQueue(queue, coordinates.x, coordinates.y, direction);
@@ -128,6 +128,5 @@ static Direction move(int x, int y) {
     listDestroy(visited);
     queueDestroy(queue);
 
-    SDL_Log("%d", directionToReturn);
     return directionToReturn;
 }

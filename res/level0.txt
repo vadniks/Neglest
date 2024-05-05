@@ -11,7 +11,7 @@ bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbb................................bbbbbbbbbbbbb
-bb...................................bbbbbbbbbbbbb
+bb...................g...............bbbbbbbbbbbbb
 p...............g........1...................g.g.b
 bb.......................2...........bbbbbbbbbbbbb
 bbbbbbb..................3...........bbbbbbbbbbbbb
