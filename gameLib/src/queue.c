@@ -47,8 +47,10 @@ void queuePush(Queue* queue, void* value) {
 
 bool queueEmpty(const Queue* queue) { return queue->size == 0; }
 
-void* queuePull(Queue* queue) {
-    assert(queue->values);
+void* nullable queuePull(Queue* queue) {
+    if (queue->size == 0 || queue->values == nullptr)
+        return nullptr;
+
     void* value = queue->values[0];
 
     const int newSize = queue->size - 1;

@@ -91,7 +91,11 @@ static bool check(Entity entity, int x, int y) { return gField[y][x] == entity; 
 
 static bool listContainsCoordinates(const List* list, Coordinates coordinates) {
     for (int i = 0; i < listSize(list); i++) {
-        const Coordinates* xCoordinates = listGet(list, i);
+        const Coordinates* nullable xCoordinates = listGet(list, i);
+
+        if (xCoordinates == nullptr)
+            return false;
+
         if (coordinates.x == xCoordinates->x && coordinates.y == xCoordinates->y)
             return true;
     }
@@ -102,10 +106,13 @@ static Direction move(int x, int y) {
     List* visited = listCreate(SDL_free);
     Queue* queue = baseQueue(x, y);
 
-    Direction directionToReturn;
+    Direction directionToReturn = DIRECTION_RIGHT;
 
     while (true) {
-        Node* node = queuePull(queue);
+        Node* nullable node = queuePull(queue);
+        if (node == nullptr)
+            goto end;
+
         Direction direction = node->direction;
         Coordinates coordinates = node->coordinates;
         SDL_free(node);

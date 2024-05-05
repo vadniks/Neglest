@@ -18,6 +18,10 @@
 
 #pragma once
 
+#ifndef nullable
+#   define nullable
+#endif
+
 struct List;
 typedef struct List List;
 
@@ -26,5 +30,5 @@ typedef void (*ListDeallocator)(void*);
 List* listCreate(ListDeallocator deallocator);
 void listDestroy(List* list);
 void listAdd(List* list, void* value);
-void* listGet(const List* list, int index);
+void* nullable listGet(const List* list, int index);
 int listSize(const List* list);

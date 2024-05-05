@@ -45,8 +45,9 @@ void listAdd(List* list, void* value) {
     list->values[list->size - 1] = value;
 }
 
-void* listGet(const List* list, int index) {
-    assert(index >= 0 && index < list->size);
+void* nullable listGet(const List* list, int index) {
+    if (index < 0 || index >= list->size)
+        return nullptr;
     return list->values[index];
 }
 
