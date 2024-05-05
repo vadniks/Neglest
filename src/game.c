@@ -45,7 +45,7 @@ static TTF_Font* gSmallFont = nullptr;
 static TTF_Font* gBigFont = nullptr;
 static int gMouseX = 0, gMouseY = 0;
 static bool gMouseButtonPressed = false;
-static unsigned gLevelStartMillis = 0;
+static unsigned gStartMillis = 0, gFinishMillis = 0;
 
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
@@ -86,7 +86,7 @@ void gameInit(void) {
     gSmallFont = TTF_OpenFont("res/Roboto-Regular.ttf", 20);
     gBigFont = TTF_OpenFont("res/Roboto-Regular.ttf", 40);
 
-    gLevelStartMillis = SDL_GetTicks();
+    gStartMillis = SDL_GetTicks();
     gGameLevel = gameLevelCreate(gCurrentLevel);
 }
 
@@ -197,9 +197,9 @@ static void drawCurrentLevel(void) {
     );
 }
 
-static void drawLevelTime(void) {
+static void drawTime(void) {
     char text[64];
-    assert(SDL_snprintf(text, sizeof text, "Time: %u ms", SDL_GetTicks() - gLevelStartMillis) > 0);
+    assert(SDL_snprintf(text, sizeof text, "Time: %u ms", SDL_GetTicks() - gStartMillis) > 0);
 
     drawText(
         gSmallFont,
@@ -210,7 +210,8 @@ static void drawLevelTime(void) {
 }
 
 static void drawFinish(void) {
-    const char* text = "Finish!";
+    char text[64];
+    assert(SDL_snprintf(text, sizeof text, "Finished, %u ms!", gFinishMillis - gStartMillis));
 
     int w, h;
     TTF_SizeUTF8(gBigFont, text, &w, &h);
@@ -227,7 +228,8 @@ static void restart(void) {
     gCameraOffsetX = 0;
     gCameraOffsetY = 0;
     gCurrentLevel = 0;
-    gLevelStartMillis = SDL_GetTicks();
+    gStartMillis = SDL_GetTicks();
+    gFinishMillis = 0;
     gGameLevel = gameLevelCreate(0);
 }
 
@@ -270,6 +272,8 @@ static void drawRestartButton(void) {
 
 void gameRender(void) {
     if (gGameLevel == nullptr) {
+        if (gFinishMillis == 0)
+            gFinishMillis = SDL_GetTicks();
         drawFinish();
         drawRestartButton();
         return;
@@ -288,7 +292,7 @@ void gameRender(void) {
     drawCollectedGems();
     drawTotalGems();
     drawCurrentLevel();
-    drawLevelTime();
+    drawTime();
 }
 
 void gameChangeLevel(void) {
