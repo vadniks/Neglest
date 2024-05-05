@@ -27,7 +27,7 @@ bbbbbbbbbbbbbbbb.........2...bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbb...............................gb
+bbbbbbbbbbbbbbbbb..............................g.b
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb............bbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbb........3...bbbbbbbbbbbbbbbbbbbbb
