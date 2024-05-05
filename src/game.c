@@ -203,7 +203,7 @@ static void drawLevelTime(void) {
 
     drawText(
         gSmallFont,
-        (vec2) {(float) (GAME_WINDOW_WIDTH - RIGHT_PADDING + 5), (float) GAME_BLOCK_SIZE * 3.0f},
+        (vec2) {(float) (GAME_WINDOW_WIDTH - RIGHT_PADDING + 5), (float) GAME_BLOCK_SIZE * 2.5f},
         text,
         (vec4) {1.0f, 1.0f, 1.0f, 1.0f}
     );
