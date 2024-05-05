@@ -53,10 +53,3 @@ void* listGet(const List* list, int index) {
 int listSize(const List* list) {
     return list->size;
 }
-
-bool listContains(const List* list, const void* value) {
-    for (int i = 0; i < list->size; i++)
-        if (list->values[i] == value)
-            return true;
-    return false;
-}

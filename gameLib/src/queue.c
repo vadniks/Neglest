@@ -54,7 +54,7 @@ void* queuePull(Queue* queue) {
     const int newSize = queue->size - 1;
     if (!newSize) {
         SDL_free(queue->values);
-        queue->values = NULL;
+        queue->values = nullptr;
         queue->size = 0;
         return value;
     }

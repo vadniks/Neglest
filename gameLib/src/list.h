@@ -28,4 +28,3 @@ void listDestroy(List* list);
 void listAdd(List* list, void* value);
 void* listGet(const List* list, int index);
 int listSize(const List* list);
-bool listContains(const List* list, const void* value);
