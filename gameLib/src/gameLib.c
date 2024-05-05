@@ -32,7 +32,7 @@ void gameLibInit(int currentLevel, const Entity* const* field, int fieldRows, in
 }
 
 static GameLibDirection move(int x, int y) {
-
+    return GAME_LIB_DIRECTION_RIGHT;
 }
 
 GameLibDirection gameLibMove(int x, int y) {
