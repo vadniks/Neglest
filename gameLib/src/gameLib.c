@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "../include/gameLib.h"
+#include <gameLib/gameLib.h>
 #include <assert.h>
 #include <SDL2/SDL.h>
 

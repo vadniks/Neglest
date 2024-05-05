@@ -19,7 +19,7 @@
 #include "gameLevel.h"
 #include "game.h"
 #include "entity.h"
-#include "../gameLib/include/gameLib.h"
+#include <gameLib/gameLib.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <unistd.h>

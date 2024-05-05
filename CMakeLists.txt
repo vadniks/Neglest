@@ -26,7 +26,7 @@ set(GAME_LIB gameLib)
 add_subdirectory(${GAME_LIB})
 
 target_link_libraries(${PROJECT_NAME} SDL2 SDL2_ttf SDL2_image GL GLEW m ${PROJECT_SOURCE_DIR}/libs/cglm/bin/libcglm.so ${GAME_LIB})
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/libs/cglm/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/libs/cglm/include gameLib/include)
 
 file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY res DESTINATION ${CMAKE_BINARY_DIR})
