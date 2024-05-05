@@ -18,11 +18,4 @@
 
 #pragma once
 
-#include "entity.h"
-#include "direction.h"
-
-[[gnu::visibility("default")]]
-void gameLibInit(int currentLevel, const Entity* const* field, int fieldRows, int fieldColumns);
-
-[[gnu::visibility("default")]]
-GameLibDirection gameLibMove(int x, int y);
+#include "../../src/entity.h"

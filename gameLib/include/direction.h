@@ -18,11 +18,9 @@
 
 #pragma once
 
-#include "entity.h"
-#include "direction.h"
-
-[[gnu::visibility("default")]]
-void gameLibInit(int currentLevel, const Entity* const* field, int fieldRows, int fieldColumns);
-
-[[gnu::visibility("default")]]
-GameLibDirection gameLibMove(int x, int y);
+typedef enum {
+    GAME_LIB_DIRECTION_UP,
+    GAME_LIB_DIRECTION_LEFT,
+    GAME_LIB_DIRECTION_DOWN,
+    GAME_LIB_DIRECTION_RIGHT
+} GameLibDirection;
