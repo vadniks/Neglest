@@ -21,11 +21,15 @@
 #include "../../src/entity.h"
 
 [[gnu::visibility("default")]]
-void gameLibMove(
+void gameLibInit(
     int currentLevel,
     const Entity** field,
     int fieldRows,
-    int fieldColumns,
+    int fieldColumns
+);
+
+[[gnu::visibility("default")]]
+void gameLibMove(
     int oldX,
     int oldY,
     int* newX,

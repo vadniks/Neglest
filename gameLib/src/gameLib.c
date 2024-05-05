@@ -20,19 +20,23 @@
 #include <assert.h>
 #include <SDL2/SDL.h>
 
-typedef struct {
-    int x, y;
-} Gem;
+static int gCurrentLevel = 0;
+static const Entity** gField = nullptr;
+static int gFieldRows = 0, gFieldColumns = 0;
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnusedParameter"
-#pragma clang diagnostic ignored "-Wunused-parameter"
-
-void gameLibMove(
+void gameLibInit(
     int currentLevel,
     const Entity** field,
     int fieldRows,
-    int fieldColumns,
+    int fieldColumns
+) {
+    gCurrentLevel = currentLevel;
+    gField = field;
+    gFieldRows = fieldRows;
+    gFieldColumns = fieldColumns;
+}
+
+void gameLibMove(
     int oldX,
     int oldY,
     int* newX,
@@ -40,25 +44,7 @@ void gameLibMove(
 ) {
     const int allocations = SDL_GetNumAllocations();
 
-    Gem* gems = nullptr;
-    int gemsSize = 0;
 
-    for (int y = 0; y < fieldRows; y++) {
-        for (int x = 0; x < fieldColumns; x++) {
-            if (field[y][x] == ENTITY_GEM) {
-                gems = SDL_realloc(gems, ++gemsSize * sizeof(Entity));
-                gems[gemsSize - 1] = (Gem) {x, y};
-            }
-        }
-    }
-
-    for (int i = 0; i < gemsSize; i++)
-        SDL_Log("x: %d, y: %d", gems[i].x, gems[i].y);
-    SDL_Log("");
-
-    SDL_free(gems);
 
     assert(allocations == SDL_GetNumAllocations());
 }
-
-#pragma clang diagnostic pop
