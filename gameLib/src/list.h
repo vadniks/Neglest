@@ -21,9 +21,11 @@
 struct List;
 typedef struct List List;
 
-List* listCreate(void);
+typedef void (*ListDeallocator)(void*);
+
+List* listCreate(ListDeallocator deallocator);
 void listDestroy(List* list);
-void listAdd(List* list, const void* value);
-const void* listGet(const List* list, int index);
+void listAdd(List* list, void* value);
+void* listGet(const List* list, int index);
 int listSize(const List* list);
 bool listContains(const List* list, const void* value);

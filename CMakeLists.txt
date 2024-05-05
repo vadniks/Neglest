@@ -18,6 +18,7 @@ add_compile_options("-O3")
 add_compile_options("-Wno-gnu-auto-type")
 add_compile_options("-Wno-logical-op-parentheses")
 add_compile_options("-Wno-unknown-pragmas")
+add_compile_options("-Wno-gnu-folding-constant")
 
 file(GLOB PROJECT_SOURCES CONFIGURE_DEPENDS src/*.c src/*.h)
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

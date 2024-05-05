@@ -21,32 +21,35 @@
 #include <SDL2/SDL.h>
 
 struct Queue {
-    const void** values;
+    void** values;
     int size;
+    QueueDeallocator deallocator;
 };
 
-Queue* queueCreate(void) {
+Queue* queueCreate(QueueDeallocator deallocator) {
     Queue* queue = SDL_malloc(sizeof *queue);
     queue->values = nullptr;
     queue->size = 0;
+    queue->deallocator = deallocator;
     return queue;
 }
 
 void queueDestroy(Queue* queue) {
+    for (int i = 0; i < queue->size; queue->deallocator(queue->values[i++]));
     SDL_free(queue->values);
     SDL_free(queue);
 }
 
-void queuePush(Queue* queue, const void* value) {
+void queuePush(Queue* queue, void* value) {
     queue->values = SDL_realloc(queue->values, ++(queue->size) * sizeof(void*));
     queue->values[queue->size - 1] = value;
 }
 
 bool queueEmpty(const Queue* queue) { return queue->size == 0; }
 
-const void* queuePull(Queue* queue) {
+void* queuePull(Queue* queue) {
     assert(queue->values);
-    const void* value = queue->values[0];
+    void* value = queue->values[0];
 
     const int newSize = queue->size - 1;
     if (!newSize) {
@@ -56,7 +59,7 @@ const void* queuePull(Queue* queue) {
         return value;
     }
 
-    const void** temp = SDL_malloc(newSize * sizeof(void*));
+    void** temp = SDL_malloc(newSize * sizeof(void*));
     SDL_memcpy(temp, &(queue->values[1]), newSize * sizeof(void*));
 
     SDL_free(queue->values);

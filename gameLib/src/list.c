@@ -21,28 +21,31 @@
 #include <SDL2/SDL.h>
 
 struct List {
-    const void** values;
+    void** values;
     int size;
+    ListDeallocator deallocator;
 };
 
-List* listCreate(void) {
+List* listCreate(ListDeallocator deallocator) {
     List* list = SDL_malloc(sizeof *list);
     list->values = nullptr;
     list->size = 0;
+    list->deallocator = deallocator;
     return list;
 }
 
 void listDestroy(List* list) {
+    for (int i = 0; i < list->size; list->deallocator(list->values[i++]));
     SDL_free(list->values);
     SDL_free(list);
 }
 
-void listAdd(List* list, const void* value) {
+void listAdd(List* list, void* value) {
     list->values = SDL_realloc(list->values, ++(list->size));
     list->values[list->size - 1] = value;
 }
 
-const void* listGet(const List* list, int index) {
+void* listGet(const List* list, int index) {
     assert(index >= 0 && index < list->size);
     return list->values[index];
 }

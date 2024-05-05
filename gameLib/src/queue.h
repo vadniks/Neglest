@@ -21,8 +21,10 @@
 struct Queue;
 typedef struct Queue Queue;
 
-Queue* queueCreate(void);
+typedef void (*QueueDeallocator)(void*);
+
+Queue* queueCreate(QueueDeallocator deallocator);
 void queueDestroy(Queue* queue);
-void queuePush(Queue* queue, const void* value);
+void queuePush(Queue* queue, void* value);
 bool queueEmpty(const Queue* queue);
-const void* queuePull(Queue* queue);
+void* queuePull(Queue* queue);
