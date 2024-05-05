@@ -43,7 +43,7 @@ bbbbbbbbbb..........bbbbbbb..bbbbbbb....bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb..bbbbbbbbb..bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb..bbbbbbbbb..bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbb..........bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbb....g.....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb..........bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb....bb....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb..bbbbbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
