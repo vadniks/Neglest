@@ -128,5 +128,6 @@ static Direction move(int x, int y) {
     listDestroy(visited);
     queueDestroy(queue);
 
+    SDL_Log("%d", directionToReturn);
     return directionToReturn;
 }

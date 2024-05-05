@@ -19,8 +19,8 @@
 #pragma once
 
 typedef enum {
-    DIRECTION_UP,
     DIRECTION_LEFT,
+    DIRECTION_RIGHT,
+    DIRECTION_UP,
     DIRECTION_DOWN,
-    DIRECTION_RIGHT
 } Direction;
