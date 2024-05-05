@@ -1,7 +1,7 @@
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.bbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb..........bbbbbbb....bbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb..g.......bbbbbbb....bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
+b.g..................................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
@@ -12,7 +12,7 @@ bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbbbbbbbbbbbbb.....................bbbbbbbbbbbbb
 bbbbb................................bbbbbbbbbbbbb
 bb...................g...............bbbbbbbbbbbbb
-p...............g........1...................g.g.b
+bp..............g........1...................g.g.b
 bb.......................2...........bbbbbbbbbbbbb
 bbbbbbb..................3...........bbbbbbbbbbbbb
 bbbbbbbbbb...............4...........bbbbbbbbbbbbb
@@ -38,7 +38,7 @@ bbbbbbbbbb..........bbbbbbb.............bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb....bbb......bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb....bbb......bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb....bbb......bbbbbbbbbb
-bbbbbbbbbb..........bbbbbbb..bbbbbbb....bbbbbbbbbb
+bbbbbbbbbb..........bbbbbbb..bbbbbbb..g.bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb..bbbbbbb....bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb..bbbbbbbbb..bbbbbbbbbb
 bbbbbbbbbb..........bbbbbbb..bbbbbbbbb..bbbbbbbbbb
@@ -47,4 +47,4 @@ bbbbbbbbbb....g.....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb..........bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb....bb....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbb..bbbbbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbbbb.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
