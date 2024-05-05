@@ -132,11 +132,7 @@ GameLevel* gameLevelCreate(int which) {
         }
     }
 
-    const int fieldSize = GAME_LEVEL_FIELD_ROWS * GAME_LEVEL_FIELD_COLUMNS * (int) sizeof(Entity*);
-    const Entity** field = alloca(fieldSize * sizeof(Entity));
-    SDL_memcpy(field, level->field, fieldSize);
-
-    gameLibInit(gameCurrentLevel(), field, GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS);
+    gameLibInit(gameCurrentLevel(), GAME_LEVEL_FIELD_ROWS, GAME_LEVEL_FIELD_COLUMNS);
 
     return level;
 }
@@ -221,9 +217,13 @@ static void processEnemies(GameLevel* level) {
 static void processPlayer(GameLevel* level) {
     if (DEFS_ENABLE_KEYBOARD_PLAYER_MOVEMENT) return;
 
+    const int fieldSize = GAME_LEVEL_FIELD_ROWS * GAME_LEVEL_FIELD_COLUMNS * (int) sizeof(Entity*);
+    const Entity** field = alloca(fieldSize * sizeof(Entity));
+    SDL_memcpy(field, level->field, fieldSize);
+
     int x = level->playerPositionX, y = level->playerPositionY;
 
-    switch (gameLibMove(level->playerPositionX, level->playerPositionY)) {
+    switch (gameLibMove(field, level->playerPositionX, level->playerPositionY)) {
         case DIRECTION_UP:
             y--;
             break;

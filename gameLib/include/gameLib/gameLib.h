@@ -22,7 +22,7 @@
 #include "direction.h"
 
 [[gnu::visibility("default")]]
-void gameLibInit(int currentLevel, const Entity* const* field, int fieldRows, int fieldColumns);
+void gameLibInit(int currentLevel, int fieldRows, int fieldColumns);
 
 [[gnu::visibility("default")]]
-Direction gameLibMove(int x, int y);
+Direction gameLibMove(const Entity* const* field, int x, int y);

@@ -41,7 +41,7 @@ void listDestroy(List* list) {
 }
 
 void listAdd(List* list, void* value) {
-    list->values = SDL_realloc(list->values, ++(list->size));
+    list->values = SDL_realloc(list->values, ++(list->size) * sizeof(void*));
     list->values[list->size - 1] = value;
 }
 
