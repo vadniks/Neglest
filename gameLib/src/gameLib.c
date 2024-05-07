@@ -58,12 +58,15 @@ typedef struct {
     Coordinates coordinates;
 } Node;
 
+#define DIRECTIONS {DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, DIRECTION_DOWN}
+#define NEIGHBOURS {{x - 1, y},     {x + 1, y},      {x, y - 1},   {x, y + 1}}
+
 static Queue* baseQueue(int x, int y) {
     Queue* queue = queueCreate(SDL_free);
 
     const int size = 4;
-    Direction directions[size] = {DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, DIRECTION_DOWN};
-    Coordinates neighbours[size] = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}};
+    Direction directions[size] = DIRECTIONS;
+    Coordinates neighbours[size] = NEIGHBOURS;
 
     for (int i = 0; i < size; i++) {
         Node* node = SDL_malloc(sizeof *node);
@@ -77,7 +80,7 @@ static Queue* baseQueue(int x, int y) {
 
 static void addToQueue(Queue* queue, int x, int y, Direction direction) {
     const int size = 4;
-    Coordinates neighbours[size] = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}};
+    Coordinates neighbours[size] = NEIGHBOURS;
 
     for (int i = 0; i < size; i++) {
         Node* node = SDL_malloc(sizeof *node);
