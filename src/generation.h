@@ -17,3 +17,5 @@
  */
 
 #pragma once
+
+void generation(void);

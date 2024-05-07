@@ -17,6 +17,7 @@
  */
 
 #include "game.h"
+#include "generation.h" // TODO: test
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -95,12 +96,13 @@ int main(void) {
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_BLEND);
 
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     SDL_GL_SetSwapInterval(1);
 
     gameInit();
-    renderLoop(window);
+    generation(); // TODO: test
+//    renderLoop(window);
     gameClean();
 
     SDL_GL_DeleteContext(glContext);
