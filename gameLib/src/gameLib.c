@@ -87,7 +87,7 @@ static void addToQueue(Queue* queue, int x, int y, Direction direction) {
     }
 }
 
-static bool check(Entity entity, int x, int y) { return gField[y][x] == entity; }
+static inline bool check(Entity entity, int x, int y) { return gField[y][x] == entity; }
 
 static bool listContainsCoordinates(const List* list, Coordinates coordinates) {
     for (int i = 0; i < listSize(list); i++) {
