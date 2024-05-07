@@ -18,4 +18,4 @@
 
 #pragma once
 
-void generation(void);
+void generationInit(void);

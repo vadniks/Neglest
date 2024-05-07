@@ -101,7 +101,7 @@ int main(void) {
     SDL_GL_SetSwapInterval(1);
 
     gameInit();
-    generation(); // TODO: test
+    generationInit(); // TODO: test
 //    renderLoop(window);
     gameClean();
 

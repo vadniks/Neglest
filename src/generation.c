@@ -23,20 +23,25 @@
 #include <unistd.h>
 #include <assert.h>
 
+static int gRows = 0, gColumns = 0, gMaxRomWidth = 0, gMaxRoomHeight = 0;
+
 static int xRandom(int max) { return (int) ((float) random() / (float) RAND_MAX * ((float) max + 1.0f)); }
 
-void generation(void) {
-    const int
-        rows = gameBlocksPerYAxis(),
-        columns = gameBlocksPerXAxis(),
-        maxWidth = columns / 2,
-        maxHeight = rows / 2;
+static void createPath(void) {
 
-    char field[rows][columns];
+}
+
+void generationInit(void) {
+    gRows = gameBlocksPerYAxis();
+    gColumns = gameBlocksPerXAxis();
+    gMaxRomWidth = gColumns / 2;
+    gMaxRoomHeight = gRows / 2;
+
+    char field[gRows][gColumns];
     SDL_memset(field, 'b', sizeof field);
 
-    for (int y = 0; y < rows; y++) {
-        for (int x = 0; x < columns; x++) {
+    for (int y = 0; y < gRows; y++) {
+        for (int x = 0; x < gColumns; x++) {
             printf("%c", field[y][x]);
         }
         printf("\n");
@@ -49,8 +54,8 @@ void generation(void) {
 
     //
 
-    for (int y = 0; y < rows; y++) {
-        for (int x = 0; x < columns; x++) {
+    for (int y = 0; y < gRows; y++) {
+        for (int x = 0; x < gColumns; x++) {
             printf("%c", field[y][x]);
         }
         printf("\n");
