@@ -22,6 +22,7 @@
 
 #include "generation.h"
 #include "list.h"
+#include "queue.h"
 #include <SDL2/SDL.h>
 
 #ifndef nullable
@@ -61,6 +62,26 @@ List* treeLeafs(Tree* tree) {
 
         return list;
     }
+}
+
+void treeLevel(Tree* tree, int level, Queue* queue) {
+    if (level == 1)
+        queuePush(queue, tree);
+    else {
+        if (tree->left != nullptr)
+            treeLevel(tree->left, level - 1, queue);
+        if (tree->right != nullptr)
+            treeLevel(tree->right, level - 1, queue);
+    }
+}
+
+void treePrint(Tree* tree) {
+    SDL_Log("%p", (void*) tree);
+
+    if (tree->left != nullptr)
+        treePrint(tree->left);
+    if (tree->right != nullptr)
+        treePrint(tree->right);
 }
 
 

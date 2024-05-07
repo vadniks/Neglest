@@ -23,10 +23,10 @@
 struct Queue {
     void** values;
     int size;
-    QueueDeallocator deallocator;
+    QueueDeallocator nullable deallocator;
 };
 
-Queue* queueCreate(QueueDeallocator deallocator) {
+Queue* queueCreate(QueueDeallocator nullable deallocator) {
     Queue* queue = SDL_malloc(sizeof *queue);
     queue->values = nullptr;
     queue->size = 0;
@@ -35,7 +35,9 @@ Queue* queueCreate(QueueDeallocator deallocator) {
 }
 
 void queueDestroy(Queue* queue) {
-    for (int i = 0; i < queue->size; queue->deallocator(queue->values[i++]));
+    if (queue->deallocator != nullptr)
+        for (int i = 0; i < queue->size; queue->deallocator(queue->values[i++]));
+
     SDL_free(queue->values);
     SDL_free(queue);
 }
