@@ -65,8 +65,8 @@ static Queue* baseQueue(int x, int y) {
     Queue* queue = queueCreate(SDL_free);
 
     const int size = 4;
-    Direction directions[size] = DIRECTIONS;
-    Coordinates neighbours[size] = NEIGHBOURS;
+    const Direction directions[size] = DIRECTIONS;
+    const Coordinates neighbours[size] = NEIGHBOURS;
 
     for (int i = 0; i < size; i++) {
         Node* node = SDL_malloc(sizeof *node);
@@ -80,7 +80,7 @@ static Queue* baseQueue(int x, int y) {
 
 static void addToQueue(Queue* queue, int x, int y, Direction direction) {
     const int size = 4;
-    Coordinates neighbours[size] = NEIGHBOURS;
+    const Coordinates neighbours[size] = NEIGHBOURS;
 
     for (int i = 0; i < size; i++) {
         Node* node = SDL_malloc(sizeof *node);
