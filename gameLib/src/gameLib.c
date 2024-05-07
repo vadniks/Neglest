@@ -92,9 +92,7 @@ static bool check(Entity entity, int x, int y) { return gField[y][x] == entity; 
 static bool listContainsCoordinates(const List* list, Coordinates coordinates) {
     for (int i = 0; i < listSize(list); i++) {
         const Coordinates* nullable xCoordinates = listGet(list, i);
-
-        if (xCoordinates == nullptr)
-            return false;
+        assert(xCoordinates != nullptr);
 
         if (coordinates.x == xCoordinates->x && coordinates.y == xCoordinates->y)
             return true;
