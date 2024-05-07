@@ -28,20 +28,39 @@
 #   define nullable
 #endif
 
-struct Node;
-typedef struct Node {
-    struct Node* nullable left;
-    struct Node* nullable right;
-} Node;
+struct Tree;
+typedef struct Tree {
+    struct Tree* nullable left;
+    struct Tree* nullable right;
+} Tree;
 
-List* treeLeafs(Node* node) {
-    if (node->left == nullptr && node->right == nullptr) {
+List* treeLeafs(Tree* tree) {
+    if (tree->left == nullptr && tree->right == nullptr) {
         List* list = listCreate(nullptr);
-        listAdd(list, node);
+        listAdd(list, tree);
+        return list;
     } else {
-        Node* nodesLeft = nullptr;
-        Node* nodesRight = nullptr;
+        List* list = listCreate(nullptr);
 
+        if (tree->left != nullptr) {
+            List* left = treeLeafs(tree->left);
 
+            for (int i = 0; i < listSize(left); i++)
+                listAdd(list, listGet(left, i));
+
+            listDestroy(left);
+        }
+        if (tree->right != nullptr) {
+            List* right = treeLeafs(tree->right);
+
+            for (int i = 0; i < listSize(right); i++)
+                listAdd(list, listGet(right, i));
+
+            listDestroy(right);
+        }
+
+        return list;
     }
 }
+
+

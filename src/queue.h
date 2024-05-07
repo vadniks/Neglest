@@ -18,4 +18,17 @@
 
 #pragma once
 
-#include "../../src/queue.h"
+#ifndef nullable
+#   define nullable
+#endif
+
+struct Queue;
+typedef struct Queue Queue;
+
+typedef void (*QueueDeallocator)(void*);
+
+Queue* queueCreate(QueueDeallocator deallocator);
+void queueDestroy(Queue* queue);
+void queuePush(Queue* queue, void* value);
+bool queueEmpty(const Queue* queue);
+void* nullable queuePull(Queue* queue);
