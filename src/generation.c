@@ -23,19 +23,17 @@
 #include <unistd.h>
 #include <assert.h>
 
-static int xRandom(int max) { return (int) random() / RAND_MAX * (max + 1); }
-
-static int min(int a, int b) { return a < b ? a : b; }
+static int xRandom(int max) { return (int) ((float) random() / (float) RAND_MAX * ((float) max + 1.0f)); }
 
 void generation(void) {
     const int
         rows = gameBlocksPerYAxis(),
         columns = gameBlocksPerXAxis(),
-        maxWidth = columns / 4,
-        maxHeight = rows / 4;
+        maxWidth = columns / 2,
+        maxHeight = rows / 2;
 
     char field[rows][columns];
-    SDL_memset(field, '.', sizeof field);
+    SDL_memset(field, 'b', sizeof field);
 
     for (int y = 0; y < rows; y++) {
         for (int x = 0; x < columns; x++) {
@@ -49,21 +47,7 @@ void generation(void) {
     assert(getentropy(&entropy, sizeof(int)) == 0);
     srand(entropy);
 
-    const int roomsCount = 5;
-    for (int i = 0; i < roomsCount; i++) {
-        const int
-            width = xRandom(maxWidth),
-            height = xRandom(maxHeight),
-            initialX = abs(xRandom(columns) - width),
-            initialY = abs(xRandom(rows) - height);
-
-        for (int y = initialY; y < height; y++) {
-            for (int x = initialX; x < width; x++) {
-                if (y < rows && x < columns)
-                    field[y][x] = 'b';
-            }
-        }
-    }
+    //
 
     for (int y = 0; y < rows; y++) {
         for (int x = 0; x < columns; x++) {
