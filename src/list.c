@@ -23,10 +23,10 @@
 struct List {
     void** values;
     int size;
-    ListDeallocator deallocator;
+    ListDeallocator nullable deallocator;
 };
 
-List* listCreate(ListDeallocator deallocator) {
+List* listCreate(ListDeallocator nullable deallocator) {
     List* list = SDL_malloc(sizeof *list);
     list->values = nullptr;
     list->size = 0;
@@ -35,7 +35,9 @@ List* listCreate(ListDeallocator deallocator) {
 }
 
 void listDestroy(List* list) {
-    for (int i = 0; i < list->size; list->deallocator(list->values[i++]));
+    if (list->deallocator != nullptr)
+        for (int i = 0; i < list->size; list->deallocator(list->values[i++]));
+
     SDL_free(list->values);
     SDL_free(list);
 }
