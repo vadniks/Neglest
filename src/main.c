@@ -17,7 +17,6 @@
  */
 
 #include "game.h"
-#include "generation.h" // TODO: test
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -101,9 +100,7 @@ int main(void) {
     SDL_GL_SetSwapInterval(1);
 
     gameInit();
-    generationInit(); // TODO: test
-    generationClean();
-//    renderLoop(window);
+    renderLoop(window);
     gameClean();
 
     SDL_GL_DeleteContext(glContext);
