@@ -24,11 +24,12 @@
 #include <assert.h>
 
 static int gRows = 0, gColumns = 0, gMaxRomWidth = 0, gMaxRoomHeight = 0;
+char** gField = nullptr;
 
 static int xRandom(int max) { return (int) ((float) random() / (float) RAND_MAX * ((float) max + 1.0f)); }
 
 static void createPath(void) {
-
+//    char current =
 }
 
 void generationInit(void) {
@@ -37,28 +38,38 @@ void generationInit(void) {
     gMaxRomWidth = gColumns / 2;
     gMaxRoomHeight = gRows / 2;
 
-    char field[gRows][gColumns];
-    SDL_memset(field, 'b', sizeof field);
+    gField = SDL_malloc(gRows * sizeof(char*));
+    for (int i = 0; i < gRows; i++) {
+        gField[i] = SDL_malloc(gColumns);
+        for (int j = 0; j < gColumns; j++)
+            gField[i][j] = 'b';
+    }
 
     for (int y = 0; y < gRows; y++) {
         for (int x = 0; x < gColumns; x++) {
-            printf("%c", field[y][x]);
+            printf("%c", gField[y][x]);
         }
         printf("\n");
     }
     printf("\n");
 
-    int entropy;
-    assert(getentropy(&entropy, sizeof(int)) == 0);
-    srand(entropy);
+//    int entropy;
+//    assert(getentropy(&entropy, sizeof(int)) == 0);
+//    srand(entropy);
 
     //
 
-    for (int y = 0; y < gRows; y++) {
-        for (int x = 0; x < gColumns; x++) {
-            printf("%c", field[y][x]);
-        }
-        printf("\n");
-    }
-    printf("\n");
+//    for (int y = 0; y < gRows; y++) {
+//        for (int x = 0; x < gColumns; x++) {
+//            printf("%c", gField[y][x]);
+//        }
+//        printf("\n");
+//    }
+//    printf("\n");
+}
+
+void generationClean(void) {
+    for (int i = 0; i < gRows; i++)
+        SDL_free(gField[i]);
+    SDL_free(gField);
 }

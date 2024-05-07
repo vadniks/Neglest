@@ -102,6 +102,7 @@ int main(void) {
 
     gameInit();
     generationInit(); // TODO: test
+    generationClean();
 //    renderLoop(window);
     gameClean();
 
