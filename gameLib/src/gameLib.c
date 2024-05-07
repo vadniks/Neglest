@@ -112,7 +112,7 @@ static Direction move(int x, int y) {
     while (true) {
         Node* nullable node = queuePull(queue);
         if (node == nullptr)
-            goto end;
+            break;
 
         Direction direction = node->direction;
         Coordinates coordinates = node->coordinates;
@@ -120,7 +120,7 @@ static Direction move(int x, int y) {
 
         if (check(ENTITY_GEM, coordinates.x, coordinates.y)) {
             directionToReturn = direction;
-            goto end;
+            break;
         }
 
         if (listContainsCoordinates(visited, coordinates) || !check(ENTITY_EMPTY, coordinates.x, coordinates.y))
@@ -132,7 +132,6 @@ static Direction move(int x, int y) {
         *xCoordinates = coordinates;
         listAdd(visited, xCoordinates);
     }
-    end:
 
     listDestroy(visited);
     queueDestroy(queue);
