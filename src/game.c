@@ -47,6 +47,18 @@ static int gMouseX = 0, gMouseY = 0;
 static bool gMouseButtonPressed = false;
 static unsigned gStartMillis = 0, gFinishMillis = 0;
 
+static float normalize(int coordinate, int axis) {
+    return 2.0f * ((float) coordinate + 0.5f) / (float) axis - 1.0f;
+}
+
+static float normalizeX(int coordinate) {
+    return normalize(coordinate, GAME_WINDOW_WIDTH);
+}
+
+static float normalizeY(int coordinate) {
+    return normalize(coordinate, GAME_WINDOW_HEIGHT);
+}
+
 static Texture* loadTextureAndConvertFormat(const char* path) {
     SDL_Surface* surface = IMG_Load(path);
     assert(surface != nullptr);
